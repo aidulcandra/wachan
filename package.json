@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/aidulcandra/wachan/issues"
   },
-  "homepage": "https://github.com/aidulcandra/wachan#readme"
+  "homepage": "https://github.com/aidulcandra/wachan#readme",
+  "files": [
+    "index.js"
+  ]
 }
