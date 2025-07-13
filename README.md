@@ -3,12 +3,12 @@ Simpler way to code baileys.
 
 ## Installation
 ```bash
-npm i @aidulcandra/wachan
+npm install wachan
 ```
 
 ## Example
 ```javascript
-const bot = require("@aidulcandra/wachan")
+const bot = require("wachan")
 
 // Receving a message with the exact text "Hello", then reply with "Hi"
 bot.onReceive("Hello", "Hi")
