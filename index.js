@@ -3,6 +3,7 @@ const { connect } = require("./lib/core/socket")
 const { store } = require("./lib/core/store")
 const { setUpBehaviors } = require("./lib/core/behaviors")
 const { settings } = require("./lib/core/settings")
+const wachan = require("./package.json")
 require("colors");
 
 const receivers = []
@@ -16,7 +17,6 @@ function onReceive(options, response) {
     const callback = typeof response === "function"
         ? response
         : () => response
-        
     const receiver = new Receiver(opt)
     receivers.push({receiver, callback})
     return receiver
@@ -25,15 +25,24 @@ function onReceive(options, response) {
 async function start() {
     while (true) {
         try {
+            console.clear()
+            console.log("", "🗨 WACHAN".green, `v${wachan.version}`.gray, "\n")
+            console.log("Wachan is starting connection...".green)
             const {socket, requiresRestart} = await connect({store})
             if (requiresRestart) {
-                console.log("Socket requires restart. Restarting...".yellow);
+                console.log("Wachan needs to restart. Restarting...".yellow);
                 continue;
             }
             setUpBehaviors(socket, receivers, settings)
+            console.log("Connected!".green)
             return {socket}
         } catch (error) {
-            console.error("Socket connection failed:".red, error.message.red)
+            if (error.message == "Unauthorized") {
+                console.log("Wachan needs re-login. Relogging in...".yellow)
+                continue
+            }
+            console.error("Wachan failed to connect to whatsapp:".red, error.message.red)
+            break
         }
     }
 }
