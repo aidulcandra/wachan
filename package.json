@@ -1,6 +1,6 @@
 {
   "name": "wachan",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Simpler way to code baileys.",
   "main": "index.js",
   "scripts": {
