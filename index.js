@@ -13,12 +13,11 @@ function onReceive(options, response) {
         ? {text: options}
         : typeof options === "function"
             ? {filter: options}
-            : options
-    const callback = typeof response === "function"
-        ? response
-        : () => response
+            : options instanceof RegExp
+                ? {regex: options}
+                : options
     const receiver = new Receiver(opt)
-    receivers.push({receiver, callback})
+    receivers.push({receiver, response})
     return receiver
 }
 

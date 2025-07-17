@@ -27,6 +27,22 @@ bot.onReceive(
     "You again"
 )
 
+// Use regex as input
+bot.onReceive(/good (morning|afternoon|evening)/i, "to you as well")
+
+// Capture part of text, and put it in the output text using <<number/name>>. Numbering starts from 0.
+bot.onReceive(/my name is (\w+)/, "Nice to meet you, <<0>>!")
+bot.onReceive(/I live in (?<place>\w+)/, "<<place>> must be a nice place to live!")
+
+// Captured texts go to the second argument of output functions
+bot.onReceive(/^translate (.+)/, async (message, captures) => {
+    const translation = await translate(captures[0])
+    return translation
+})
+bot.onReceive(/I am (?<name>\w+)/, async (message, captures) => {
+    return `${captures.name} is a cool name!`
+})
+
 // Start the bot
 bot.start()
 ```
