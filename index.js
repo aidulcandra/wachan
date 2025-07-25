@@ -1,5 +1,5 @@
 const { Receiver } = require("./lib/classes/receiver")
-const { connect } = require("./lib/core/socket")
+const { connect, getSocket } = require("./lib/core/socket")
 const { store } = require("./lib/core/store")
 const { setUpBehaviors } = require("./lib/core/behaviors")
 const { settings } = require("./lib/core/settings")
@@ -46,4 +46,4 @@ async function start() {
     }
 }
 
-module.exports = { onReceive, start, receivers, settings }
+module.exports = { onReceive, start, receivers, settings, getSocket }
