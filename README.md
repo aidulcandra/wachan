@@ -46,3 +46,19 @@ bot.onReceive(/I am (?<name>\w+)/, async (message, captures) => {
 // Start the bot
 bot.start()
 ```
+
+## Settings File
+### Default Settings
+When first run, a default settings file is created if it's not there.
+```json
+{
+  "receiveOfflineMessages": true,
+}
+```
+These settings can be altered in the meantime by accessing `bot.settings`. To save the changes so that it will take effect next run, use `bot.settings.save()`. Explanation on each item:
+- `receiveOfflineMessages`: If set to `true`, will allow messages received when offline to be processed by `bot.onReceive`.
+
+## Custom Functionality
+Exposed are these items for programming custom functionalities.
+1. Baileys' socket object: `bot.getSocket()`
+2. Message's original object: `message.toBaileys()`
