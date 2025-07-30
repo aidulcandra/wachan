@@ -72,6 +72,7 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.id` - ID of the sender
     - `message.sender.isMe` - `true` if the sender is the bot itself
     - `message.sender.name` - Username of the sender.
+    - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
 - `message.text` - Text or caption of the message.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.toBaileys()` - Return the original baileys message object.
