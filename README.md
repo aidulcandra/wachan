@@ -58,6 +58,24 @@ When first run, a default settings file is created if it's not there.
 These settings can be altered in the meantime by accessing `bot.settings`. To save the changes so that it will take effect next run, use `bot.settings.save()`. Explanation on each item:
 - `receiveOfflineMessages`: If set to `true`, will allow messages received when offline to be processed by `bot.onReceive`.
 
+## Message Handler Function
+You can use a function as the response to a message. The first argument is `message` and the second argument is `captures` (if available).
+```js
+bot.onReceive("test", async function (message, captures) {
+    // Code here
+})
+```
+### Message Object
+`message`: Wachan message object
+- `message.room` - ID of the chat room
+- `message.sender` - Sender object
+    - `message.sender.id` - ID of the sender
+    - `message.sender.isMe` - `true` if the sender is the bot itself
+    - `message.sender.name` - Username of the sender.
+- `message.text` - Text or caption of the message.
+- `message.receivedOnline` - `true` if this message is received when bot is online.
+- `message.toBaileys()` - Return the original baileys message object.
+
 ## Custom Functionality
 Exposed are these items for programming custom functionalities.
 1. Baileys' socket object: `bot.getSocket()`
