@@ -84,8 +84,8 @@ The keys depend on the regex. If using regular capturing using brackets, then th
 
 Input Regex|Received message text|`captures`
 -|-|-
-`/My name is (\S+)\. I live in (\S+)\./` | `"My name is Wachan. I live in NPM.` | `{"0":"Wachan", "1":"NPM"}`
-`/My name is (?<name>\S+)\. I live in (?<location>\S+)\./` | `"My name is Wachan. I live in NPM.` | `{"name":"Wachan", "location":"NPM"}`
+`/My name is (\S+)\. I live in (\S+)\./` | `"My name is Wachan. I live in NPM."` | `{"0":"Wachan", "1":"NPM"}`
+`/My name is (?<name>\S+)\. I live in (?<location>\S+)\./` | `"My name is Wachan. I live in NPM."` | `{"name":"Wachan", "location":"NPM"}`
 
 ## Custom Functionality
 Exposed are these items for programming custom functionalities.
