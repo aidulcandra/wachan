@@ -77,6 +77,16 @@ bot.onReceive("test", async function (message, captures) {
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.toBaileys()` - Return the original baileys message object.
 
+### Captures
+The second argument, `captures` is an array of captured text from regex inputs.
+
+The keys depend on the regex. If using regular capturing using brackets, then the result is stored with numbered keys (starting from 0). If using <i>named capture</i>, then the key is a string.
+
+Input Regex|Received message text|`captures`
+-|-|-
+`/My name is (\S+)\. I live in (\S+)\./` | `"My name is Wachan. I live in NPM.` | `{"0":"Wachan", "1":"NPM"}`
+`/My name is (?<name>\S+)\. I live in (?<location>\S+)\./` | `"My name is Wachan. I live in NPM.` | `{"name":"Wachan", "location":"NPM"}`
+
 ## Custom Functionality
 Exposed are these items for programming custom functionalities.
 1. Baileys' socket object: `bot.getSocket()`
