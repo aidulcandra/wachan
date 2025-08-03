@@ -46,6 +46,16 @@ bot.onReceive(/Aku adalah (?<name>\w+)/, async (message, captures) => {
     return `${captures.name} adalah nama yang keren!`
 })
 
+// Ketika wachan berhasil tersambung (dijalankan sebelum memproses pesan pending)
+bot.onConnected(async () => {
+    await bot.sendText(targetId, "Wachan sudah tersambung!")
+})
+
+// Ketika wachan sudah siap (dijalankan setelah memproses pesan pending)
+bot.onReady(async () => {
+    await bot.sendText(targetId, "Selesai membaca semua pesan yg belum dibaca!")
+})
+
 // Jalankan bot
 bot.start()
 ```
@@ -77,6 +87,13 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - string: balas (dan meng-quote) pesan yang diterima dengan teks
         - object: balas (dan meng-quote) pesan yang diterima dengan teks yang diambil dari `response.text` kalau ada
         - function: `response(message, captures)`, jalankan fungsi. [Penjelasan](#function-response)
+- `bot.sendMessage(targetId, message)` - Kirim pesan
+    - `targetId` - ID chatroom tujuan
+    - `message` - bisa berupa string / object
+        - string: kirim pesan teks ini
+        - object: lebih banyak opsi pengiriman
+            - `message.text`: teks/caption yang akan dikirim
+            - `message.quoted`: pesan yang akan di-reply (di-quote)
 - `bot.start()` - Jalankan bot.
 - `bot.settings` - Pengaturan bot. Cek [di sini](#penjelasan-tiap-item-di-pengaturan)
     - `bot.settings.receiveOfflineMessages`
@@ -103,7 +120,7 @@ bot.onReceive("test", async function (message, captures) {
 - `message.reply(response)` - Balas ke pesan.
     - `response` - Bisa berupa string / object
         - string: balas dengan teks ini
-        - object:
+        - object: lebih banyak opsi pengiriman
             - `response.text` - Balas dengan text/caption ini
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
 

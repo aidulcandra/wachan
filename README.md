@@ -46,6 +46,16 @@ bot.onReceive(/I am (?<name>\w+)/, async (message, captures) => {
     return `${captures.name} is a cool name!`
 })
 
+// When wachan succesfully connected (processed before offline messages)
+bot.onConnected(async () => {
+    await bot.sendText(targetId, "Wachan is connected!")
+})
+
+// When wachan is ready (processed after offline messages)
+bot.onReady(async () => {
+    await bot.sendText(targetId, "Finished reading all unread messages!")
+})
+
 // Start the bot
 bot.start()
 ```
@@ -76,6 +86,13 @@ This is what wachan module exports:<br><br>
         - string: will reply to (and quote) the received message with the string as the text
         - object: will reply to (and quote) the received message with `response.text` if it's there
         - function: `response(message, captures)`, will execute the function. [Explanation here](#message-handler-function)
+- `bot.sendMessage(targetId, message)` - Send a message
+    - `targetId` - the ID of the chatroom to send to
+    - `message` - can be a string / object
+        - string: send a text message
+        - object: can send a message with more options
+            - `message.text`: text/caption to send
+            - `message.quoted`: message to be quoted
 - `bot.start()` - Start the bot.
 - `bot.settings` - Settings for the bot. See [here](#explanation-on-each-item)
     - `bot.settings.receiveOfflineMessages`
@@ -102,7 +119,7 @@ bot.onReceive("test", async function (message, captures) {
 - `message.reply(response)` - Reply to the message.
     - `response` - Can be a string / object
         - string: reply with this text
-        - object:
+        - object: can use more options
             - `response.text` - Reply with this text/caption
 - `message.toBaileys()` - Return the original baileys message object.
 
