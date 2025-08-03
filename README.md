@@ -1,4 +1,4 @@
-<b>Language</b>: English | [Indonesian](./README.id.md)
+English | [Bahasa Indonesia](./README.id.md)
 
 # wachan
 Simpler way to code baileys.

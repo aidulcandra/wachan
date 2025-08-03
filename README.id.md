@@ -1,4 +1,4 @@
-<b>Bahasa</b>: [Inggris](README.md) | Indonesia
+[English](README.md) | Bahasa Indonesia
 
 # wachan
 Cara yang lebih simpel untuk meng-kode baileys.
