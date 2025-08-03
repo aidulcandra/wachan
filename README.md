@@ -85,7 +85,7 @@ This is what wachan module exports:<br><br>
     - `response`: can be a string, an object, or a function.
         - string: will reply to (and quote) the received message with the string as the text
         - object: will reply to (and quote) the received message with `response.text` if it's there
-        - function: `response(message, captures)`, will execute the function. [Explanation here](#message-handler-function)
+        - function: `response(message, captures)`, will execute the function. [Explanation here](#response-function)
 - `bot.sendMessage(targetId, message)` - Send a message
     - `targetId` - the ID of the chatroom to send to
     - `message` - can be a string / object
