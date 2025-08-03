@@ -1,6 +1,7 @@
 const { connect, getSocket } = require("./lib/core/socket")
 const { store } = require("./lib/core/store")
 const { setUpBehaviors, addReceiver, addConnectedCallback, addReadyCallback } = require("./lib/core/behaviors")
+const { sendMessage } = require("./lib/classes/message")
 const { settings } = require("./lib/core/settings")
 const wachan = require("./package.json")
 require("colors");
@@ -29,7 +30,7 @@ async function start() {
                 console.log("Wachan needs to restart. Restarting...".yellow);
                 continue;
             }
-            console.log("Connected!".green)
+            console.log("Ready!".green)
             return {socket}
         } catch (error) {
             if (error.message == "Unauthorized") {
@@ -43,5 +44,7 @@ async function start() {
 }
 
 module.exports = { 
-    onConnected, onReady, onReceive, start, settings, getSocket
+    onConnected, onReady, onReceive, start, 
+    sendMessage,
+    settings, getSocket
 }
