@@ -19,6 +19,7 @@ bot.onReceive("Hello", "Hi")
 bot.onReceive("Hi", async (message) => {
     // Can reply using message.reply()
     await message.reply(`Hi, ${message.sender.name}!`)
+
     // Can also return a string to reply with a text
     return `Hi, ${message.sender.name}!`
 })
@@ -57,10 +58,31 @@ When first run, a default settings file is created if it's not there.
   "receiveOfflineMessages": true,
 }
 ```
-These settings can be altered in the meantime by accessing `bot.settings`. To save the changes so that it will take effect next run, use `bot.settings.save()`. Explanation on each item:
+These settings can be altered in the meantime by accessing `bot.settings`. To save the changes so that it will take effect next run, use `bot.settings.save()`.
+#### Explanation on each item:
 - `receiveOfflineMessages`: If set to `true`, will allow messages received when offline to be processed by `bot.onReceive`.
 
-## Message Handler Function
+## Bot Object
+This is what wachan module exports:<br><br>
+`bot`: Wachan bot object
+- `bot.onConnected(callback)` - Set up the action to be taken when wachan is succesfully connected to whatsapp, <b>before</b> processing offline messages.
+- `bot.onReady(callback)` - Set up the action to be taken <b>after</b> processing offline messages.
+- `bot.onReceive(input, response)` - Set up a receiver that responds to incoming messages of specified input.
+    - `input`: can be a string, regex, or function.
+        - string: will match the exact string of the message text
+        - regex: will match the pattern of the message text
+        - function, `input(message)`: will filter the message based on the return value
+    - `response`: can be a string, an object, or a function.
+        - string: will reply to (and quote) the received message with the string as the text
+        - object: will reply to (and quote) the received message with `response.text` if it's there
+        - function: `response(message, captures)`, will execute the function. [Explanation here](#message-handler-function)
+- `bot.start()` - Start the bot.
+- `bot.settings` - Settings for the bot. See [here](#explanation-on-each-item)
+    - `bot.settings.receiveOfflineMessages`
+    - `bot.settings.save()` - Save the settings. Do this after modifying the settings programmatically.
+- `bot.getSocket()` - Get the original baileys' socket object.
+
+## Response Function
 You can use a function as the response to a message. The first argument is `message` and the second argument is `captures` (if available).
 ```js
 bot.onReceive("test", async function (message, captures) {
@@ -77,17 +99,25 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
 - `message.text` - Text or caption of the message.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
+- `message.reply(response)` - Reply to the message.
+    - `response` - Can be a string / object
+        - string: reply with this text
+        - object:
+            - `response.text` - Reply with this text/caption
 - `message.toBaileys()` - Return the original baileys message object.
 
 ### Captures
-The second argument, `captures` is an array of captured text from regex inputs.
+The second argument, `captures` is an object <b>(not an array)</b> of captured text from regex inputs.
 
-The keys depend on the regex. If using regular capturing using brackets, then the result is stored with numbered keys (starting from 0). If using <i>named capture</i>, then the key is a string.
+The keys depend on the regex. If using regular capturing using brackets, then the result is stored with numeric keys (starting from 0). If using <i>named capture</i>, then the key is a string.
 
 Input Regex|Received message text|`captures`
 -|-|-
 `/My name is (\S+)\. I live in (\S+)\./` | `"My name is Wachan. I live in NPM."` | `{"0":"Wachan", "1":"NPM"}`
 `/My name is (?<name>\S+)\. I live in (?<location>\S+)\./` | `"My name is Wachan. I live in NPM."` | `{"name":"Wachan", "location":"NPM"}`
+<hr>
+
+`captures.toArray()` returns the array of the captures with numeric keys. Useful for doing array operations on it.
 
 ## Custom Functionality
 Exposed are these items for programming custom functionalities.
