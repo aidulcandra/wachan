@@ -1,38 +1,34 @@
-const { Receiver } = require("./lib/classes/receiver")
 const { connect, getSocket } = require("./lib/core/socket")
 const { store } = require("./lib/core/store")
-const { setUpBehaviors } = require("./lib/core/behaviors")
+const { setUpBehaviors, addReceiver, addConnectedCallback, addReadyCallback } = require("./lib/core/behaviors")
 const { settings } = require("./lib/core/settings")
 const wachan = require("./package.json")
 require("colors");
 
-const receivers = []
+async function onConnected(callback) {
+    addConnectedCallback(callback)
+}
+
+async function onReady(callback) {
+    addReadyCallback(callback)
+}
 
 function onReceive(options, response) {
-    const opt = typeof options === "string"
-        ? {text: options}
-        : typeof options === "function"
-            ? {filter: options}
-            : options instanceof RegExp
-                ? {regex: options}
-                : options
-    const receiver = new Receiver(opt)
-    receivers.push({receiver, response})
-    return receiver
+    addReceiver(options, response)
 }
 
 async function start() {
+    const behaviors = setUpBehaviors({settings})
     while (true) {
         try {
             console.clear()
             console.log("", "🗨 WACHAN".green, `v${wachan.version}`.gray, "\n")
-            console.log("Wachan is starting connection...".green)
-            const {socket, requiresRestart} = await connect({store})
+            console.log("Wachan is connecting...".green)
+            const {socket, requiresRestart} = await connect({store, behaviors})
             if (requiresRestart) {
                 console.log("Wachan needs to restart. Restarting...".yellow);
                 continue;
             }
-            setUpBehaviors(socket, receivers, settings)
             console.log("Connected!".green)
             return {socket}
         } catch (error) {
@@ -46,4 +42,6 @@ async function start() {
     }
 }
 
-module.exports = { onReceive, start, receivers, settings, getSocket }
+module.exports = { 
+    onConnected, onReady, onReceive, start, settings, getSocket
+}
