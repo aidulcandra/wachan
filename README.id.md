@@ -135,7 +135,7 @@ Regex Input|Teks yg diterima|Objek `captures`
 `/Nama saya (?<nama>\S+)\. Saya tinggal di (?<lokasi>\S+)\./` | `"Nama saya Wachan. Saya tinggal di NPM.` | `{"nama":"Wachan", "lokasi":"NPM"}`
 <hr>
 
-`captures.toArray()` bisa digunakan untuk mengubah objek capture ke array (agar bisa melakukan operasi array)
+`captures.toArray()` bisa digunakan untuk mengubah objek `captures` ke array (agar bisa melakukan operasi array)
 
 ## Custom Programming
 Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
