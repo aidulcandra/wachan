@@ -129,7 +129,7 @@ Argument kedua adalah `captures` yaitu objek <b>(bukan array)</b> yang berisi st
 
 Key dari objek nya tergantung pada regex-nya. Jika menggunakan capturing biasa dengan tanda kurung, maka hasilnya tersimpan pada key berupa angka (mulai dari 0). Jika menggunakan <i>named capture</i>, maka key-nya berupa string.
 
-Regex Input|Teks yg diterima|Objek `data`
+Regex Input|Teks yg diterima|Objek `captures`
 -|-|-
 `/Nama saya (\S+)\. Saya tinggal di (\S+)\./` | `"Nama saya Wachan. Saya tinggal di NPM.` | `{"0":"Wachan", "1":"NPM"}`
 `/Nama saya (?<nama>\S+)\. Saya tinggal di (?<lokasi>\S+)\./` | `"Nama saya Wachan. Saya tinggal di NPM.` | `{"nama":"Wachan", "lokasi":"NPM"}`
