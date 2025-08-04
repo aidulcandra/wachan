@@ -39,7 +39,7 @@ bot.onReceive(/Saya tinggal di (?<tempat>\w+)/, "<<tempat>> itu dimana ya?")
 
 // Jika menggunakan function sebagai output, teks yang diambil dengan regex masuk ke argument kedua dari function nya
 bot.onReceive(/^translate (.+)/, async (message, captures) => {
-    const translation = await translate(data[0])
+    const translation = await translate(captures[0])
     return translation
 })
 bot.onReceive(/Aku adalah (?<name>\w+)/, async (message, captures) => {
