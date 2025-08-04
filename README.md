@@ -121,6 +121,7 @@ bot.onReceive("test", async function (message, captures) {
         - string: reply with this text
         - object: can use more options
             - `response.text` - Reply with this text/caption
+            - `response.quoted` - Message to quote (by default, the received message). If set to `null`, it will not quote anything.
 - `message.toBaileys()` - Return the original baileys message object.
 
 ### Captures
@@ -135,6 +136,39 @@ Input Regex|Received message text|`captures`
 <hr>
 
 `captures.toArray()` returns the array of the captures with numeric keys. Useful for doing array operations on it.
+
+### Returned Value
+In the response function, you can return a string/object:
+- string: Reply to the received message with this text.<br>Example:
+```js
+bot.onReceive("test", async () => {
+    const a = "bro"
+    return `Hello, ${a}!`
+})
+
+bot.onReceive("test", async (msg) => `Hello, ${msg.sender.name}!`)
+```
+- object: Can use more options.<br>Example:
+```js
+bot.onReceive("test", async () => {
+    return {text: "Text"}
+})
+```
+Available options, assuming `r` is the returned value:
+
+- `r` - The returned object
+    - `r.text` - Text/caption to be sent
+    - `r.quoted` - Message to be quoted. By default it's the received message. Can be changed or set to `null`.
+
+<b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions can make your bot send message twice. For example:
+```js
+bot.onReceive("test", async (msg) => {
+    // this will send 2 messages
+    // 1. from the effect of the msg.reply()
+    // 2. from returning the resulting message object created by msg.reply()
+    return await msg.reply("ok")
+})
+```
 
 ## Custom Functionality
 Exposed are these items for programming custom functionalities.

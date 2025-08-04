@@ -122,6 +122,7 @@ bot.onReceive("test", async function (message, captures) {
         - string: balas dengan teks ini
         - object: lebih banyak opsi pengiriman
             - `response.text` - Balas dengan text/caption ini
+            - `response.quoted` - Pesan yang akan di-quote (di-reply). Bisa diganti ke pesan lain, atau bisa di set ke `null` untuk mengirim pesan tanpa meng-quote.
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
 
 ### Captures
@@ -136,6 +137,40 @@ Regex Input|Teks yg diterima|Objek `captures`
 <hr>
 
 `captures.toArray()` bisa digunakan untuk mengubah objek `captures` ke array (agar bisa melakukan operasi array)
+
+### Value Yang Di-Return
+Di dalam function response, kamu bisa me-return string/object:
+- string: Membalas pesan yg diterima dengan teks ini.<br>Contoh:
+```js
+bot.onReceive("test", async () => {
+    const a = "bro"
+    return `Hello, ${a}!`
+})
+
+bot.onReceive("test", async (msg) => `Hello, ${msg.sender.name}!`)
+```
+- object: Bisa ditambahkan opsi lain.<br>Contoh:
+```js
+bot.onReceive("test", async () => {
+    return {text: "Text"}
+})
+```
+Opsi yang tersedia, misalnya `r` adalah value yang di-return:
+
+- `r` - Object yang di-return
+    - `r.text` - Text/caption yang akan dikirim
+    - `r.quoted` - Pesan yang akan di-quote. Secara default adalah pesan yang diterima. Bisa diganti, dan juga bisa di-`null`-kan.
+
+<b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
+```js
+bot.onReceive("test", async (msg) => {
+    // ini akan mengirim 2 pesan
+    // 1. dari efek msg.reply()
+    // 2. dari hasil me-return message yg dibuat dari msg.reply()
+    return await msg.reply("ok")
+})
+```
+
 
 ## Custom Programming
 Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
