@@ -100,11 +100,13 @@ When first run, a default settings file is created if it's not there.
 ```json
 {
   "receiveOfflineMessages": true,
+  "defaultBotName": "Wachan"
 }
 ```
 These settings can be altered in the meantime by accessing `bot.settings`. To save the changes so that it will take effect next run, use `bot.settings.save()`.
 #### Explanation on each item:
 - `receiveOfflineMessages`: If set to `true`, will allow messages received when offline to be processed by `bot.onReceive`.
+- `defaultBotName`: Will use this name if bot's own message doesn't have `message.sender.name`
 
 ## Bot Object
 This is what wachan module exports:<br><br>

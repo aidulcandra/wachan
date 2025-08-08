@@ -100,12 +100,14 @@ Saat pertama bot dijalankan, file pengaturan awal akan dibuat jika tidak ada.
 ```json
 {
   "receiveOfflineMessages": true,
+  "defaultBotName": "Wachan"
 }
 ```
 Pengaturan ini bisa diubah ketika bot berjalan dengan cara mengakses `bot.settings`. Untuk menyimpan perubahan supaya tetap berlaku ketika bot dijalankan berikutnya, gunakan `bot.settings.save()`.
 
 #### Penjelasan tiap item di pengaturan:
 - `receiveOfflineMessages`: Jika `true`, maka akan memproses pesan offline (pesan yang masuk ketika bot sedang off). Pesan yang dimaksud adalah yang dituliskan pada `bot.onReceive`.
+- `defaultBotName`: Nama ini akan digunakan jika pesan bot sendiri tidak memiliki `message.sender.name`
 
 ## Objek Bot
 Ini objek-objek yang di-export oleh wachan:<br><br>
