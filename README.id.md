@@ -149,6 +149,8 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` jika pengirimnya adalah bot sendiri
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
+- `message.type` - Tipe pesan ini (`"text"` atau `"image"`)
+- `message.isMedia` - `true` jika pesan ini berupa media (type = `image`)
 - `message.text` - Teks atau caption dari pesan
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
 - `message.reply(options)` - Balas ke pesan.

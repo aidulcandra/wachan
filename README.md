@@ -148,6 +148,8 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` if the sender is the bot itself
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
+- `message.type` - Type of this message (`"text"` or `"image"`)
+- `message.isMedia` - `true` if this is a media message (type = `image`)
 - `message.text` - Text or caption of the message.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.reply(options)` - Reply to the message.
