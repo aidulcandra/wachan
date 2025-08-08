@@ -3,6 +3,20 @@
 # wachan
 Cara yang lebih simpel untuk meng-kode baileys.
 
+## Daftar Isi
+- [Instalasi](#instalasi)
+- [Contoh](#contoh)
+- [File Pengaturan](#file-pengaturan)
+    - [Pengaturan Awal](#pengaturan-awal)
+    - [Penjelasan](#penjelasan-tiap-item-di-pengaturan)
+- [Objek Bot](#objek-bot)
+- [Function Response](#function-response)
+    - [Objek Message](#objek-pesan-message)
+    - [Captures](#captures)
+    - [Value Yang Di Return](#value-yang-di-return)
+- [Opsi Pengiriman Pesan](#opsi-pengiriman-pesan)
+- [Custom Programming](#custom-programming)
+
 ## Instalasi
 ```bash
 npm install wachan
@@ -17,7 +31,10 @@ bot.onReceive("Hello", "Hi")
 
 // Gunakan function sebagai respon, argument pertamanya yaitu message
 bot.onReceive("Hi", async (message) => {
-    // Bisa membalas pesan dengan message.reply()
+    // Kirim pesan dengan bot.sendMessage(), id chatroom tujuan harus dimasukkan
+    await bot.sendMessage(message.room, "Hiii")
+
+    // Bisa membalas dengan message.reply(), secara otomatis meng-quote ke pesan yang diterima
     await message.reply(`Hi, ${message.sender.name}!`)
 
     // Bisa juga cukup dengan me-return string untuk membalas
@@ -29,6 +46,23 @@ bot.onReceive(
     (message) => message.sender.name == "Don",
     "You again"
 )
+
+// Cara kirim gambar
+bot.onReceive("kirim gambar", {image: bufferGambar, text: "Caption"})
+bot.onReceive("kirim gambar", {image: "url atau path ke gambar"})
+bot.onReceive("send image", async (message) => {
+    const image = buffer // atau url atau path
+    const text = "Ini captionnya"
+
+    // Dengan bot.sendMessage()
+    await bot.sendMessage(message.room, {image, text})
+
+    // Dengan message.reply()
+    await message.reply({image, text})
+
+    // Dan tentunya, dengan cara me-return object
+    return {image, text}
+})
 
 // Menggunakan regex sebagai input
 bot.onReceive(/good (morning|afternoon|evening)/i, "to you as well")
@@ -85,15 +119,13 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - function, `input(message)`: akan memfilter pesan berdasarkan value yang di-return
     - `response`: bisa berupa string, object, atau function.
         - string: balas (dan meng-quote) pesan yang diterima dengan teks
-        - object: balas (dan meng-quote) pesan yang diterima dengan teks yang diambil dari `response.text` kalau ada
+        - object: balas (dan meng-quote) pesan yang diterima dengan data dari object-nya. Lihat [di sini](#opsi-pengiriman-pesan)
         - function: `response(message, captures)`, jalankan fungsi. [Penjelasan](#function-response)
-- `bot.sendMessage(targetId, message)` - Kirim pesan
+- `bot.sendMessage(targetId, optionsa)` - Kirim pesan
     - `targetId` - ID chatroom tujuan
-    - `message` - bisa berupa string / object
+    - `options` - bisa berupa string / object
         - string: kirim pesan teks ini
-        - object: lebih banyak opsi pengiriman
-            - `message.text`: teks/caption yang akan dikirim
-            - `message.quoted`: pesan yang akan di-reply (di-quote)
+        - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
 - `bot.start()` - Jalankan bot.
 - `bot.settings` - Pengaturan bot. Cek [di sini](#penjelasan-tiap-item-di-pengaturan)
     - `bot.settings.receiveOfflineMessages`
@@ -117,12 +149,10 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
 - `message.text` - Teks atau caption dari pesan
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
-- `message.reply(response)` - Balas ke pesan.
-    - `response` - Bisa berupa string / object
+- `message.reply(options)` - Balas ke pesan.
+    - `options` - Bisa berupa string / object
         - string: balas dengan teks ini
-        - object: lebih banyak opsi pengiriman
-            - `response.text` - Balas dengan text/caption ini
-            - `response.quoted` - Pesan yang akan di-quote (di-reply). Bisa diganti ke pesan lain, atau bisa di set ke `null` untuk mengirim pesan tanpa meng-quote.
+        - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
 
 ### Captures
@@ -155,11 +185,19 @@ bot.onReceive("test", async () => {
     return {text: "Text"}
 })
 ```
-Opsi yang tersedia, misalnya `r` adalah value yang di-return:
 
-- `r` - Object yang di-return
-    - `r.text` - Text/caption yang akan dikirim
-    - `r.quoted` - Pesan yang akan di-quote. Secara default adalah pesan yang diterima. Bisa diganti, dan juga bisa di-`null`-kan.
+## Opsi Pengiriman Pesan
+Kesimpulannya, ada 4 cara mengirim pesan:
+1. Menggunakan `bot.sendMessage(targetId, options)`
+2. Menggunakan object di parameter kedua function `bot.onReceive(input, response)`, yaitu `response`.
+3. Menggunakan `message.reply(options)`
+4. Me-return object di dalam function response
+
+Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi jika berupa object dengan property-property di dalamnya, maka struktur object yang di-support adalah seperti berikut:
+- `options` - Opsi pengiriman pesan
+    - `options.text` - Text/caption yang akan dikirim
+    - `options.quoted` - Pesan yang akan di-quote. Secara otomatis di-set ke pesan yang diterima (jika menggunakan cara 2, 3, 4). Bisa diganti maupun di-set ke `null`.
+    - `options.image` - Gambar yang akan dikirim. Bisa berupa buffer, url, maupun path.
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -170,7 +208,6 @@ bot.onReceive("test", async (msg) => {
     return await msg.reply("ok")
 })
 ```
-
 
 ## Custom Programming
 Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.

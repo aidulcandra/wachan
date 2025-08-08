@@ -3,6 +3,20 @@ English | [Bahasa Indonesia](./README.id.md)
 # wachan
 Simpler way to code baileys.
 
+## Contents
+- [Installation](#installation)
+- [Example](#example)
+- [Settings File](#settings-file)
+    - [Default Settings](#default-settings)
+    - [Explanation](#explanation-on-each-item)
+- [Bot Object](#bot-object)
+- [Response Function](#response-function)
+    - [Message Object](#message-object)
+    - [Captures](#captures)
+    - [Returned Value](#returned-value)
+- [Message Sending Options](#message-sending-options)
+- [Custom Functionality](#custom-functionality)
+
 ## Installation
 ```bash
 npm install wachan
@@ -17,7 +31,10 @@ bot.onReceive("Hello", "Hi")
 
 // Use a function as response, first argument is message
 bot.onReceive("Hi", async (message) => {
-    // Can reply using message.reply()
+    // Can use bot.sendMessage(), target chatroom id must be specified
+    await bot.sendMessage(message.room, "Hiii")
+
+    // Can reply using message.reply(), quoting the received message by default
     await message.reply(`Hi, ${message.sender.name}!`)
 
     // Can also return a string to reply with a text
@@ -29,6 +46,23 @@ bot.onReceive(
     (message) => message.sender.name == "Don",
     "You again"
 )
+
+// Ways of sending image
+bot.onReceive("send image", {image: imageBuffer, text: "Image caption"})
+bot.onReceive("send image", {image: "<image-url or path>"})
+bot.onReceive("send image", async (message) => {
+    const image = buffer // or url or path
+    const text = "Caption here"
+
+    // Using bot.sendMessage()
+    await bot.sendMessage(message.room, {image, text})
+
+    // Using message.reply()
+    await message.reply({image, text})
+
+    // And of course, by returning the object
+    return {image, text}
+})
 
 // Use regex as input
 bot.onReceive(/good (morning|afternoon|evening)/i, "to you as well")
@@ -84,15 +118,13 @@ This is what wachan module exports:<br><br>
         - function, `input(message)`: will filter the message based on the return value
     - `response`: can be a string, an object, or a function.
         - string: will reply to (and quote) the received message with the string as the text
-        - object: will reply to (and quote) the received message with `response.text` if it's there
+        - object: will reply to (and quote) the received message using data from the object. See [here](#message-sending-options)
         - function: `response(message, captures)`, will execute the function. [Explanation here](#response-function)
-- `bot.sendMessage(targetId, message)` - Send a message
+- `bot.sendMessage(targetId, options)` - Send a message
     - `targetId` - the ID of the chatroom to send to
-    - `message` - can be a string / object
+    - `options` - can be a string / object
         - string: send a text message
-        - object: can send a message with more options
-            - `message.text`: text/caption to send
-            - `message.quoted`: message to be quoted
+        - object: can send a message with more options. See [here](#message-sending-options)
 - `bot.start()` - Start the bot.
 - `bot.settings` - Settings for the bot. See [here](#explanation-on-each-item)
     - `bot.settings.receiveOfflineMessages`
@@ -116,12 +148,10 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
 - `message.text` - Text or caption of the message.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
-- `message.reply(response)` - Reply to the message.
-    - `response` - Can be a string / object
+- `message.reply(options)` - Reply to the message.
+    - `options` - Can be a string / object
         - string: reply with this text
-        - object: can use more options
-            - `response.text` - Reply with this text/caption
-            - `response.quoted` - Message to quote (by default, the received message). If set to `null`, it will not quote anything.
+        - object: can use more options. See [here](#message-sending-options)
 - `message.toBaileys()` - Return the original baileys message object.
 
 ### Captures
@@ -153,14 +183,22 @@ bot.onReceive("test", async (msg) => `Hello, ${msg.sender.name}!`)
 bot.onReceive("test", async () => {
     return {text: "Text"}
 })
+
 ```
-Available options, assuming `r` is the returned value:
+## Message Sending Options
+In conclusion, there are 4 methods to send a message:
+1. Using `bot.sendMessage(targetId, options)`
+2. Using an object in the second parameter of `bot.onReceive(input, response)`, which is the `response`.
+3. Using `message.reply(options)`
+4. Returning an object inside a response function
 
-- `r` - The returned object
-    - `r.text` - Text/caption to be sent
-    - `r.quoted` - Message to be quoted. By default it's the received message. Can be changed or set to `null`.
+If the object is a string, then the message will be sent as a text message. However, if it's an object with properties, then it should support these options in the object:
+- `options` - The message sending options
+    - `options.text` - Text/caption to be sent
+    - `options.quoted` - Message to be quoted. By default it's the received message (if using method 2, 3, 4). Can be changed or set to `null`.
+    - `options.image` - Image to be sent. It can be a buffer, a url or a path.
 
-<b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions can make your bot send message twice. For example:
+<b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
 bot.onReceive("test", async (msg) => {
     // this will send 2 messages
