@@ -203,6 +203,8 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.text` - Text/caption yang akan dikirim
     - `options.quoted` - Pesan yang akan di-quote. Secara otomatis di-set ke pesan yang diterima (jika menggunakan cara 2, 3, 4). Bisa diganti maupun di-set ke `null`.
     - `options.image` - Gambar yang akan dikirim. Bisa berupa buffer, url, maupun path.
+    - `options.video` - Video yang akan dikirim. Bisa berupa buffer, url, maupun path.
+    - `options.gif` - Video yang akan dikirim sebagai GIF. Bisa berupa buffer, url, maupun path. (Whatsapp tidak support file GIF, jika kamu menggunakan file GIF, maka tidak akan bergerak gambarnya)
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -228,3 +230,4 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ## [Belum Rilis]
 ### Ditambahkan
 - Support pesan video
+- Support pesan gif

@@ -202,6 +202,8 @@ If the object is a string, then the message will be sent as a text message. Howe
     - `options.text` - Text/caption to be sent
     - `options.quoted` - Message to be quoted. By default it's the received message (if using method 2, 3, 4). Can be changed or set to `null`.
     - `options.image` - Image to be sent. It can be a buffer, a url or a path.
+    - `options.video` - Video to be sent. It can be a buffer, a url or a path.
+    - `options.gif` - Video to be sent as gif. It can be a buffer, a url or a path. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
@@ -227,3 +229,4 @@ Exposed are these items for programming custom functionalities.
 ## [Unreleased]
 ### Added
 - Support video message
+- Support gif message
