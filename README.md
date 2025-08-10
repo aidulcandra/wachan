@@ -16,6 +16,7 @@ Simpler way to code baileys.
     - [Returned Value](#returned-value)
 - [Message Sending Options](#message-sending-options)
 - [Custom Functionality](#custom-functionality)
+- [Changelog](#changelog)
 
 ## Installation
 ```bash
@@ -216,3 +217,13 @@ bot.onReceive("test", async (msg) => {
 Exposed are these items for programming custom functionalities.
 1. Baileys' socket object: `bot.getSocket()`
 2. Message's original object: `message.toBaileys()`
+
+<hr>
+<br>
+<br>
+
+# Changelog
+
+## [Unreleased]
+### Added
+- Support video message

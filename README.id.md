@@ -16,6 +16,7 @@ Cara yang lebih simpel untuk meng-kode baileys.
     - [Value Yang Di Return](#value-yang-di-return)
 - [Opsi Pengiriman Pesan](#opsi-pengiriman-pesan)
 - [Custom Programming](#custom-programming)
+- [Changelog](#changelog)
 
 ## Instalasi
 ```bash
@@ -217,3 +218,13 @@ bot.onReceive("test", async (msg) => {
 Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 1. Objek socket milik baileys: `bot.getSocket()`
 2. Objek pesan milik baileys: `message.toBaileys()`
+
+<hr>
+<br>
+<br>
+
+# Changelog
+
+## [Belum Rilis]
+### Ditambahkan
+- Support pesan video
