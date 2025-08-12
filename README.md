@@ -24,63 +24,52 @@ npm install wachan
 ```
 
 ## Example
+3 types of inputs:
 ```javascript
 const bot = require("wachan")
 
-// Receving a message with the exact text "Hello", then reply with "Hi"
+// 1) String Input: Respond to messages that have the exact text.
 bot.onReceive("Hello", "Hi")
 
-// Use a function as response, first argument is message
-bot.onReceive("Hi", async (message) => {
-    // Can use bot.sendMessage(), target chatroom id must be specified
-    await bot.sendMessage(message.room, "Hiii")
-
-    // Can reply using message.reply(), quoting the received message by default
-    await message.reply(`Hi, ${message.sender.name}!`)
-
-    // Can also return a string to reply with a text
-    return `Hi, ${message.sender.name}!`
-})
-
-// Use a function as input, first argument is also message. This can be used as a filter
-bot.onReceive(
-    (message) => message.sender.name == "Don",
-    "You again"
-)
-
-// Ways of sending image
-bot.onReceive("send image", {image: imageBuffer, text: "Image caption"})
-bot.onReceive("send image", {image: "<image-url or path>"})
-bot.onReceive("send image", async (message) => {
-    const image = buffer // or url or path
-    const text = "Caption here"
-
-    // Using bot.sendMessage()
-    await bot.sendMessage(message.room, {image, text})
-
-    // Using message.reply()
-    await message.reply({image, text})
-
-    // And of course, by returning the object
-    return {image, text}
-})
-
-// Use regex as input
+// 2) Regex Input: Respond to messages that have the pattern in the text.
 bot.onReceive(/good (morning|afternoon|evening)/i, "to you as well")
 
-// Capture part of text, and put it in the output text using <<number/name>>. Numbering starts from 0.
-bot.onReceive(/my name is (\w+)/, "Nice to meet you, <<0>>!")
-bot.onReceive(/I live in (?<place>\w+)/, "<<place>> must be a nice place to live!")
+// 3) Function Input: Respond to messages if the function returns true
+bot.onReceive((msg)=>msg.sender.id===OWNER_ID, "hello boss")
+```
 
-// Captured texts go to the second argument of output functions
-bot.onReceive(/^translate (.+)/, async (message, captures) => {
-    const translation = await translate(captures[0])
-    return translation
-})
-bot.onReceive(/I am (?<name>\w+)/, async (message, captures) => {
-    return `${captures.name} is a cool name!`
-})
+3 Types of responses:
+```js
+// 1) String response: Text message
+bot.onReceive("Marco", "Polo")
 
+// 2) Object response: More sending options
+bot.onReceive("send image", {image:"buffer, url, or path", caption:"This is the caption"})
+bot.onReceive("send video", {video:"...", caption:"..."})
+bot.onReceive("send gif", {gif:"...", caption:"..."}) // must send a video file for it to animate as whatsapp does not support gif files
+bot.onReceive("send audio", {audio:"..."})
+
+// 3) Function response: Custom actions
+bot.onReceive("test", async (message, captures) => {
+    const options = {...}
+
+    // 3 ways of sending message:
+    // 1) Using bot.sendMessage()
+    await bot.sendMessage(TARGET_ID, "string for text message")
+    await bot.sendMessage(TARGET_ID, options) // more sending options
+
+    // 2) Using message.reply()
+    await message.reply("string for text message")
+    await message.reply(options) // more sending options
+
+    // 3) Returning a value (equivalent to message.reply)
+    return "string for text message"
+    return options // more sending options
+})
+```
+
+Other events:
+```js
 // When wachan succesfully connected (processed before offline messages)
 bot.onConnected(async () => {
     await bot.sendText(targetId, "Wachan is connected!")
@@ -90,8 +79,10 @@ bot.onConnected(async () => {
 bot.onReady(async () => {
     await bot.sendText(targetId, "Finished reading all unread messages!")
 })
+```
 
-// Start the bot
+Starting the bot:
+```js
 bot.start()
 ```
 
@@ -149,7 +140,7 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` if the sender is the bot itself
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
-- `message.type` - Type of this message (`"text"` or `"image"`)
+- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`
 - `message.isMedia` - `true` if this is a media message (type = `image`)
 - `message.text` - Text or caption of the message.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
@@ -201,9 +192,10 @@ If the object is a string, then the message will be sent as a text message. Howe
 - `options` - The message sending options
     - `options.text` - Text/caption to be sent
     - `options.quoted` - Message to be quoted. By default it's the received message (if using method 2, 3, 4). Can be changed or set to `null`.
-    - `options.image` - Image to be sent. It can be a buffer, a url or a path.
-    - `options.video` - Video to be sent. It can be a buffer, a url or a path.
-    - `options.gif` - Video to be sent as gif. It can be a buffer, a url or a path. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
+    - `options.image` - Image to send. It can be a buffer, a url or a path.
+    - `options.video` - Video to send. It can be a buffer, a url or a path.
+    - `options.gif` - Video to send as gif. It can be a buffer, a url or a path. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
+    - `options.audio` - Audio to send. It can be a buffer, a url or a path.
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
@@ -230,3 +222,4 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - Support video message
 - Support gif message
+- Support audio message

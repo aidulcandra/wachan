@@ -24,74 +24,65 @@ npm install wachan
 ```
 
 ## Contoh
-```js
+3 jenis input:
+```javascript
 const bot = require("wachan")
 
-// Menerima pesan teks "Hello", lalu membalas "Hi"
+// 1) Input string: Deteksi pesan masuk yang punya teks persis dengan string
 bot.onReceive("Hello", "Hi")
 
-// Gunakan function sebagai respon, argument pertamanya yaitu message
-bot.onReceive("Hi", async (message) => {
-    // Kirim pesan dengan bot.sendMessage(), id chatroom tujuan harus dimasukkan
-    await bot.sendMessage(message.room, "Hiii")
+// 2) Input regex: Deteksi pesan masuk yang punya pola regex tersebut
+bot.onReceive(/selamat (pagi|siang|sore|malam)/i, "halo")
 
-    // Bisa membalas dengan message.reply(), secara otomatis meng-quote ke pesan yang diterima
-    await message.reply(`Hi, ${message.sender.name}!`)
+// 3) Input function: Deteksi pesan jika hasil fungsinya true. (Fungsi filter pesan)
+bot.onReceive((msg)=>msg.sender.id===OWNER_ID, "hello boss")
+```
 
-    // Bisa juga cukup dengan me-return string untuk membalas
-    return `Hi, ${message.sender.name}!`
+3 Jenis respon:
+```js
+// 1) Respon string: Balas dengan pesan teks
+bot.onReceive("Marco", "Polo")
+
+// 2) Respon object: Lebih banyak opsi pengiriman
+bot.onReceive("kirim gambar", {image:"buffer, url, atau path", caption:"Ini caption-nya"})
+bot.onReceive("kirim video", {video:"...", caption:"..."})
+bot.onReceive("kirim gif", {gif:"...", caption:"..."}) // file harus berupa video agar bisa bergerak (whatsapp tidak support file gif)
+bot.onReceive("kirim audio", {audio:"..."})
+
+// 3) Respon function: Custom script
+bot.onReceive("test", async (message, captures) => {
+    const options = {...}
+
+    // 3 cara mengirim pesan:
+    // 1) Dengan bot.sendMessage()
+    await bot.sendMessage(TARGET_ID, "string untuk pesan teks")
+    await bot.sendMessage(TARGET_ID, options) // lebih banyak opsi pengiriman
+
+    // 2) Dengan message.reply()
+    await message.reply("string untuk pesan teks")
+    await message.reply(options) // lebih banyak opsi pengiriman
+
+    // 3) Me-return value (sama dengan message.reply)
+    return "string untuk pesan teks"
+    return options // lebih banyak opsi pengiriman
 })
+```
 
-// Menggunakan function sebagai input, argument pertama juga berisi message. Ini bisa dipakai untuk memfilter pesan
-bot.onReceive(
-    (message) => message.sender.name == "Don",
-    "You again"
-)
-
-// Cara kirim gambar
-bot.onReceive("kirim gambar", {image: bufferGambar, text: "Caption"})
-bot.onReceive("kirim gambar", {image: "url atau path ke gambar"})
-bot.onReceive("send image", async (message) => {
-    const image = buffer // atau url atau path
-    const text = "Ini captionnya"
-
-    // Dengan bot.sendMessage()
-    await bot.sendMessage(message.room, {image, text})
-
-    // Dengan message.reply()
-    await message.reply({image, text})
-
-    // Dan tentunya, dengan cara me-return object
-    return {image, text}
-})
-
-// Menggunakan regex sebagai input
-bot.onReceive(/good (morning|afternoon|evening)/i, "to you as well")
-
-// Mengambil bagian dari teks menggunakan regex. Hasilnya akan dimasukkan ke teks output menggantikan pola <<angka/nama>>. Penomoran dimulai dari 0.
-bot.onReceive(/nama saya (\w+)/, "Halo, <<0>>!")
-bot.onReceive(/Saya tinggal di (?<tempat>\w+)/, "<<tempat>> itu dimana ya?")
-
-// Jika menggunakan function sebagai output, teks yang diambil dengan regex masuk ke argument kedua dari function nya
-bot.onReceive(/^translate (.+)/, async (message, captures) => {
-    const translation = await translate(captures[0])
-    return translation
-})
-bot.onReceive(/Aku adalah (?<name>\w+)/, async (message, captures) => {
-    return `${captures.name} adalah nama yang keren!`
-})
-
-// Ketika wachan berhasil tersambung (dijalankan sebelum memproses pesan pending)
+Event-event lain:
+```js
+// Ketika Wachan berhasil tersambung (diproses SEBELUM memproses pesan offline)
 bot.onConnected(async () => {
-    await bot.sendText(targetId, "Wachan sudah tersambung!")
+    await bot.sendText(targetId, "Wachan sudah terhubung!")
 })
 
-// Ketika wachan sudah siap (dijalankan setelah memproses pesan pending)
+// Ketika Wachan sudah siap (diproses SETELAH memproses pesan offline)
 bot.onReady(async () => {
-    await bot.sendText(targetId, "Selesai membaca semua pesan yg belum dibaca!")
+    await bot.sendText(targetId, "Selesai membaca semua pesan offline!")
 })
+```
 
-// Jalankan bot
+Menjalankan bot:
+```js
 bot.start()
 ```
 
@@ -150,7 +141,7 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` jika pengirimnya adalah bot sendiri
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
-- `message.type` - Tipe pesan ini (`"text"` atau `"image"`)
+- `message.type` - Tipe pesan ini. Tipe-tipe yang tersedia: `"text"`, `"image"`, `"video"`, `"gif"`
 - `message.isMedia` - `true` jika pesan ini berupa media (type = `image`)
 - `message.text` - Teks atau caption dari pesan
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
@@ -205,6 +196,7 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.image` - Gambar yang akan dikirim. Bisa berupa buffer, url, maupun path.
     - `options.video` - Video yang akan dikirim. Bisa berupa buffer, url, maupun path.
     - `options.gif` - Video yang akan dikirim sebagai GIF. Bisa berupa buffer, url, maupun path. (Whatsapp tidak support file GIF, jika kamu menggunakan file GIF, maka tidak akan bergerak gambarnya)
+    - `options.audio` - Audio yang akan dikirim. Bisa berupa buffer, url, maupun path.
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -231,3 +223,4 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - Support pesan video
 - Support pesan gif
+- Support pesan audio
