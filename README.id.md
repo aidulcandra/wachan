@@ -220,6 +220,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+
+## [1.6.0] - 2025-08-12
 ### Ditambahkan
 - Support pesan video
 - Support pesan gif

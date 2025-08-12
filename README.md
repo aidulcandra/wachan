@@ -219,6 +219,8 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+
+## [1.6.0] - 2025-08-12
 ### Added
 - Support video message
 - Support gif message
