@@ -219,6 +219,8 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+### Fixed
+- Sending a message to a @lid id throws an error
 
 ## [1.6.0] - 2025-08-12
 ### Added

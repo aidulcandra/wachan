@@ -220,6 +220,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+### Diperbaiki
+- Mengirim ke id @lid menyebabkan error
 
 ## [1.6.0] - 2025-08-12
 ### Ditambahkan
