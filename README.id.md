@@ -48,6 +48,7 @@ bot.onReceive("kirim gambar", {image:"buffer, url, atau path", caption:"Ini capt
 bot.onReceive("kirim video", {video:"...", caption:"..."})
 bot.onReceive("kirim gif", {gif:"...", caption:"..."}) // file harus berupa video agar bisa bergerak (whatsapp tidak support file gif)
 bot.onReceive("kirim audio", {audio:"..."})
+bot.onReceive("kirim sticker", {sticker:"..."}) // file WebP
 
 // 3) Respon function: Custom script
 bot.onReceive("test", async (message, captures) => {
@@ -142,8 +143,8 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` jika pengirimnya adalah bot sendiri
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
-- `message.type` - Tipe pesan ini. Tipe-tipe yang tersedia: `"text"`, `"image"`, `"video"`, `"gif"`
-- `message.isMedia` - `true` jika pesan ini berupa media (type = `image`)
+- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, atau `"sticker"`
+- `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, atau `"sticker"`)
 - `message.text` - Teks atau caption dari pesan
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
 - `message.reply(options)` - Balas ke pesan.
@@ -198,6 +199,7 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.video` - Video yang akan dikirim. Bisa berupa buffer, url, maupun path.
     - `options.gif` - Video yang akan dikirim sebagai GIF. Bisa berupa buffer, url, maupun path. (Whatsapp tidak support file GIF, jika kamu menggunakan file GIF, maka tidak akan bergerak gambarnya)
     - `options.audio` - Audio yang akan dikirim. Bisa berupa buffer, url, maupun path.
+    - `options.sticker` - File WebP yang akan dikirim sebagai stiker (buffer/url/path)
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -221,8 +223,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+### Ditambahkan
+- Support pesan sticker
 ### Diperbaiki
-- Mengirim ke id @lid menyebabkan error
+- Mengirim ke id @lid tidak lagi menyebabkan error
 
 ## [1.6.0] - 2025-08-12
 ### Ditambahkan

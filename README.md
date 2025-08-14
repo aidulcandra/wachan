@@ -48,6 +48,7 @@ bot.onReceive("send image", {image:"buffer, url, or path", caption:"This is the 
 bot.onReceive("send video", {video:"...", caption:"..."})
 bot.onReceive("send gif", {gif:"...", caption:"..."}) // must send a video file for it to animate as whatsapp does not support gif files
 bot.onReceive("send audio", {audio:"..."})
+bot.onReceive("send sticker", {sticker:"..."}) // webp file
 
 // 3) Function response: Custom actions
 bot.onReceive("test", async (message, captures) => {
@@ -141,8 +142,8 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` if the sender is the bot itself
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
-- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`
-- `message.isMedia` - `true` if this is a media message (type = `image`)
+- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`
+- `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, or `"sticker"`)
 - `message.text` - Text or caption of the message.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.reply(options)` - Reply to the message.
@@ -197,6 +198,7 @@ If the object is a string, then the message will be sent as a text message. Howe
     - `options.video` - Video to send. It can be a buffer, a url or a path.
     - `options.gif` - Video to send as gif. It can be a buffer, a url or a path. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
     - `options.audio` - Audio to send. It can be a buffer, a url or a path.
+    - `options.sticker` - WebP file to send as sticker (buffer/url/path)
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
@@ -220,8 +222,10 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+### Added
+- Support sticker message
 ### Fixed
-- Sending a message to a @lid id throws an error
+- Sending a message to a @lid id no longer throws an error
 
 ## [1.6.0] - 2025-08-12
 ### Added
