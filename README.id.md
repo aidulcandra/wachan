@@ -123,6 +123,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
 - `bot.start()` - Jalankan bot.
 - `bot.settings` - Pengaturan bot. Cek [di sini](#penjelasan-tiap-item-di-pengaturan)
     - `bot.settings.receiveOfflineMessages`
+    - `bot.settings.defaultBotName`
     - `bot.settings.save()` - Simpan pengaturan. Perlu dilakukan setelah memodifikasi settings di dalam program.
 - `bot.getSocket()` - Ambil objek socket baileys.
 

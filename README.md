@@ -122,6 +122,7 @@ This is what wachan module exports:<br><br>
 - `bot.start()` - Start the bot.
 - `bot.settings` - Settings for the bot. See [here](#explanation-on-each-item)
     - `bot.settings.receiveOfflineMessages`
+    - `bot.settings.defaultBotName`
     - `bot.settings.save()` - Save the settings. Do this after modifying the settings programmatically.
 - `bot.getSocket()` - Get the original baileys' socket object.
 
