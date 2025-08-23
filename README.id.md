@@ -116,6 +116,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - string: balas (dan meng-quote) pesan yang diterima dengan teks
         - object: balas (dan meng-quote) pesan yang diterima dengan data dari object-nya. Lihat [di sini](#opsi-pengiriman-pesan)
         - function: `response(message, captures)`, jalankan fungsi. [Penjelasan](#function-response)
+    - me-return: sebuah objek `Receiver`. Receiver ini bisa dihapus dengan cara `receiver.remove()` untuk menghentikan respon yg dilakukannya.
 - `bot.sendMessage(targetId, optionsa)` - Kirim pesan
     - `targetId` - ID chatroom tujuan
     - `options` - bisa berupa string / object
@@ -143,8 +144,8 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` jika pengirimnya adalah bot sendiri
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
-- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, atau `"sticker"`
-- `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, atau `"sticker"`)
+- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`
+- `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`)
 - `message.text` - Teks atau caption dari pesan
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
 - `message.reply(options)` - Balas ke pesan.
@@ -200,6 +201,9 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.gif` - Video yang akan dikirim sebagai GIF. Bisa berupa buffer, url, maupun path. (Whatsapp tidak support file GIF, jika kamu menggunakan file GIF, maka tidak akan bergerak gambarnya)
     - `options.audio` - Audio yang akan dikirim. Bisa berupa buffer, url, maupun path.
     - `options.sticker` - File WebP yang akan dikirim sebagai stiker (buffer/url/path)
+    - `options.document` - File yang akan dikirim sebagai pesan document. Pengaturan tambahan:
+        - `options.mimetype` - Mimetype dari file ini.
+        - `options.fileName` - Nama file yang ditampilkan untuk pesan document ini.
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -222,9 +226,12 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
-## [Belum Rilis]
+## [1.7.0] - 2025-08-23
 ### Ditambahkan
 - Support pesan sticker
+- Support pesan document
+- `bot.onReceive()` sekarang me-return objek `Receiver`.
+- Objek `Receiver` yang dibuat dari `bot.onReceive()` bisa dihapus dengan method `.remove()`.
 ### Diperbaiki
 - Mengirim ke id @lid tidak lagi menyebabkan error
 

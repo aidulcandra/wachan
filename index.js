@@ -15,7 +15,7 @@ async function onReady(callback) {
 }
 
 function onReceive(options, response) {
-    addReceiver(options, response)
+    return addReceiver(options, response)
 }
 
 async function start() {

@@ -115,6 +115,7 @@ This is what wachan module exports:<br><br>
         - string: will reply to (and quote) the received message with the string as the text
         - object: will reply to (and quote) the received message using data from the object. See [here](#message-sending-options)
         - function: `response(message, captures)`, will execute the function. [Explanation here](#response-function)
+    - returns: a `Receiver` object. This Receiver can be removed to stop its behavior by calling `receiver.remove()`
 - `bot.sendMessage(targetId, options)` - Send a message
     - `targetId` - the ID of the chatroom to send to
     - `options` - can be a string / object
@@ -142,8 +143,8 @@ bot.onReceive("test", async function (message, captures) {
     - `message.sender.isMe` - `true` if the sender is the bot itself
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
-- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`
-- `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, or `"sticker"`)
+- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`
+- `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, or `"document"`)
 - `message.text` - Text or caption of the message.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.reply(options)` - Reply to the message.
@@ -163,7 +164,7 @@ Input Regex|Received message text|`captures`
 `/My name is (?<name>\S+)\. I live in (?<location>\S+)\./` | `"My name is Wachan. I live in NPM."` | `{"name":"Wachan", "location":"NPM"}`
 <hr>
 
-`captures.toArray()` returns the array of the captures with numeric keys. Useful for doing array operations on it.
+`captures.toArray()` returns the array of the captures. Useful for doing array operations on it.
 
 ### Returned Value
 In the response function, you can return a string/object:
@@ -199,6 +200,9 @@ If the object is a string, then the message will be sent as a text message. Howe
     - `options.gif` - Video to send as gif. It can be a buffer, a url or a path. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
     - `options.audio` - Audio to send. It can be a buffer, a url or a path.
     - `options.sticker` - WebP file to send as sticker (buffer/url/path)
+    - `options.document` - A file to send as document. Supporting properties:
+        - `options.mimetype` - Mimetype for this document/file
+        - `options.fileName` - Filename for this document/file
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
@@ -221,9 +225,12 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
-## [Unreleased]
+## [1.7.0] - 2025-08-23
 ### Added
 - Support sticker message
+- Support document message
+- `bot.onReceive()` now returns a `Receiver` object.
+- `Receiver` objects created from `bot.onReceive()` can be removed using `.remove()` method.
 ### Fixed
 - Sending a message to a @lid id no longer throws an error
 
