@@ -226,6 +226,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
+## [Belum Rilis]
+### Diperbaiki
+- `message.receivedOnline` sekarang sudah bisa bernilai `false`
+
 ## [1.7.0] - 2025-08-23
 ### Ditambahkan
 - Support pesan sticker

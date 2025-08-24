@@ -225,6 +225,10 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
+## [Unreleased]
+### Fixed
+- `message.receivedOnline` can now be `false`
+
 ## [1.7.0] - 2025-08-23
 ### Added
 - Support sticker message
