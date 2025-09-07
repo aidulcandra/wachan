@@ -272,6 +272,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+
+## [1.8.0] - 2025-09-08
 ### Ditambahkan
 - Tambah fitur Message Store. Ini akan menyimpan sementara pesan yang diterima. Bisa diatur batas penyimpanannya di settings. Penyimpanan ini berguna untuk memperbaiki beberapa bug yang memerlukan untuk pesan dipanggil kembali.
 - Tambah pengaturan `bot.settings.messageStoreSize` (default: 1000)

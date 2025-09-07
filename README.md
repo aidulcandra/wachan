@@ -272,6 +272,8 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+
+## [1.8.0] - 2025-09-08
 ### Added
 - Added Message Store. This will store received messages in memory. The limit can be adjusted in the settings. This is useful to fix some bugs that requires certain messages to be reused.
 - Added `bot.settings.messageStoreSize` (default: 1000)
