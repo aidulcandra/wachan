@@ -118,6 +118,9 @@ This is what wachan module exports:<br><br>
         - object: will reply to (and quote) the received message using data from the object. See [here](#message-sending-options)
         - function: `response(message, captures)`, will execute the function. [Explanation here](#response-function)
     - returns: a `Receiver` object. This Receiver can be removed to stop its behavior by calling `receiver.remove()`
+- `bot.waitForMessage(input, timeout)` - Wait for a message of specified input then return the message
+    - `input`: The same as `input` in `bot.onReceive()` above
+    - `timeout`: Time limit for the waiting. If no matching messages have been captured, `waitForMessage()` returns `undefined`
 - `bot.sendMessage(targetId, options)` - Send a message
     - `targetId` - the ID of the chatroom to send to
     - `options` - can be a string / object
@@ -234,6 +237,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - Added Message Store. This will store received messages in memory. The limit can be adjusted in the settings. This is useful to fix some bugs that requires certain messages to be reused.
 - Added `bot.settings.messageStoreSize` (default: 1000)
+- Added `bot.waitForMessage()`
 - Added `message.timestamp`
 - Added `message.sender.lid`
 - Added `message.getQuoted()`

@@ -117,6 +117,9 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - object: balas (dan meng-quote) pesan yang diterima dengan data dari object-nya. Lihat [di sini](#opsi-pengiriman-pesan)
         - function: `response(message, captures)`, jalankan fungsi. [Penjelasan](#function-response)
     - me-return: sebuah objek `Receiver`. Receiver ini bisa dihapus dengan cara `receiver.remove()` untuk menghentikan respon yg dilakukannya.
+- `bot.waitForMessage(input, timeout)` - Menunggu munculnya pesan masuk sesuai input lalu me-return pesan tersebut.
+    - `input`: Sama seperti `input` di `bot.onReceive()` di atas.
+    - `timeout`: Batas waktu tunggu. Jika tidak ditemukan pesan dan waktu habis, `waitForMessage()` akan me-return `undefined`.
 - `bot.sendMessage(targetId, optionsa)` - Kirim pesan
     - `targetId` - ID chatroom tujuan
     - `options` - bisa berupa string / object
@@ -233,6 +236,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - Tambah fitur Message Store. Ini akan menyimpan sementara pesan yang diterima. Bisa diatur batas penyimpanannya di settings. Penyimpanan ini berguna untuk memperbaiki beberapa bug yang memerlukan untuk pesan dipanggil kembali.
 - Tambah pengaturan `bot.settings.messageStoreSize` (default: 1000)
+- Tambah fitur `bot.waitForMessage()`
 - Tambah fitur `message.timestamp` 
 - Tambah fitur `message.sender.lid`
 - Tambah fitur `message.getQuoted()`
