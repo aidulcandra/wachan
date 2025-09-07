@@ -22,6 +22,10 @@
     "url": "https://github.com/aidulcandra/wachan/issues"
   },
   "homepage": "https://github.com/aidulcandra/wachan#readme",
+  "exports": {
+    ".": "./index.js",
+    "./commands": "./tools/commands.js"
+  },
   "files": [
     "index.js",
     "lib",
