@@ -31,7 +31,6 @@ async function waitForMessage(options, timeout=10000) {
     return result
 }
 
-
 async function start() {
     if (!fs.existsSync(WACHAN_DATA_PATH)) {
         fs.mkdirSync(WACHAN_DATA_PATH)
