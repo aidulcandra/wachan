@@ -1,3 +1,6 @@
+const WACHAN_DATA_PATH = "./wachan"
+
+const fs = require("fs")
 const { connect, getSocket } = require("./lib/core/socket")
 const { store } = require("./lib/core/store")
 const { setUpBehaviors, addReceiver, addConnectedCallback, addReadyCallback } = require("./lib/core/behaviors")
@@ -19,7 +22,11 @@ function onReceive(options, response) {
 }
 
 async function start() {
+    if (!fs.existsSync(WACHAN_DATA_PATH)) {
+        fs.mkdirSync(WACHAN_DATA_PATH)
+    }
     const behaviors = setUpBehaviors({settings})
+    store.messageStore.size = settings.messageStoreSize
     while (true) {
         try {
             console.clear()
