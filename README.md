@@ -93,13 +93,15 @@ When first run, a default settings file is created if it's not there.
 ```json
 {
   "receiveOfflineMessages": true,
-  "defaultBotName": "Wachan"
+  "defaultBotName": "Wachan",
+  "messageStoreSize": 1000
 }
 ```
 These settings can be altered in the meantime by accessing `bot.settings`. To save the changes so that it will take effect next run, use `bot.settings.save()`.
 #### Explanation on each item:
 - `receiveOfflineMessages`: If set to `true`, will allow messages received when offline to be processed by `bot.onReceive`.
 - `defaultBotName`: Will use this name if bot's own message doesn't have `message.sender.name`
+- `messageStoreSize`: The size limit of the Message Store. This store is used internally to fix some bugs.
 
 ## Bot Object
 This is what wachan module exports:<br><br>
@@ -139,10 +141,12 @@ bot.onReceive("test", async function (message, captures) {
 `message`: Wachan message object
 - `message.room` - ID of the chat room
 - `message.sender` - Sender object
-    - `message.sender.id` - ID of the sender
+    - `message.sender.id` - ID of the sender (in the format of `phonenumber@s.whatsapp.net`)
+    - `message.sender.lid` - LID of the sender (a hidden id  of each Whatsapp user, in the format of `randomnumber@lid`)
     - `message.sender.isMe` - `true` if the sender is the bot itself
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
+- `message.timestamp` - UNIX timestamp of this message.
 - `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`
 - `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, or `"document"`)
 - `message.text` - Text or caption of the message.
@@ -151,6 +155,7 @@ bot.onReceive("test", async function (message, captures) {
     - `options` - Can be a string / object
         - string: reply with this text
         - object: can use more options. See [here](#message-sending-options)
+- `message.getQuoted()` - Return the message that this message is quoting.
 - `message.toBaileys()` - Return the original baileys message object.
 
 ### Captures
@@ -226,7 +231,14 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+### Added
+- Added Message Store. This will store received messages in memory. The limit can be adjusted in the settings. This is useful to fix some bugs that requires certain messages to be reused.
+- Added `bot.settings.messageStoreSize` (default: 1000)
+- Added `message.timestamp`
+- Added `message.sender.lid`
+- Added `message.getQuoted()`
 ### Fixed
+- Updated `Baileys` version to `6.7.19`
 - `message.receivedOnline` can now be `false`
 
 ## [1.7.0] - 2025-08-23

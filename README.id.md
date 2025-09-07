@@ -140,10 +140,12 @@ bot.onReceive("test", async function (message, captures) {
 `message`: Objek pesan Wachan
 - `message.room` - ID dari chatroom
 - `message.sender` - Objek pengirim (sender)
-    - `message.sender.id` - ID pengirim
+    - `message.sender.id` - ID pengirim (berupa format `nomor-telepon@s.whatsapp.net`)
+    - `message.sender.lid` - LID pengirim (id tersembunyi untuk tiap user Whatsapp, dalam format `nomoracak@lid`)
     - `message.sender.isMe` - `true` jika pengirimnya adalah bot sendiri
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
+- `message.timestamp` - Timestamp dari pesan ini dalam format Unix Timestamp.
 - `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`
 - `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`)
 - `message.text` - Teks atau caption dari pesan
@@ -152,6 +154,7 @@ bot.onReceive("test", async function (message, captures) {
     - `options` - Bisa berupa string / object
         - string: balas dengan teks ini
         - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
+- `message.getQuoted()` - Me-return pesan yang di-quote oleh pesan ini.
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
 
 ### Captures
@@ -227,7 +230,14 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+### Ditambahkan
+- Tambah fitur Message Store. Ini akan menyimpan sementara pesan yang diterima. Bisa diatur batas penyimpanannya di settings. Penyimpanan ini berguna untuk memperbaiki beberapa bug yang memerlukan untuk pesan dipanggil kembali.
+- Tambah pengaturan `bot.settings.messageStoreSize` (default: 1000)
+- Tambah fitur `message.timestamp` 
+- Tambah fitur `message.sender.lid`
+- Tambah fitur `message.getQuoted()`
 ### Diperbaiki
+- Update Baileys ke versi `6.7.19`
 - `message.receivedOnline` sekarang sudah bisa bernilai `false`
 
 ## [1.7.0] - 2025-08-23
