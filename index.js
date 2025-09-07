@@ -21,6 +21,17 @@ function onReceive(options, response) {
     return addReceiver(options, response)
 }
 
+async function waitForMessage(options, timeout=10000) {
+    let receiver
+    const result = await new Promise(resolve => {
+        receiver = onReceive(options, m=>resolve(m))
+        setTimeout(resolve, timeout)
+    })
+    receiver.remove()
+    return result
+}
+
+
 async function start() {
     if (!fs.existsSync(WACHAN_DATA_PATH)) {
         fs.mkdirSync(WACHAN_DATA_PATH)
@@ -52,6 +63,6 @@ async function start() {
 
 module.exports = { 
     onConnected, onReady, onReceive, start, 
-    sendMessage,
+    sendMessage, waitForMessage,
     settings, getSocket
 }
