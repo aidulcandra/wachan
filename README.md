@@ -15,6 +15,7 @@ Simpler way to code baileys.
     - [Captures](#captures)
     - [Returned Value](#returned-value)
 - [Message Sending Options](#message-sending-options)
+- [Tools](#tools)
 - [Custom Functionality](#custom-functionality)
 - [Changelog](#changelog)
 
@@ -222,6 +223,43 @@ bot.onReceive("test", async (msg) => {
 })
 ```
 
+## Tools
+You can import tools that can be useful for certain scenarios. Currently this is the only tool.
+### Commands Tool `require("wachan/commands")`
+Useful for quickly setting up prefix-command-params style inputs in popular bot format. Ex: `/search article`
+<br>
+Exports: `commands`
+- `commands` - The Commands Tool. When imported, will add a new item in the settings, `bot.settings.commandPrefixes`, which is an array of prefixes that can be used to invoke commands.
+    - `commands.add(name, response, options)`
+        - `name` - The name of the command
+        - `response` - String/Object/Function
+            - as string: Reply the command message with this.
+            - as object: More sending options. [See here](#message-sending-options)
+            - as function: `response(message, params, command, prefix)`
+                - `message` - The command message
+                - `params` - Parameters of the commands. Example: `/test a b c` -> params = ["a","b","c"]
+                - `command` - The command name that is used
+                - `prefix` - The prefix that is used
+        - `options` - Additional options for the command
+            - `options.aliases` - Array of aliases for the command
+            - `options.separator` - Character to use as parameter string splitter. Default a space (`" "`)
+    - `commands.addPrefix(prefix)` - Add a new command prefix. Like aliases, but for prefix.
+    - `commands.removePrefix(prefix)` - Remove one of the existing command prefixes.
+
+Example Usage:
+```js
+const cmd = require("wachan/commands")
+cmd.add("add", function (msg, params) {
+    const [a, b] = params
+    const result = Number(a) + Number(b)
+    return `The result of ${a}+${b} is ${a+b}`
+})
+
+// Will respond when someone types:
+// /add 4 5
+// Bot will add 4 and 5 then send the result in chat
+```
+
 ## Custom Functionality
 Exposed are these items for programming custom functionalities.
 1. Baileys' socket object: `bot.getSocket()`
@@ -241,6 +279,7 @@ Exposed are these items for programming custom functionalities.
 - Added `message.timestamp`
 - Added `message.sender.lid`
 - Added `message.getQuoted()`
+- Added Commands Tool (`require("wachan/commands")`)
 ### Fixed
 - Updated `Baileys` version to `6.7.19`
 - `message.receivedOnline` can now be `false`

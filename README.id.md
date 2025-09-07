@@ -221,6 +221,45 @@ bot.onReceive("test", async (msg) => {
 })
 ```
 
+## Tools
+Kamu bisa import tools Yang berguna di berbagai skenario. Untuk sekarang hanya ini Tool yang ada.
+### Commands Tool `require("wachan/commands")`
+Berguna untuk membuat command (perintah) yang berformat prefix-command-param yang populer di kalangan developer bot whatsapp. Contoh: `/search article`
+<br>
+Meng-export: `commands`
+- `commands` - Commands Tool. Ketika diimport, akan otomatis menambah satu item pengaturan baru, `bot.settings.commandPrefixes`, yaitu array dari prefix-prefix yang bisa digunakan untuk menjalankan command.
+    - `commands.add(name, response, options)`
+        - `name` - Nama command-nya
+        - `response` - String/Object/Function
+            - sebagai string: Balas ke pesan command dengan teks
+            - sebagai object: Lebih banyak opsi pengiriman. [Cek di sini](#opsi-pengiriman-pesan)
+            - sebagai function: `response(message, params, command, prefix)`
+                - `message` - Pesan perintah
+                - `params` - Parameter. Contoh: `/test a b c` -> params = ["a","b","c"]
+                - `command` - Nama command yang digunakan.
+                - `prefix` - Prefix yang digunakan
+        - `options` - Opis tambahan untuk command ini
+            - `options.aliases` - Array alias untuk alternatif perintah
+            - `options.separator` - Karakter yang akan digunakan sebagai pemotong string parameter. Default spasi (`" "`)
+    - `commands.addPrefix(prefix)` - Menambahkan prefix
+    - `commands.removePrefix(prefix)` - Menghapus salah satu prefix yang ada.
+
+Contoh Penggunaan:
+```js
+const cmd = require("wachan/commands")
+cmd.add("add", function (msg, params) {
+    const [a, b] = params
+    const result = Number(a) + Number(b)
+    return `The result of ${a}+${b} is ${a+b}`
+})
+
+// Akan merespon ketika ada yang mengetik:
+// /add 4 5
+// Bot akan menambahkan 4 and 5 then send the result in chat
+
+
+```
+
 ## Custom Programming
 Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 1. Objek socket milik baileys: `bot.getSocket()`
@@ -240,6 +279,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - Tambah fitur `message.timestamp` 
 - Tambah fitur `message.sender.lid`
 - Tambah fitur `message.getQuoted()`
+- Tambah tool Commands `require("wachan/commands")`
 ### Diperbaiki
 - Update Baileys ke versi `6.7.19`
 - `message.receivedOnline` sekarang sudah bisa bernilai `false`
