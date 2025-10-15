@@ -228,7 +228,7 @@ Berguna untuk membuat command (perintah) yang berformat prefix-command-param yan
 <br>
 Meng-export: `commands`
 - `commands` - Commands Tool. Ketika diimport, akan otomatis menambah satu item pengaturan baru, `bot.settings.commandPrefixes`, yaitu array dari prefix-prefix yang bisa digunakan untuk menjalankan command.
-    - `commands.add(name, response, options)`
+    - `commands.add(name, response, options)` - Tambah command baru
         - `name` - Nama command-nya
         - `response` - String/Object/Function
             - sebagai string: Balas ke pesan command dengan teks
@@ -238,7 +238,7 @@ Meng-export: `commands`
                 - `params` - Parameter. Contoh: `/test a b c` -> params = ["a","b","c"]
                 - `command` - Nama command yang digunakan.
                 - `prefix` - Prefix yang digunakan
-        - `options` - Opis tambahan untuk command ini
+        - `options` - Opsi tambahan untuk command ini
             - `options.aliases` - Array alias untuk alternatif perintah
             - `options.separator` - Karakter yang akan digunakan sebagai pemotong string parameter. Default spasi (`" "`)
     - `commands.addPrefix(prefix)` - Menambahkan prefix
