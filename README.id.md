@@ -308,6 +308,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 #### Tool Commands (`require("wachan/commands")`)
 - Tambah `commands.fromFile()` dan `commands.fromFolder()`
+- Tambah `commands.getCommandInfo()` dan `commands.generateMenu()`
 
 ## [1.8.0] - 2025-09-08
 ### Ditambahkan
