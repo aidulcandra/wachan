@@ -230,7 +230,7 @@ Useful for quickly setting up prefix-command-params style inputs in popular bot 
 <br>
 Exports: `commands`
 - `commands` - The Commands Tool. When imported, will add a new item in the settings, `bot.settings.commandPrefixes`, which is an array of prefixes that can be used to invoke commands.
-    - `commands.add(name, response, options)`
+    - `commands.add(name, response, options)` - Add a new command.
         - `name` - The name of the command
         - `response` - String/Object/Function
             - as string: Reply the command message with this.
@@ -243,21 +243,25 @@ Exports: `commands`
         - `options` - Additional options for the command
             - `options.aliases` - Array of aliases for the command
             - `options.separator` - Character to use as parameter string splitter. Default a space (`" "`)
+    - `commands.fromFile(commandName, filePath)` - Add a new command from a file. The file must be a `.js` file exporting a object `cmdFile` with the structure as follows:
+        - `cmdFile.response` - Similar to `commands.add()`'s `response` parameter. See above.
+        - `cmdFile.options` - Optional. Similar to `commands.add()`'s `options` parameter. See above.
+    - `commands.fromFolder(folderPath)` - Scan a folder for command files then add them as commands. The names are taken from the names of the files. See above for the details of a command file.
     - `commands.addPrefix(prefix)` - Add a new command prefix. Like aliases, but for prefix.
     - `commands.removePrefix(prefix)` - Remove one of the existing command prefixes.
 
 Example Usage:
 ```js
 const cmd = require("wachan/commands")
-cmd.add("add", function (msg, params) {
+cmd.add("multiply", function (msg, params) {
     const [a, b] = params
-    const result = Number(a) + Number(b)
-    return `The result of ${a}+${b} is ${a+b}`
+    const result = Number(a) * Number(b)
+    return `The result of ${a}*${b} is ${result}`
 })
 
 // Will respond when someone types:
-// /add 4 5
-// Bot will add 4 and 5 then send the result in chat
+// /multiply 4 5
+// Bot will multiply 4 and 5 then send the result in chat
 ```
 
 ## Custom Functionality
@@ -272,6 +276,9 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+### Added
+#### Commands Tool (`require("wachan/commands"`)
+- Added `commands.fromFile()` and `commands.fromFolder()`
 
 ## [1.8.0] - 2025-09-08
 ### Added

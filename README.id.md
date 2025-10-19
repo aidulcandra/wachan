@@ -241,21 +241,24 @@ Meng-export: `commands`
         - `options` - Opsi tambahan untuk command ini
             - `options.aliases` - Array alias untuk alternatif perintah
             - `options.separator` - Karakter yang akan digunakan sebagai pemotong string parameter. Default spasi (`" "`)
+    - `commands.fromFile(commandName, filePath)` - Tambah command baru dari file. File-nya harus berekstensi `.js` dan dari file tersebut di-export objek `cmdFile` dengan struktur seperti berikut:
+        - `cmdFile.response` - Mirip dengan parameter `response` pada `commands.add()`. Lihat di atas.
+        - `cmdFile.options` - Opsional. Mirip dengan parameter `options` pada `commands.add()`. Lihat di atas.
     - `commands.addPrefix(prefix)` - Menambahkan prefix
     - `commands.removePrefix(prefix)` - Menghapus salah satu prefix yang ada.
 
 Contoh Penggunaan:
 ```js
 const cmd = require("wachan/commands")
-cmd.add("add", function (msg, params) {
+cmd.add("multiply", function (msg, params) {
     const [a, b] = params
-    const result = Number(a) + Number(b)
-    return `The result of ${a}+${b} is ${a+b}`
+    const result = Number(a) * Number(b)
+    return `The result of ${a}*${b} is ${result}`
 })
 
 // Akan merespon ketika ada yang mengetik:
-// /add 4 5
-// Bot akan menambahkan 4 and 5 then send the result in chat
+// /multiply 4 5
+// Bot akan mengalikan 4 and 5 lalu mengirimkan hasilnya di chat.
 
 
 ```
@@ -272,6 +275,9 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+### Ditambahkan
+#### Tool Commands (`require("wachan/commands")`)
+- Tambah `commands.fromFile()` dan `commands.fromFolder()`
 
 ## [1.8.0] - 2025-09-08
 ### Ditambahkan
