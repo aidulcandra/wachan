@@ -30,7 +30,8 @@
     "index.js",
     "lib",
     "package.json",
-    "README.md"
+    "README.md",
+    "tools"
   ],
   "dependencies": {
     "baileys": "^6.7.20",
