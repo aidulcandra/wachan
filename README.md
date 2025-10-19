@@ -243,14 +243,42 @@ Exports: `commands`
         - `options` - Additional options for the command
             - `options.aliases` - Array of aliases for the command
             - `options.separator` - Character to use as parameter string splitter. Default a space (`" "`)
+            - `options.description` - Command description
+            - `options.sectionName` - Section name of this command. This is used when generating a menu (see below at `commands.generateMenu()`)
     - `commands.fromFile(commandName, filePath)` - Add a new command from a file. The file must be a `.js` file exporting a object `cmdFile` with the structure as follows:
         - `cmdFile.response` - Similar to `commands.add()`'s `response` parameter. See above.
         - `cmdFile.options` - Optional. Similar to `commands.add()`'s `options` parameter. See above.
     - `commands.fromFolder(folderPath)` - Scan a folder for command files then add them as commands. The names are taken from the names of the files. See above for the details of a command file.
     - `commands.addPrefix(prefix)` - Add a new command prefix. Like aliases, but for prefix.
     - `commands.removePrefix(prefix)` - Remove one of the existing command prefixes.
+    - `commands.getCommandInfo(commandName)` - Get the info about a registered command by its name.
+    - `commands.generateMenu(options)` - Generate a string of menu that automatically lists all the registered commands and also groups them by their sections. Generation options:
+        -   `options?.prefix` - The prefix to display. By default the first prefix in the registered prefixes list.
+        - `options?.header` - The header or title of the menu. Note: You need to add newlines (`\n`) manually at the end of it if you want to separate the header and the body in their own lines. By default: `"> COMMAND LIST:\n\n"`
+        - `options?.sectionTitleFormat` - Use this to format the title of each section. Use `<<section>>` to mark the position of the section title. By default: `"# <<section>>\n"` (Again, manually insert the newlines)
+        - `options?.sectionFooter` - The footer of each section. Again, manually insert the newlines but insert them at the beginning. (Ex: `"\n------"`). By default: `""` (empty string)
+        - `options?.commandFormat` - The formatting of each command item. Use `<<prefix>>`, `<<name>>`, and `<<description>>` to mark the position of the prefix, command name, and the description, respectively. By default: ``"- `<<prefix>><<name>>`: <<description>>"``
+        - `options?.commandSeparator` - The separator between command items. By default: `"\n"` (a newline)
+        - `options?.sectionSeparator` - The separator between sections. By default: `"\n\n"`
+        - `options?.unsectionedFirst` - If `true` will show the unsectioned commands before the sectioned ones and vice versa.
+        - `options?.noDescriptionPlaceholder` - The string to show if a command has no description.
 
-Example Usage:
+        This is to show you what the generated menu looks like using default formatting:
+```
+> COMMAND LIST:
+
+# Section A
+- `/cmd1`: Description of the command.
+- `/hello`: Say hello.
+- `/wachan`: Awesome module.
+
+# Section B
+- `/this`: Is an example
+- `/you`: Can imagine what it looks like in Whatsapp, I suppose.
+- `/nodesc`: No description
+```
+
+Example Usage of this tool:
 ```js
 const cmd = require("wachan/commands")
 cmd.add("multiply", function (msg, params) {
@@ -279,6 +307,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 #### Commands Tool (`require("wachan/commands"`)
 - Added `commands.fromFile()` and `commands.fromFolder()`
+- Added `commands.getCommandInfo()` and `commands.generateMenu()`
 
 ## [1.8.0] - 2025-09-08
 ### Added

@@ -241,11 +241,39 @@ Meng-export: `commands`
         - `options` - Opsi tambahan untuk command ini
             - `options.aliases` - Array alias untuk alternatif perintah
             - `options.separator` - Karakter yang akan digunakan sebagai pemotong string parameter. Default spasi (`" "`)
+            - `options.description` - Deskripsi command
+            - `options.sectionName` - Nama section dari command ini. Ini digunakan untuk men-generate menu. (lihat di bawah di bagian `commands.generateMenu()`)
     - `commands.fromFile(commandName, filePath)` - Tambah command baru dari file. File-nya harus berekstensi `.js` dan dari file tersebut di-export objek `cmdFile` dengan struktur seperti berikut:
         - `cmdFile.response` - Mirip dengan parameter `response` pada `commands.add()`. Lihat di atas.
         - `cmdFile.options` - Opsional. Mirip dengan parameter `options` pada `commands.add()`. Lihat di atas.
     - `commands.addPrefix(prefix)` - Menambahkan prefix
     - `commands.removePrefix(prefix)` - Menghapus salah satu prefix yang ada.
+    - `commands.getCommandInfo(commandName)` - Ambil info tentang suatu command yang sudah terdaftar.
+    - `commands.generateMenu(options)` - Generate sebuah string berisi menu perintah yang otomatis berisi list perintah dan dikelompokkan berdasarkan section-nya. Opsi Generation:
+        -   `options?.prefix` - Prefix yang akan ditampilkan. Secara default, prefix pertama di daftar prefix.
+        - `options?.header` - Judul menu. Catatan: Kamu perlu menambahkan newlines (`\n`) secara manual di ujunnya jika ingin memisahkan judul dan isi di baris berbeda. Secara default: `"> COMMAND LIST:\n\n"`
+        - `options?.sectionTitleFormat` - Gunakan ini untuk formatting judul tiap section. Gunakan `<<section>>` untuk menandai posisi teks nama section. Secara default: `"# <<section>>\n"` (Sama seperti tadi, tambahkan newline secara manual)
+        - `options?.sectionFooter` - Footer (bagian bawah/penutup) dari tiap section. Sekali lagi, newline perlu ditambahkan secara manual tetapi di awal. (Contoh: `"\n------"`). Secara default: `""` (string kosong)
+        - `options?.commandFormat` - Formatting dari setiap butir command. Gunakan `<<prefix>>`, `<<name>>`, dan `<<description>>` untuk menandai posisi prefix, nama command, dan deskripsi command. Secara default: ``"- `<<prefix>><<name>>`: <<description>>"``
+        - `options?.commandSeparator` - Pemisah tiap item command. Secara default: `"\n"` (newline)
+        - `options?.sectionSeparator` - Pemisah antar section. Secara default: `"\n\n"`
+        - `options?.unsectionedFirst` - Jika `true` akan menampilkan command tanpa section lebih dulu, setelah itu command yang ada sectionnya. Jika `false` maka sebaliknya.
+        - `options?.noDescriptionPlaceholder` - String yang akan digunakan jika command tidak punya deskripsi.
+
+        Ini contoh string yang digenerate jika menggunakan formatting default:
+```
+> COMMAND LIST:
+
+# Section A
+- `/cmd1`: Description of the command.
+- `/hello`: Say hello.
+- `/wachan`: Awesome module.
+
+# Section B
+- `/this`: Is an example
+- `/you`: Can imagine what it looks like in Whatsapp, I suppose.
+- `/nodesc`: No description
+```
 
 Contoh Penggunaan:
 ```js
