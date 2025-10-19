@@ -96,10 +96,11 @@ function generateMenu(options = {}) {
     const prefix = options.prefix ?? (settings.commandPrefixes[0] || "")
     const header = options.header ?? "> COMMAND LIST:\n\n"
     const sectionTitleFormat = options.sectionTitleFormat ?? "# <<section>>\n"
+    const sectionFooter = options.sectionFooter ?? ""
     const commandFormat = options.commandFormat ?? "- `<<prefix>><<name>>`: <<description>>"
     const commandSeparator = options.commandSeparator ?? "\n"
     const sectionSeparator = options.sectionSeparator ?? "\n\n"
-    const unsectionedFirst = options.unsectionedFirst ?? true
+    const unsectionedFirst = options.unsectionedFirst ?? false
     const noDescriptionPlaceholder = options.noDescriptionPlaceholder ?? "No description"
 
     let menu = header
@@ -115,7 +116,7 @@ function generateMenu(options = {}) {
     const sectioned = Object.entries(commandSections).map(([sectionName, commands]) => {
         const sectionTitle = sectionTitleFormat.replace("<<section>>", sectionName)
         const commandListStr = buildCommandList(commands)
-        return `${sectionTitle}${commandListStr}`
+        return `${sectionTitle}${commandListStr}${sectionFooter}`
     }).join(sectionSeparator).trim()
     if (unsectionedFirst) {
         if (unsectioned) menu += unsectioned + sectionSeparator
