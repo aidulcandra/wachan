@@ -303,6 +303,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+
+## [1.9.0] - 2025-10-19
 ### Ditambahkan
 #### Tool Commands (`require("wachan/commands")`)
 - Tambah `commands.fromFile()` dan `commands.fromFolder()`

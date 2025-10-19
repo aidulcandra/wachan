@@ -304,6 +304,8 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+
+## [1.9.0] - 2025-10-19
 ### Added
 #### Commands Tool (`require("wachan/commands"`)
 - Added `commands.fromFile()` and `commands.fromFolder()`
