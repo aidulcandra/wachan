@@ -31,7 +31,7 @@ async function waitForMessage(options, timeout=10000) {
     return result
 }
 
-async function start() {
+async function start(options = {}) {
     if (!fs.existsSync(WACHAN_DATA_PATH)) {
         fs.mkdirSync(WACHAN_DATA_PATH)
     }
@@ -42,7 +42,8 @@ async function start() {
             console.clear()
             console.log("", "🗨 WACHAN".green, `v${wachan.version}`.gray, "\n")
             console.log("Wachan is connecting...".green)
-            const {socket, requiresRestart} = await connect({store, behaviors})
+            const suppressLogs = options.suppressBaileysLogs ?? true
+            const {socket, requiresRestart} = await connect({store, behaviors, suppressLogs})
             if (requiresRestart) {
                 console.log("Wachan needs to restart. Restarting...".yellow);
                 continue;
