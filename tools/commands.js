@@ -1,6 +1,7 @@
 const fs = require("fs")
 
-const { onReceive, settings } = require("../index")
+const bot = require("../index")
+const { onReceive, settings } = bot
 
 const prefixes = settings.commandPrefixes ??= ["/"]
 
@@ -24,12 +25,12 @@ function add(commandName, response, options = {}) {
     } else {
         commandList.push(c)
     }
-    return onReceive(commandRegex, async function (message, captures) {
+    return onReceive(commandRegex, async function (message, captures, group) {
         const { prefix, commandName, paramString } = captures
         const separator = options.separator || " "
         const params = paramString?.split(separator) || []
         return typeof response === "function"
-            ? response(message, params, commandName, prefix)
+            ? response(message, params, commandName, prefix, group, bot)
             : response
     })
 }

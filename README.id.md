@@ -51,7 +51,7 @@ bot.onReceive("kirim audio", {audio:"..."})
 bot.onReceive("kirim sticker", {sticker:"..."}) // file WebP
 
 // 3) Respon function: Custom script
-bot.onReceive("test", async (message, captures) => {
+bot.onReceive("test", async (message, captures, group) => {
     const options = {...}
 
     // 3 cara mengirim pesan:
@@ -133,9 +133,9 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
 - `bot.getSocket()` - Ambil objek socket baileys.
 
 ## Function Response
-Kamu bisa gunakan function sebagai respon pesan. Argument pertamanya adalah `message` dan keduanya adalah `captures` (jika ada).
+Kamu bisa gunakan function sebagai respon pesan. Argument pertamanya adalah `message`, kedua `captures` (jika ada), dan ketiga `group` (jika chat room tempat pesan diterima adalah grup).
 ```js
-bot.onReceive("test", async function (message, captures) {
+bot.onReceive("test", async function (message, captures, group) {
     // Kode di sini
 })
 ```
@@ -172,6 +172,19 @@ Regex Input|Teks yg diterima|Objek `captures`
 <hr>
 
 `captures.toArray()` bisa digunakan untuk mengubah objek `captures` ke array (agar bisa melakukan operasi array)
+
+### Group
+Argumentt kedua adalah `group`, objek yang berisi informasi tentang grup. Nilainya `null` jika pesan dikirim ke pesan pribadi.
+- `group`
+    - `group.id` - ID grup (sama dengan `message.room`)
+    - `group.subject` - Subject (judul) grup
+    - `group.description` - Deskripsi grup
+    - `group.getParticipants()` - Ambil list peserta grup berupa array berisi objek-objek dengan struktur berikut:
+        - `participant`
+            - `participant.id` - ID peserta. Bisa berupa JID atau LID
+            - `participant.lid` - LID peserta
+    - `group.getAdmins()` - Ambil list khusus admin grup
+    - `group.getMembers()` - Ambil list khusus member (bukan admin)
 
 ### Value Yang Di-Return
 Di dalam function response, kamu bisa me-return string/object:
@@ -233,11 +246,13 @@ Meng-export: `commands`
         - `response` - String/Object/Function
             - sebagai string: Balas ke pesan command dengan teks
             - sebagai object: Lebih banyak opsi pengiriman. [Cek di sini](#opsi-pengiriman-pesan)
-            - sebagai function: `response(message, params, command, prefix)`
+            - sebagai function: `response(message, params, command, prefix, group, bot)`
                 - `message` - Pesan perintah
                 - `params` - Parameter. Contoh: `/test a b c` -> params = ["a","b","c"]
                 - `command` - Nama command yang digunakan.
                 - `prefix` - Prefix yang digunakan
+                - `group` - Info tentang grup dimana perintah ini dijalankan
+                - `bot` - Objek bot yang sama dengan export utama wachan
         - `options` - Opsi tambahan untuk command ini
             - `options.aliases` - Array alias untuk alternatif perintah
             - `options.separator` - Karakter yang akan digunakan sebagai pemotong string parameter. Default spasi (`" "`)
@@ -303,6 +318,9 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 # Changelog
 
 ## [Belum Rilis]
+### Ditambahkan
+- Argument ketiga di dalam fungsi respon, `group`
+- Argument kelima dan keenam di dalam fungsi respon untuk command, `group` dan `bot`
 
 ## [1.9.0] - 2025-10-19
 ### Ditambahkan

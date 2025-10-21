@@ -52,7 +52,7 @@ bot.onReceive("send audio", {audio:"..."})
 bot.onReceive("send sticker", {sticker:"..."}) // webp file
 
 // 3) Function response: Custom actions
-bot.onReceive("test", async (message, captures) => {
+bot.onReceive("test", async (message, captures, group) => {
     const options = {...}
 
     // 3 ways of sending message:
@@ -135,9 +135,9 @@ This is what wachan module exports:<br><br>
 - `bot.getSocket()` - Get the original baileys' socket object.
 
 ## Response Function
-You can use a function as the response to a message. The first argument is `message` and the second argument is `captures` (if available).
+You can use a function as the response to a message. The first argument is `message`, the second argument is `captures` (if available), and the third is `group` (if the chatroom is a group chat).
 ```js
-bot.onReceive("test", async function (message, captures) {
+bot.onReceive("test", async function (message, captures, group) {
     // Code here
 })
 ```
@@ -174,6 +174,20 @@ Input Regex|Received message text|`captures`
 <hr>
 
 `captures.toArray()` returns the array of the captures. Useful for doing array operations on it.
+
+### Group
+The third argument is `group`, the object that contains information about the group. This will be `null` if the message is sent in a private chat.
+- `group`
+    - `group.id` - ID of the group (the same as `message.room`)
+    - `group.subject` - The subject / title of the group chat
+    - `group.description` - The description of the group
+    - `group.getParticipants()` - Get the list of all participants in the group. It's an array of object with the structure:
+        - `participant`
+            - `participant.id` - ID of the participant. Could be a JID or LID.
+            - `participant.lid` - LID of the participant
+    - `group.getAdmins()` - Get the list of participants who are admins of the group.
+    - `group.getMembers()` - Get the list of participants who are not admins.
+
 
 ### Returned Value
 In the response function, you can return a string/object:
@@ -235,11 +249,13 @@ Exports: `commands`
         - `response` - String/Object/Function
             - as string: Reply the command message with this.
             - as object: More sending options. [See here](#message-sending-options)
-            - as function: `response(message, params, command, prefix)`
+            - as function: `response(message, params, command, prefix, group, bot)`
                 - `message` - The command message
                 - `params` - Parameters of the commands. Example: `/test a b c` -> params = ["a","b","c"]
                 - `command` - The command name that is used
                 - `prefix` - The prefix that is used
+                - `group` - If the chatroom is a group this will be an object that contains information about the group. Else `null`.
+                - `bot` - The bot object which is the same as wachan's main export.
         - `options` - Additional options for the command
             - `options.aliases` - Array of aliases for the command
             - `options.separator` - Character to use as parameter string splitter. Default a space (`" "`)
@@ -304,6 +320,9 @@ Exposed are these items for programming custom functionalities.
 # Changelog
 
 ## [Unreleased]
+### Added
+- 3rd argument in the response function, `group`
+- 5th and 6th argument in the command's response function, `group` and `bot`
 
 ## [1.9.0] - 2025-10-19
 ### Added

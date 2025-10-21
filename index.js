@@ -61,8 +61,10 @@ async function start(options = {}) {
     }
 }
 
-module.exports = { 
+const bot = { 
     onConnected, onReady, onReceive, start, 
     sendMessage, waitForMessage,
     settings, getSocket
 }
+
+module.exports = bot
