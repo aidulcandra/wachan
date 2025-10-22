@@ -258,6 +258,7 @@ Meng-export: `commands`
             - `options.separator` - Karakter yang akan digunakan sebagai pemotong string parameter. Default spasi (`" "`)
             - `options.description` - Deskripsi command
             - `options.sectionName` - Nama section dari command ini. Ini digunakan untuk men-generate menu. (lihat di bawah di bagian `commands.generateMenu()`)
+            - `options.hidden` - Command ini tidak akan ditampilkan di menu dari hasil `commands.generateMenu()`
     - `commands.fromFile(commandName, filePath)` - Tambah command baru dari file. File-nya harus berekstensi `.js` dan dari file tersebut di-export objek `cmdFile` dengan struktur seperti berikut:
         - `cmdFile.response` - Mirip dengan parameter `response` pada `commands.add()`. Lihat di atas.
         - `cmdFile.options` - Opsional. Mirip dengan parameter `options` pada `commands.add()`. Lihat di atas.
@@ -321,6 +322,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - Argument ketiga di dalam fungsi respon, `group`
 - Argument kelima dan keenam di dalam fungsi respon untuk command, `group` dan `bot`
+- Opsi baru untuk registrasi command: `options.hidden`
 
 ## [1.9.0] - 2025-10-19
 ### Ditambahkan

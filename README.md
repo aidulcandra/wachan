@@ -261,6 +261,7 @@ Exports: `commands`
             - `options.separator` - Character to use as parameter string splitter. Default a space (`" "`)
             - `options.description` - Command description
             - `options.sectionName` - Section name of this command. This is used when generating a menu (see below at `commands.generateMenu()`)
+            - `options.hidden` - This command will not be shown in the string of the `commands.generateMenu()` function's result.
     - `commands.fromFile(commandName, filePath)` - Add a new command from a file. The file must be a `.js` file exporting a object `cmdFile` with the structure as follows:
         - `cmdFile.response` - Similar to `commands.add()`'s `response` parameter. See above.
         - `cmdFile.options` - Optional. Similar to `commands.add()`'s `options` parameter. See above.
@@ -323,6 +324,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - 3rd argument in the response function, `group`
 - 5th and 6th argument in the command's response function, `group` and `bot`
+- A new option field for a command: `options.hidden`
 
 ## [1.9.0] - 2025-10-19
 ### Added

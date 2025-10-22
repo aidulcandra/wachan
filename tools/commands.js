@@ -17,7 +17,8 @@ function add(commandName, response, options = {}) {
     const c = {
         name: commandName,
         description: options.description || "",
-        aliases: options.aliases || []
+        aliases: options.aliases || [],
+        hidden: options.hidden || false
     }
     if (options.sectionName) {
         commandSections[options.sectionName] ??= []
@@ -106,7 +107,8 @@ function generateMenu(options = {}) {
 
     let menu = header
     const buildCommandList = (list) => {
-        return list.map(c => {
+        return list.filter(c => !c.hidden)
+        .map(c => {
             return commandFormat
                 .replace("<<prefix>>", prefix)
                 .replace("<<name>>", c.name)
@@ -114,7 +116,9 @@ function generateMenu(options = {}) {
         }).join(commandSeparator).trim()
     }
     const unsectioned = buildCommandList(commandList)
-    const sectioned = Object.entries(commandSections).map(([sectionName, commands]) => {
+    const sectioned = Object.entries(commandSections)
+    .filter(([_, commands]) => commands.some(c => !c.hidden))
+    .map(([sectionName, commands]) => {
         const sectionTitle = sectionTitleFormat.replace("<<section>>", sectionName)
         const commandListStr = buildCommandList(commands)
         return `${sectionTitle}${commandListStr}${sectionFooter}`
