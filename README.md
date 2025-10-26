@@ -240,7 +240,7 @@ bot.onReceive("test", async (msg) => {
 ```
 
 ## Tools
-You can import tools that can be useful for certain scenarios. Currently this is the only tool.
+You can import tools that can be useful for certain scenarios.
 ### Commands Tool `require("wachan/commands")`
 Useful for quickly setting up prefix-command-params style inputs in popular bot format. Ex: `/search article`
 <br>
