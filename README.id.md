@@ -355,6 +355,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - Argument ketiga di dalam fungsi respon, `group`
 - Argument kelima dan keenam di dalam fungsi respon untuk command, `group` dan `bot`
 - Opsi baru untuk registrasi command: `options.hidden`
+### Diperbaiki
+- Fix `message.downloadMedia(saveTo)` error jika menyediakan path file yang tidak ada
 
 ## [1.9.0] - 2025-10-19
 ### Ditambahkan

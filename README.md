@@ -358,6 +358,8 @@ Exposed are these items for programming custom functionalities.
 - 3rd argument in the response function, `group`
 - 5th and 6th argument in the command's response function, `group` and `bot`
 - A new option field for a command: `options.hidden`
+### Fixed
+- `message.downloadMedia(saveTo)` no longer needs an existing file to save file
 
 ## [1.9.0] - 2025-10-19
 ### Added
