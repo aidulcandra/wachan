@@ -341,6 +341,7 @@ await bot.sendMessage(targetRoom, { sticker })
 Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 1. Objek socket milik baileys: `bot.getSocket()`
 2. Objek pesan milik baileys: `message.toBaileys()`
+3. `bot.start({ suppressBaileysLogs: false })` untuk menampilkan logs dari baileys di console
 
 <hr>
 <br>

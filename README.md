@@ -344,6 +344,7 @@ await bot.sendMessage(targetRoom, { sticker })
 Exposed are these items for programming custom functionalities.
 1. Baileys' socket object: `bot.getSocket()`
 2. Message's original object: `message.toBaileys()`
+3. `bot.start({ suppressBaileysLogs: false })` to show the logs from baileys
 
 <hr>
 <br>
