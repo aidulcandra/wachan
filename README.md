@@ -16,6 +16,8 @@ Simpler way to code baileys.
     - [Returned Value](#returned-value)
 - [Message Sending Options](#message-sending-options)
 - [Tools](#tools)
+    - [Commands](#commands-tool-requirewachancommands)
+    - [Sticker](#sticker-tool-requirewachansticker)
 - [Custom Functionality](#custom-functionality)
 - [Changelog](#changelog)
 
@@ -309,6 +311,35 @@ cmd.add("multiply", function (msg, params) {
 // Bot will multiply 4 and 5 then send the result in chat
 ```
 
+### Sticker Tool `require("wachan/sticker")`
+You can use this to create WebP stickers that are ready to use in WhatsApp.
+<br>Exports: `sticker`
+<br><br>`sticker` - The sticker tool
+- `sticker.create(input, options)` - Create a new WebP sticker buffer from input.
+    - `input` - Can be a string of URL or path, or buffer of image/video
+    - `options` - Additional options
+        - `options.pack` - The pack name of the sticker. You can see this at the bottom of the sticker preview window in WhatsApp.
+        - `options.author` - The author name of the sticker. You can see this at the bottom of the sticker preview window in WhatsApp.
+        - `options.mode` - The image fitting mode:
+            - `"crop"` - Crop the sticker into a square area in the center.
+            - `"fit"` - Stretch or squeeze the image into a square area.
+            - `"all"` - No change. Fit all part of the image in the sticker by zooming out.
+
+Example:
+```js
+const st = require("wachan/sticker")
+
+const input = "url of your image, or path" // or buffer
+
+const sticker = await st.create(input, {
+    pack: "My stickers",
+    author: "Me",
+    mode: "crop"
+})
+
+await bot.sendMessage(targetRoom, { sticker })
+```
+
 ## Custom Functionality
 Exposed are these items for programming custom functionalities.
 1. Baileys' socket object: `bot.getSocket()`
@@ -322,6 +353,7 @@ Exposed are these items for programming custom functionalities.
 
 ## [Unreleased]
 ### Added
+- Sticker tool: `require("wachan/sticker")`
 - 3rd argument in the response function, `group`
 - 5th and 6th argument in the command's response function, `group` and `bot`
 - A new option field for a command: `options.hidden`

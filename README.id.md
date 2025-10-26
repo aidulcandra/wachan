@@ -15,6 +15,9 @@ Cara yang lebih simpel untuk meng-kode baileys.
     - [Captures](#captures)
     - [Value Yang Di Return](#value-yang-di-return)
 - [Opsi Pengiriman Pesan](#opsi-pengiriman-pesan)
+- [Tools](#tools)
+    - [Commands](#commands-tool-requirewachancommands)
+    - [Sticker](#sticker-tool-requirewachansticker)
 - [Custom Programming](#custom-programming)
 - [Changelog](#changelog)
 
@@ -235,7 +238,7 @@ bot.onReceive("test", async (msg) => {
 ```
 
 ## Tools
-Kamu bisa import tools Yang berguna di berbagai skenario. Untuk sekarang hanya ini Tool yang ada.
+Kamu bisa import tools Yang berguna di berbagai skenario.
 ### Commands Tool `require("wachan/commands")`
 Berguna untuk membuat command (perintah) yang berformat prefix-command-param yang populer di kalangan developer bot whatsapp. Contoh: `/search article`
 <br>
@@ -303,8 +306,35 @@ cmd.add("multiply", function (msg, params) {
 // Akan merespon ketika ada yang mengetik:
 // /multiply 4 5
 // Bot akan mengalikan 4 and 5 lalu mengirimkan hasilnya di chat.
+```
 
+### Sticker Tool `require("wachan/sticker")`
+Kamu bisa gunakan ini untuk membuat sticker WebP yang siap pakai di WhatsApp.
+<br>Exports: `sticker`
+<br><br>`sticker` - Sticker tool
+- `sticker.create(input, options)` - Buat stiker WebP dari input.
+    - `input` - Bisa string URL atau path, atau buffer gambar/video
+    - `options` - Opsi tambahan
+        - `options.pack` - Nama pack dari stiker ini. Bisa dilihat di bagian bawah jendela preview stiker di WhatsApp.
+        - `options.author` - Nama author dari stiker ini. Bisa dilihat di bagian bawah jendela preview stiker di WhatsApp.
+        - `options.mode` - Mode bagaimana gambar dimuat:
+            - `"crop"` - Crop / potong pinggir stiker sehingga menjadi persegi.
+            - `"fit"` - Tarik atau rapatkan stiker sehingga muat menjadi persegi.
+            - `"all"` - Tidak ada perubahan, muat semua bagian gambar dengan cara zoom out.
 
+Contoh:
+```js
+const st = require("wachan/sticker")
+
+const input = "url atau path gambar" // atau buffer
+
+const sticker = await st.create(input, {
+    pack: "My stickers",
+    author: "Me",
+    mode: "crop"
+})
+
+await bot.sendMessage(targetRoom, { sticker })
 ```
 
 ## Custom Programming
@@ -320,6 +350,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 ## [Belum Rilis]
 ### Ditambahkan
+- Tambah Sticker Tool: `require("wachan/sticker")`
 - Argument ketiga di dalam fungsi respon, `group`
 - Argument kelima dan keenam di dalam fungsi respon untuk command, `group` dan `bot`
 - Opsi baru untuk registrasi command: `options.hidden`
