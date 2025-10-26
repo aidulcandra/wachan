@@ -354,7 +354,7 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
-## [Unreleased]
+## [1.10.0] - 2025-10-26
 ### Added
 - `message.react()`
 - Sticker tool: `require("wachan/sticker")`

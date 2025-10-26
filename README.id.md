@@ -351,7 +351,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
-## [Belum Rilis]
+## [1.10.0] - 2025-10-26
 ### Ditambahkan
 - `message.react()`
 - Tambah Sticker Tool: `require("wachan/sticker")`
