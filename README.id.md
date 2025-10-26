@@ -160,6 +160,8 @@ bot.onReceive("test", async function (message, captures, group) {
     - `options` - Bisa berupa string / object
         - string: balas dengan teks ini
         - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
+- `message.react(emoji)` - Kirim reaction ke pesan ini
+    - `emoji` - String berisi 1 emoji untuk dijadikan reaction
 - `message.getQuoted()` - Me-return pesan yang di-quote oleh pesan ini.
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
 
@@ -351,6 +353,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 ## [Belum Rilis]
 ### Ditambahkan
+- `message.react()`
 - Tambah Sticker Tool: `require("wachan/sticker")`
 - Argument ketiga di dalam fungsi respon, `group`
 - Argument kelima dan keenam di dalam fungsi respon untuk command, `group` dan `bot`

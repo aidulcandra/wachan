@@ -161,6 +161,8 @@ bot.onReceive("test", async function (message, captures, group) {
     - `options` - Can be a string / object
         - string: reply with this text
         - object: can use more options. See [here](#message-sending-options)
+- `message.react(emoji)` - Send reaction to the message.
+    - `emoji` - The emoji in string to use as reaction
 - `message.getQuoted()` - Return the message that this message is quoting.
 - `message.toBaileys()` - Return the original baileys message object.
 
@@ -354,6 +356,7 @@ Exposed are these items for programming custom functionalities.
 
 ## [Unreleased]
 ### Added
+- `message.react()`
 - Sticker tool: `require("wachan/sticker")`
 - 3rd argument in the response function, `group`
 - 5th and 6th argument in the command's response function, `group` and `bot`
