@@ -272,6 +272,7 @@ Meng-export: `commands`
     - `commands.addPrefix(prefix)` - Menambahkan prefix
     - `commands.removePrefix(prefix)` - Menghapus salah satu prefix yang ada.
     - `commands.getCommandInfo(commandName)` - Ambil info tentang suatu command yang sudah terdaftar.
+    - `commands.getCommands()` - Ambil info semua command yang sudah terdaftar.
     - `commands.generateMenu(options)` - Generate sebuah string berisi menu perintah yang otomatis berisi list perintah dan dikelompokkan berdasarkan section-nya. Opsi Generation:
         -   `options?.prefix` - Prefix yang akan ditampilkan. Secara default, prefix pertama di daftar prefix.
         - `options?.header` - Judul menu. Catatan: Kamu perlu menambahkan newlines (`\n`) secara manual di ujunnya jika ingin memisahkan judul dan isi di baris berbeda. Secara default: `"> COMMAND LIST:\n\n"`
@@ -357,6 +358,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - `bot.getGroupData(jid)`
 - `message.id`
+- `commands.getCommands()`
 
 ## [1.10.0] - 2025-10-26
 ### Ditambahkan

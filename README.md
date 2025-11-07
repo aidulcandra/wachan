@@ -275,6 +275,7 @@ Exports: `commands`
     - `commands.addPrefix(prefix)` - Add a new command prefix. Like aliases, but for prefix.
     - `commands.removePrefix(prefix)` - Remove one of the existing command prefixes.
     - `commands.getCommandInfo(commandName)` - Get the info about a registered command by its name.
+    - `commands.getCommands()` - Get a list of the info of all registered commands.
     - `commands.generateMenu(options)` - Generate a string of menu that automatically lists all the registered commands and also groups them by their sections. Generation options:
         -   `options?.prefix` - The prefix to display. By default the first prefix in the registered prefixes list.
         - `options?.header` - The header or title of the menu. Note: You need to add newlines (`\n`) manually at the end of it if you want to separate the header and the body in their own lines. By default: `"> COMMAND LIST:\n\n"`
@@ -360,6 +361,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - `bot.getGroupData()`
 - `message.id`
+- `commands.getCommands()`
 
 ## [1.10.0] - 2025-10-26
 ### Added

@@ -138,4 +138,8 @@ function getCommandInfo(name) {
         || Object.values(commandSections).flat().find(c => c.name === name)
 }
 
-module.exports = { add, fromFile, fromFolder, addPrefix, removePrefix, generateMenu, getCommandInfo }
+function getCommands() {
+    return JSON.parse(JSON.stringify(commandList))
+}
+
+module.exports = { add, fromFile, fromFolder, addPrefix, removePrefix, generateMenu, getCommandInfo, getCommands }
