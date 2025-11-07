@@ -128,6 +128,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
     - `options` - bisa berupa string / object
         - string: kirim pesan teks ini
         - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
+- `bot.getGroupData(jid)` - Dapatkan informasi tentang grup.
 - `bot.start()` - Jalankan bot.
 - `bot.settings` - Pengaturan bot. Cek [di sini](#penjelasan-tiap-item-di-pengaturan)
     - `bot.settings.receiveOfflineMessages`
@@ -350,6 +351,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 <br>
 
 # Changelog
+
+## [Belum Rilis]
+### Ditambahkan
+- `bot.getGroupData(jid)`
 
 ## [1.10.0] - 2025-10-26
 ### Ditambahkan

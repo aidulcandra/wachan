@@ -129,6 +129,7 @@ This is what wachan module exports:<br><br>
     - `options` - can be a string / object
         - string: send a text message
         - object: can send a message with more options. See [here](#message-sending-options)
+- `bot.getGroupData(jid)` - Get data of a group chat by its ID.
 - `bot.start()` - Start the bot.
 - `bot.settings` - Settings for the bot. See [here](#explanation-on-each-item)
     - `bot.settings.receiveOfflineMessages`
@@ -353,6 +354,10 @@ Exposed are these items for programming custom functionalities.
 <br>
 
 # Changelog
+
+## [Unreleased]
+### Added
+- `bot.getGroupData()`
 
 ## [1.10.0] - 2025-10-26
 ### Added

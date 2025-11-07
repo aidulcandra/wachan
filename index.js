@@ -31,6 +31,10 @@ async function waitForMessage(options, timeout=10000) {
     return result
 }
 
+async function getGroupData(jid) {
+    return await store.groupStore.get(jid)
+}
+
 async function start(options = {}) {
     if (!fs.existsSync(WACHAN_DATA_PATH)) {
         fs.mkdirSync(WACHAN_DATA_PATH)
@@ -64,6 +68,7 @@ async function start(options = {}) {
 const bot = { 
     onConnected, onReady, onReceive, start, 
     sendMessage, waitForMessage,
+    getGroupData,
     settings, getSocket
 }
 
