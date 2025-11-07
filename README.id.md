@@ -145,6 +145,7 @@ bot.onReceive("test", async function (message, captures, group) {
 ```
 ### Objek Pesan (Message)
 `message`: Objek pesan Wachan
+- `message.id` - ID dari objek pesan ini
 - `message.room` - ID dari chatroom
 - `message.sender` - Objek pengirim (sender)
     - `message.sender.id` - ID pengirim (berupa format `nomor-telepon@s.whatsapp.net`)
@@ -355,6 +356,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ## [Belum Rilis]
 ### Ditambahkan
 - `bot.getGroupData(jid)`
+- `message.id`
 
 ## [1.10.0] - 2025-10-26
 ### Ditambahkan

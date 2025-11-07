@@ -146,6 +146,7 @@ bot.onReceive("test", async function (message, captures, group) {
 ```
 ### Message Object
 `message`: Wachan message object
+- `message.id` - ID of the message
 - `message.room` - ID of the chat room
 - `message.sender` - Sender object
     - `message.sender.id` - ID of the sender (in the format of `phonenumber@s.whatsapp.net`)
@@ -358,6 +359,7 @@ Exposed are these items for programming custom functionalities.
 ## [Unreleased]
 ### Added
 - `bot.getGroupData()`
+- `message.id`
 
 ## [1.10.0] - 2025-10-26
 ### Added
