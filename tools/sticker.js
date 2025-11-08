@@ -30,6 +30,8 @@ async function create(input, options = {}) {
     const mode = options?.mode?.trim()?.match(/^(crop|fit|all)$/i)?.[1]?.toLowerCase()
         || "all"
 
+    const size = Number(options?.size) || (isVideo ? 128 : 512)
+    if (isNaN(size)) throw new Error("wachan/sticker: Size must be a number".red)
     let output
     if (isVideo) {
         const tempDir = tmpdir()
@@ -40,7 +42,7 @@ async function create(input, options = {}) {
         const o = ["-vcodec libwebp"]
         if (mode === "crop") o.push("-vf crop='min(iw,ih):ow'")
         else if (mode === "all") o.push("-vf format=rgba,pad='max(iw,ih):ow:-1:-1:#00000000'")
-        o.push("-s 128:128", "-vsync 0", "-an", "-loop 0")
+        o.push(`-s ${size}:${size}`, "-vsync 0", "-an", "-loop 0")
 
         await new Promise((resolve) => {
             ffmpeg(videoPath)
@@ -54,7 +56,7 @@ async function create(input, options = {}) {
     } else {
         const animated = await fileTypeFromBuffer(buffer).then(ft => ft?.ext === 'gif')
         output = await sharp(buffer, { animated })
-            .resize(128, 128, { 
+            .resize(size, size, { 
                 fit: {
                     "crop": "cover",
                     "fit": "fill",

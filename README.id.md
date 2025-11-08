@@ -322,6 +322,7 @@ Kamu bisa gunakan ini untuk membuat sticker WebP yang siap pakai di WhatsApp.
     - `options` - Opsi tambahan
         - `options.pack` - Nama pack dari stiker ini. Bisa dilihat di bagian bawah jendela preview stiker di WhatsApp.
         - `options.author` - Nama author dari stiker ini. Bisa dilihat di bagian bawah jendela preview stiker di WhatsApp.
+        - `options.size` - Panjang sisi stiker (lebar atau tingginya). Default 128 untuk video, dan 512 untuk selain video. Ini mempengaruhi ukuran stiker. Di Whatsapp ukuran stiker maksimum adalah 1MB.
         - `options.mode` - Mode bagaimana gambar dimuat:
             - `"crop"` - Crop / potong pinggir stiker sehingga menjadi persegi.
             - `"fit"` - Tarik atau rapatkan stiker sehingga muat menjadi persegi.
@@ -359,6 +360,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `bot.getGroupData(jid)`
 - `message.id`
 - `commands.getCommands()`
+- Field baru `size` pada options di `sticker.create()`
 
 ## [1.10.0] - 2025-10-26
 ### Ditambahkan

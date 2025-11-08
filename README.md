@@ -325,6 +325,7 @@ You can use this to create WebP stickers that are ready to use in WhatsApp.
     - `options` - Additional options
         - `options.pack` - The pack name of the sticker. You can see this at the bottom of the sticker preview window in WhatsApp.
         - `options.author` - The author name of the sticker. You can see this at the bottom of the sticker preview window in WhatsApp.
+        - `options.size` - The length of one side of the sticker. Default 128 for videos, 512 otherwise. This affects the size of the sticker. And the acceptable sticker file size in Whatsapp is below 1MB.
         - `options.mode` - The image fitting mode:
             - `"crop"` - Crop the sticker into a square area in the center.
             - `"fit"` - Stretch or squeeze the image into a square area.
@@ -362,6 +363,7 @@ Exposed are these items for programming custom functionalities.
 - `bot.getGroupData()`
 - `message.id`
 - `commands.getCommands()`
+- `sticker.create()`'s new option field `size`
 
 ## [1.10.0] - 2025-10-26
 ### Added
