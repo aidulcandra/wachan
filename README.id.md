@@ -408,6 +408,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - `bot.getGroupData(jid)`
 - `bot.messageType`
+- Opsi `phoneNumber` di dalam `bot.start(option)`
 - `message.id`
 - `message.delete()`
 - `message.getQuoted()` sekarang sudah tersedia juga di message tanpa quoted, tetapi akan mereturn `null`

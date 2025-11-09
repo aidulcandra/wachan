@@ -411,6 +411,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - `bot.getGroupData()`
 - `bot.messageType`
+- `phoneNumber` option in `bot.start(options)`
 - Function response `next()` function from the 4th argument
 - `message.id`
 - `message.delete()`
