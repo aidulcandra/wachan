@@ -165,7 +165,7 @@ bot.onReceive("test", async function (message, captures, group) {
 - `message.react(emoji)` - Kirim reaction ke pesan ini
     - `emoji` - String berisi 1 emoji untuk dijadikan reaction
 - `message.delete()` - Hapus pesan ini. Note: Bot harus menjadi admin sebelum menghapus pesan-pesan yang ada di grup.
-- `message.getQuoted()` - Me-return pesan yang di-quote oleh pesan ini.
+- `message.getQuoted()` - Me-return pesan yang di-quote oleh pesan ini. `null` jika tidak ada.
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
 
 ### Captures
@@ -361,6 +361,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `bot.getGroupData(jid)`
 - `message.id`
 - `message.delete()`
+- `message.getQuoted()` sekarang sudah tersedia juga di message tanpa quoted, tetapi akan mereturn `null`
 - `commands.getCommands()`
 - Field baru `size` pada options di `sticker.create()`
 

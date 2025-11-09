@@ -166,7 +166,7 @@ bot.onReceive("test", async function (message, captures, group) {
 - `message.react(emoji)` - Send reaction to the message.
     - `emoji` - The emoji in string to use as reaction
 - `message.delete()` - Delete this message. Note: the bot needs to be an admin for it to be able to delete messages in a group.
-- `message.getQuoted()` - Return the message that this message is quoting.
+- `message.getQuoted()` - Return the message that this message is quoting. `null` if there isn't.
 - `message.toBaileys()` - Return the original baileys message object.
 
 ### Captures
@@ -364,6 +364,7 @@ Exposed are these items for programming custom functionalities.
 - `bot.getGroupData()`
 - `message.id`
 - `message.delete()`
+- `message.getQuoted()` is now available in messages with no quoted message, but it returns `null`
 - `commands.getCommands()`
 - `sticker.create()`'s new option field `size`
 
