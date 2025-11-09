@@ -173,7 +173,15 @@ bot.onReceive("test", async function (message, captures, group) {
 - `message.timestamp` - Timestamp dari pesan ini dalam format Unix Timestamp.
 - `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`
 - `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`)
+- `message.downloadMedia(saveTo)` - Download media sebagai buffer. Jika path disediakan di parameter `saveTo`, maka filenya akan disimpan di situ.
 - `message.text` - Teks atau caption dari pesan
+- `message.reaction` - Informasi tentang reaction, jika ini adalah pesan reaction
+    - `message.reaction.emoji` - Emoji yang digunakan
+    - `message.reaction.key` - Objek key dari pesan yang di-react
+- `message.buttonReply` - Informasi tentang button yang diketuk
+    - `message.buttonReply.id` - ID yang diberikan ke button
+    - `message.buttonReply.text` - Teks yang tertulis di atas button
+    - `message.buttonReply.pos` - Posisi button (yang pertama adalah 0)
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
 - `message.reply(options)` - Balas ke pesan.
     - `options` - Bisa berupa string / object

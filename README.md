@@ -174,7 +174,15 @@ bot.onReceive("test", async function (message, captures, group) {
 - `message.timestamp` - UNIX timestamp of this message.
 - `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`
 - `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, or `"document"`)
+- `message.downloadMedia(saveTo)` - Get the buffer of the media. If you provide a path in `saveTo`, it will also save the file there.
 - `message.text` - Text or caption of the message.
+- `message.reaction` - Information about reaction, if this is a reaction message
+    - `message.reaction.emoji` - The emoji that is used as reaction
+    - `message.reaction.key` - Key object of the reacted message
+- `message.buttonReply` - Information about tapped button
+    - `message.buttonReply.id` - The ID that is assigned to the button
+    - `message.buttonReply.text` - The displayed text on the button
+    - `message.buttonReply.pos` - The position of the button (first one is 0)
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.reply(options)` - Reply to the message.
     - `options` - Can be a string / object
