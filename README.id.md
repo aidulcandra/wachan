@@ -248,6 +248,9 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.document` - File yang akan dikirim sebagai pesan document. Pengaturan tambahan:
         - `options.mimetype` - Mimetype dari file ini.
         - `options.fileName` - Nama file yang ditampilkan untuk pesan document ini.
+    - `options.buttons` - An array berisi objek button. Setiap button berisi property di bawah ini. Perlu diketahui jika kamu gunakan ini, kamu juga harus gunakan `options.text`, dan bisa juga ditambah `options.title` dan `options.footer`.
+        - `id`: ID dari button
+        - `text`: Teks button
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -417,6 +420,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `bot.messageType`
 - `bot.onError()`
 - Opsi `phoneNumber` di dalam `bot.start(option)`
+- Jenis message baru `buttons`
+- Argumen ke-4 di dalam fungsi respon, `next`
 - `message.id`
 - `message.delete()`
 - `message.getQuoted()` sekarang sudah tersedia juga di message tanpa quoted, tetapi akan mereturn `null`

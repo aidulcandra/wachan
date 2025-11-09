@@ -36,6 +36,7 @@
   ],
   "dependencies": {
     "baileys": "^6.7.20",
+    "baileys_helper": "^1.0.6",
     "colors": "^1.4.0",
     "ffmpeg-static": "^5.2.0",
     "file-type": "^21.0.0",

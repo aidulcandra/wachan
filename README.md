@@ -250,6 +250,9 @@ If the object is a string, then the message will be sent as a text message. Howe
     - `options.document` - A file to send as document. Supporting properties:
         - `options.mimetype` - Mimetype for this document/file
         - `options.fileName` - Filename for this document/file
+    - `options.buttons` - An array of buttons. Each one has these properties below. Note that if you use this, you must also use `options.text`, and optionally use `options.title` and `options.footer`.
+        - `id`: ID of the button
+        - `text`: Text to display
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
@@ -420,6 +423,7 @@ Exposed are these items for programming custom functionalities.
 - `bot.messageType`
 - `bot.onError()`
 - `phoneNumber` option in `bot.start(options)`
+- New type of message `buttons`
 - Function response `next()` function from the 4th argument
 - `message.id`
 - `message.delete()`
