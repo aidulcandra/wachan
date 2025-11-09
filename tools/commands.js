@@ -139,7 +139,10 @@ function getCommandInfo(name) {
 }
 
 function getCommands() {
-    return JSON.parse(JSON.stringify(commandList))
+    return JSON.parse(JSON.stringify({
+        unsectioned: commandList,
+        sections: commandSections
+    }))
 }
 
 module.exports = { add, fromFile, fromFolder, addPrefix, removePrefix, generateMenu, getCommandInfo, getCommands }
