@@ -256,9 +256,21 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.document` - File yang akan dikirim sebagai pesan document. Pengaturan tambahan:
         - `options.mimetype` - Mimetype dari file ini.
         - `options.fileName` - Nama file yang ditampilkan untuk pesan document ini.
-    - `options.buttons` - An array berisi objek button. Setiap button berisi property di bawah ini. Perlu diketahui jika kamu gunakan ini, kamu juga harus gunakan `options.text`, dan bisa juga ditambah `options.title` dan `options.footer`.
-        - `id`: ID dari button
-        - `text`: Teks button
+    - `options.buttons[]` - Array berisi button (tombol-tombol). Setiap button memiliki property berikut.
+        - `button.type` - Jenis button: `reply`, `list`, `url`, `copy`, `call`.
+        - `button.text` - Teks button. Wajib untuk button jenis `reply`, `url`, `copy`, dan `call`.
+        - `button.id` - ID button. Wajib untuk button jenis `reply`.
+        - `button.url` - URL yang akan dikunjungi ketika button diketuk. Wajib untuk button jenis `url`.
+        - `button.code` - Kode yang akan dicopy ke keyboard ketika button diketuk. Wajib untuk button jenis `copy`.
+        - `button.phoneNumber` - Nomor yang akan dihubungi ketika button diketuk. Wajib untuk button jenis `call`.
+        - `button.title` - Judul menu list yang dimunculkan dari button jenis `list`.
+        - `button.sections[]` - Array berisi section dari menu list. Wajib untuk button jenis `list`.
+            - `section.title` - Judul section
+            - `section.rows[]` - Array dari list item. Wajib ada di dalam section.
+                - `row.id` - ID dari item. Wajib ada.
+                - `row.title` - Judul dari item. Wajib ada.
+                - `row.description` - Deskripsi item.
+                - `row.header` - Teks header dari item.
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js

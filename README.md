@@ -258,9 +258,21 @@ If the object is a string, then the message will be sent as a text message. Howe
     - `options.document` - A file to send as document. Supporting properties:
         - `options.mimetype` - Mimetype for this document/file
         - `options.fileName` - Filename for this document/file
-    - `options.buttons` - An array of buttons. Each one has these properties below. Note that if you use this, you must also use `options.text`, and optionally use `options.title` and `options.footer`.
-        - `id`: ID of the button
-        - `text`: Text to display
+    - `options.buttons[]` - An array of buttons. Each one has these properties below.
+        - `button.type` - The type of the button: `reply`, `list`, `url`, `copy`, `call`.
+        - `button.text` - The displayed text on the button. This is required for `reply`, `url`, `copy`, and `call` buttons.
+        - `button.id` - ID of the button. Required for `reply` buttons.
+        - `button.url` - URL to visit when the button is tapped. Required for `url` buttons.
+        - `button.code` - The code to copy to clipboard when the button is tapped. Required for `copy` buttons.
+        - `button.phoneNumber` - The number to dial when tapping the button. Required for `call` buttons.
+        - `button.title` - Title of the list menu. Required for `list` buttons.
+        - `button.sections[]` - Array of list menu sections. Required for `list` buttons.
+            - `section.title` - Title of the section
+            - `section.rows[]` - List of items in the section. Required in a section.
+                - `row.id` - ID of the item on this row. Required.
+                - `row.title` - Title of the item on this row. Required.
+                - `row.description` - Description of the item.
+                - `row.header` - Header text of the item.
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
