@@ -3,7 +3,7 @@ const WACHAN_DATA_PATH = "./wachan"
 const fs = require("fs")
 const { connect, getSocket } = require("./lib/core/socket")
 const { store } = require("./lib/core/store")
-const { setUpBehaviors, addReceiver, addConnectedCallback, addReadyCallback } = require("./lib/core/behaviors")
+const { setUpBehaviors, addReceiver, addConnectedCallback, addReadyCallback, addErrorCallback } = require("./lib/core/behaviors")
 const { sendMessage } = require("./lib/classes/message")
 const { settings } = require("./lib/core/settings")
 const wachan = require("./package.json")
@@ -19,6 +19,10 @@ async function onReady(callback) {
 
 function onReceive(options, response) {
     return addReceiver(options, response)
+}
+
+function onError(response) {
+    return addErrorCallback(response)
 }
 
 async function waitForMessage(options, timeout=10000) {
@@ -68,7 +72,7 @@ async function start(options = {}) {
 }
 
 const bot = { 
-    onConnected, onReady, onReceive, start, 
+    onConnected, onReady, onReceive, onError, start, 
     sendMessage, waitForMessage,
     getGroupData,
     settings, getSocket,

@@ -127,6 +127,13 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - object: balas (dan meng-quote) pesan yang diterima dengan data dari object-nya. Lihat [di sini](#opsi-pengiriman-pesan)
         - function: `response(message, captures)`, jalankan fungsi. [Penjelasan](#function-response)
     - me-return: sebuah objek `Receiver`. Receiver ini bisa dihapus dengan cara `receiver.remove()` untuk menghentikan respon yg dilakukannya.
+- `bot.onError(response)` - Tambahkan fungsi yang akan dieksekusi ketika error.
+    - `response` - Fungsi yang akan dijalankan, `response(error, context)`.
+        - `error` - Objek error.
+        - `context` - Objek yang berisi argument-argument dari fungsi respon:
+            - `message`
+            - `captures`
+            - `groupChat`
 - `bot.waitForMessage(input, timeout)` - Menunggu munculnya pesan masuk sesuai input lalu me-return pesan tersebut.
     - `input`: Sama seperti `input` di `bot.onReceive()` di atas.
     - `timeout`: Batas waktu tunggu. Jika tidak ditemukan pesan dan waktu habis, `waitForMessage()` akan me-return `undefined`.
@@ -408,6 +415,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - `bot.getGroupData(jid)`
 - `bot.messageType`
+- `bot.onError()`
 - Opsi `phoneNumber` di dalam `bot.start(option)`
 - `message.id`
 - `message.delete()`

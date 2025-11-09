@@ -128,6 +128,13 @@ This is what wachan module exports:<br><br>
         - object: will reply to (and quote) the received message using data from the object. See [here](#message-sending-options)
         - function: `response(message, captures)`, will execute the function. [Explanation here](#response-function)
     - returns: a `Receiver` object. This Receiver can be removed to stop its behavior by calling `receiver.remove()`
+- `bot.onError(response)` - Set up a new action to be taken in response of an error.
+    - `response` - A function to run, `response(error, context)`.
+        - `error` - The error object.
+        - `context` - An object, containing the arguments from the response function:
+            - `message`
+            - `captures`
+            - `groupChat`
 - `bot.waitForMessage(input, timeout)` - Wait for a message of specified input then return the message
     - `input`: The same as `input` in `bot.onReceive()` above
     - `timeout`: Time limit for the waiting. If no matching messages have been captured, `waitForMessage()` returns `undefined`
@@ -411,6 +418,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - `bot.getGroupData()`
 - `bot.messageType`
+- `bot.onError()`
 - `phoneNumber` option in `bot.start(options)`
 - Function response `next()` function from the 4th argument
 - `message.id`
