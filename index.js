@@ -78,7 +78,7 @@ const bot = {
     settings, getSocket,
     messageType: { 
         any: 0, nonmedia:1, media: 2,
-        text: 10, reaction: 11,
+        text: 10, reaction: 11, buttonReply: 12,
         image: 20, video: 21, gif: 22, audio: 23, sticker: 24, document: 25
     }
 }
