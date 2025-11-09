@@ -137,7 +137,9 @@ This is what wachan module exports:<br><br>
         - string: send a text message
         - object: can send a message with more options. See [here](#message-sending-options)
 - `bot.getGroupData(jid)` - Get data of a group chat by its ID.
-- `bot.start()` - Start the bot.
+- `bot.start(options)` - Start the bot. Options:
+    - `suppressBaileysLogs`: Default `true`. If `true`, do not show logs from baileys in the console.
+    - `phoneNumber`: String containing the phone number (with country code, without symbols and spaces). If not specified, wachan will prompt it in the console.
 - `bot.settings` - Settings for the bot. See [here](#explanation-on-each-item)
     - `bot.settings.receiveOfflineMessages`
     - `bot.settings.defaultBotName`
