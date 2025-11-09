@@ -165,6 +165,7 @@ bot.onReceive("test", async function (message, captures, group) {
         - object: can use more options. See [here](#message-sending-options)
 - `message.react(emoji)` - Send reaction to the message.
     - `emoji` - The emoji in string to use as reaction
+- `message.delete()` - Delete this message. Note: the bot needs to be an admin for it to be able to delete messages in a group.
 - `message.getQuoted()` - Return the message that this message is quoting.
 - `message.toBaileys()` - Return the original baileys message object.
 
@@ -362,6 +363,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - `bot.getGroupData()`
 - `message.id`
+- `message.delete()`
 - `commands.getCommands()`
 - `sticker.create()`'s new option field `size`
 
