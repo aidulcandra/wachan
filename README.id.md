@@ -15,6 +15,7 @@ Cara yang lebih simpel untuk meng-kode baileys.
     - [Captures](#captures)
     - [Value Yang Di Return](#value-yang-di-return)
 - [Opsi Pengiriman Pesan](#opsi-pengiriman-pesan)
+- [Alur Receiver](#alur-receiver)
 - [Tools](#tools)
     - [Commands](#commands-tool-requirewachancommands)
     - [Sticker](#sticker-tool-requirewachansticker)
@@ -239,6 +240,37 @@ bot.onReceive("test", async (msg) => {
     // 1. dari efek msg.reply()
     // 2. dari hasil me-return message yg dibuat dari msg.reply()
     return await msg.reply("ok")
+})
+```
+
+## Alur Receiver
+Receiver diperiksa satu per satu menurut urutan ia di-register. Jika dua receiver bisa di-trigger oleh satu pesan yang sama, maka hanya receiver pertama yang akan dieksekusi.
+```js
+// Kedua receiver ini bisa di-trigger oleh pesan yang bertuliskan "tes123" tapi hanya yang pertama yang akan merespon
+bot.onReceive("tes123", "Ini akan dikirimkan.")
+bot.onReceive(/^tes/, "Ini tidak akan dikirimkan.")
+```
+
+Di dalam fungsi respon, kamu bisa lanjutkan alurnya ke receiver berikutnya dengan fungsi `next()` yang ada di parameter ke-4:
+```js
+bot.onReceive(/./, (msg, captures, group, next) => {
+    if (userAuthorized(msg.sender.id)) next()
+    return "Kamu tidak punya akses!"
+})
+
+bot.onReceive("test", "Halo silakan masuk!")
+```
+
+### Memodifikasi Message
+Objek `message` yang diteruskan ke fungsi respon adalah objek yang sama. Maka dari itu kamu bisa memodifikasi `message` ini dan perubahannya akan terlihat di fungsi-fungsi respon berikutnya.
+```js
+bot.onReceive(/./, (msg, cap, group, next) => {
+    msg.watermark = "MyBot"
+    next()
+})
+
+bot.onReceive("test", (msg) => {
+    return `Brought to you by ${msg.watermark}`
 })
 ```
 

@@ -15,6 +15,7 @@ Simpler way to code baileys.
     - [Captures](#captures)
     - [Returned Value](#returned-value)
 - [Message Sending Options](#message-sending-options)
+- [Receiver Flow](#receiver-flow)
 - [Tools](#tools)
     - [Commands](#commands-tool-requirewachancommands)
     - [Sticker](#sticker-tool-requirewachansticker)
@@ -244,6 +245,37 @@ bot.onReceive("test", async (msg) => {
 })
 ```
 
+## Receiver Flow
+The receivers are checked one by one in order you register them. If two or more receivers can be triggered by the same message, then the one that was registered first will be executed.
+```js
+// Both of these receivers can be triggered by a message that says "tes123" but only the first one will be triggered
+bot.onReceive("tes123", "This will be sent.")
+bot.onReceive(/^tes/, "This will not be sent.")
+```
+
+In a response function, you can continue the flow to the next receiver using the `next()` function from the 4th argument:
+```js
+bot.onReceive(/./, (msg, captures, group, next) => {
+    if (userAuthorized(msg.sender.id)) next()
+    return "You are not authorized!"
+})
+
+bot.onReceive("test", "Hello authorized user!")
+```
+
+### Message Modification
+The `message` object that is passed to the response functions is the same object. Therefore, you can modify it in a response function, and the modification remains in the subsequent response functions.
+```js
+bot.onReceive(/./, (msg, cap, group, next) => {
+    msg.watermark = "MyBot"
+    next()
+})
+
+bot.onReceive("test", (msg) => {
+    return `Brought to you by ${msg.watermark}`
+})
+```
+
 ## Tools
 You can import tools that can be useful for certain scenarios.
 ### Commands Tool `require("wachan/commands")`
@@ -362,6 +394,7 @@ Exposed are these items for programming custom functionalities.
 ## [Unreleased]
 ### Added
 - `bot.getGroupData()`
+- Function response `next()` function from the 4th argument
 - `message.id`
 - `message.delete()`
 - `message.getQuoted()` is now available in messages with no quoted message, but it returns `null`
