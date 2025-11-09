@@ -16,6 +16,7 @@ Cara yang lebih simpel untuk meng-kode baileys.
     - [Value Yang Di Return](#value-yang-di-return)
 - [Opsi Pengiriman Pesan](#opsi-pengiriman-pesan)
 - [Alur Receiver](#alur-receiver)
+- [Enum Tipe Message](#enum-tipe-message)
 - [Tools](#tools)
     - [Commands](#commands-tool-requirewachancommands)
     - [Sticker](#sticker-tool-requirewachansticker)
@@ -28,7 +29,7 @@ npm install wachan
 ```
 
 ## Contoh
-3 jenis input:
+4 jenis input:
 ```javascript
 const bot = require("wachan")
 
@@ -40,6 +41,9 @@ bot.onReceive(/selamat (pagi|siang|sore|malam)/i, "halo")
 
 // 3) Input function: Deteksi pesan jika hasil fungsinya true. (Fungsi filter pesan)
 bot.onReceive((msg)=>msg.sender.id===OWNER_ID, "hello boss")
+
+// 4) Input enum:
+bot.onReceive(bot.messageType.video, "Pesan video diterima!")
 ```
 
 3 Jenis respon:
@@ -112,10 +116,12 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
 - `bot.onConnected(callback)` - Menambahkan function yang akan dijalankan ketika wachan berhasil terkoneksi ke whatsapp, <b>sebelum</b> memproses pesan offline.
 - `bot.onReady(callback)` - Menambahkan function yang akan dijalankan ketika bot sudah siap. Dijalankan <b>setelah</b> memproses pesan offline.
 - `bot.onReceive(input, response)` - Menambahkan receiver (penerima pesan) yang akan merespon ke pesan yg ditentukan oleh input.
-    - `input`: bisa berupa string, regex, atau function.
+    - `input`: bisa berupa string, regex, function, atau enum.
         - string: akan mencocokkan teks yang persis pada isi pesan
         - regex: akan mencocokkan pola teks pada isi pesan
         - function, `input(message)`: akan memfilter pesan berdasarkan value yang di-return
+        - enum: cek `bot.messageType` untuk tipe-tipe yang ada:
+            `any`, `nonmedia`, `media`, `text`, `reaction`, `image`, `video`, `gif`, `audio`, `sticker`, `document`
     - `response`: bisa berupa string, object, atau function.
         - string: balas (dan meng-quote) pesan yang diterima dengan teks
         - object: balas (dan meng-quote) pesan yang diterima dengan data dari object-nya. Lihat [di sini](#opsi-pengiriman-pesan)
@@ -136,9 +142,10 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
     - `bot.settings.defaultBotName`
     - `bot.settings.save()` - Simpan pengaturan. Perlu dilakukan setelah memodifikasi settings di dalam program.
 - `bot.getSocket()` - Ambil objek socket baileys.
+- `bot.messageType` - Berisi enum untuk filter di receiver. Lihat di [sini](#enum-tipe-message)
 
 ## Function Response
-Kamu bisa gunakan function sebagai respon pesan. Argument pertamanya adalah `message`, kedua `captures` (jika ada), dan ketiga `group` (jika chat room tempat pesan diterima adalah grup).
+Kamu bisa gunakan function sebagai respon pesan. Argument pertamanya adalah `message`, kedua `captures` (jika ada), ketiga `group` (jika chat room tempat pesan diterima adalah grup), dan terakhir fungsi `next` (cek [Alur Receiver](#alur-receiver)).
 ```js
 bot.onReceive("test", async function (message, captures, group) {
     // Kode di sini
@@ -253,7 +260,7 @@ bot.onReceive(/^tes/, "Ini tidak akan dikirimkan.")
 
 Di dalam fungsi respon, kamu bisa lanjutkan alurnya ke receiver berikutnya dengan fungsi `next()` yang ada di parameter ke-4:
 ```js
-bot.onReceive(/./, (msg, captures, group, next) => {
+bot.onReceive(/.*/, (msg, captures, group, next) => {
     if (userAuthorized(msg.sender.id)) next()
     return "Kamu tidak punya akses!"
 })
@@ -264,7 +271,7 @@ bot.onReceive("test", "Halo silakan masuk!")
 ### Memodifikasi Message
 Objek `message` yang diteruskan ke fungsi respon adalah objek yang sama. Maka dari itu kamu bisa memodifikasi `message` ini dan perubahannya akan terlihat di fungsi-fungsi respon berikutnya.
 ```js
-bot.onReceive(/./, (msg, cap, group, next) => {
+bot.onReceive(bot.messageType.any, (msg, cap, group, next) => {
     msg.watermark = "MyBot"
     next()
 })
@@ -273,6 +280,13 @@ bot.onReceive("test", (msg) => {
     return `Brought to you by ${msg.watermark}`
 })
 ```
+
+## Enum Tipe Message
+`bot.messageType` mempunyai enum-enum berikut:
+- `any`: Ini sama seperti regex `/.*/` di dalam input receiver.
+- `nonmedia`: This termasuk pesan `text` dan `reaction`.
+- `media`: This termasuk `image`, `video`, `gif`, `audio`, `sticker` dan `document`.
+- Lainnya: `text`, `reaction`, `image`, `video`, `gif`, `audio`, `sticker`, `document`.
 
 ## Tools
 Kamu bisa import tools Yang berguna di berbagai skenario.
@@ -391,6 +405,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ## [Belum Rilis]
 ### Ditambahkan
 - `bot.getGroupData(jid)`
+- `bot.messageType`
 - `message.id`
 - `message.delete()`
 - `message.getQuoted()` sekarang sudah tersedia juga di message tanpa quoted, tetapi akan mereturn `null`

@@ -16,6 +16,7 @@ Simpler way to code baileys.
     - [Returned Value](#returned-value)
 - [Message Sending Options](#message-sending-options)
 - [Receiver Flow](#receiver-flow)
+- [Message Type Enums](#message-type-enums)
 - [Tools](#tools)
     - [Commands](#commands-tool-requirewachancommands)
     - [Sticker](#sticker-tool-requirewachansticker)
@@ -28,7 +29,7 @@ npm install wachan
 ```
 
 ## Example
-3 types of inputs:
+4 types of inputs:
 ```javascript
 const bot = require("wachan")
 
@@ -40,6 +41,9 @@ bot.onReceive(/good (morning|afternoon|evening)/i, "to you as well")
 
 // 3) Function Input: Respond to messages if the function returns true
 bot.onReceive((msg)=>msg.sender.id===OWNER_ID, "hello boss")
+
+// 4) Enum Input: 
+bot.onReceive(bot.messageType.audio, "Received audio message")
 ```
 
 3 Types of responses:
@@ -113,10 +117,12 @@ This is what wachan module exports:<br><br>
 - `bot.onConnected(callback)` - Set up the action to be taken when wachan is succesfully connected to whatsapp, <b>before</b> processing offline messages.
 - `bot.onReady(callback)` - Set up the action to be taken <b>after</b> processing offline messages.
 - `bot.onReceive(input, response)` - Set up a receiver that responds to incoming messages of specified input.
-    - `input`: can be a string, regex, or function.
+    - `input`: can be a string, regex, function, or enum.
         - string: will match the exact string of the message text
         - regex: will match the pattern of the message text
         - function, `input(message)`: will filter the message based on the return value
+        - enum: check `bot.messageType` for available enums:
+            - `any`, `nonmedia`, `media`, `text`, `reaction`, `image`, `video`, `gif`, `audio`, `sticker`, `document`
     - `response`: can be a string, an object, or a function.
         - string: will reply to (and quote) the received message with the string as the text
         - object: will reply to (and quote) the received message using data from the object. See [here](#message-sending-options)
@@ -137,9 +143,10 @@ This is what wachan module exports:<br><br>
     - `bot.settings.defaultBotName`
     - `bot.settings.save()` - Save the settings. Do this after modifying the settings programmatically.
 - `bot.getSocket()` - Get the original baileys' socket object.
+- `bot.messageType` - Contains enums for receiver input. See [here](#message-type-enums)
 
 ## Response Function
-You can use a function as the response to a message. The first argument is `message`, the second argument is `captures` (if available), and the third is `group` (if the chatroom is a group chat).
+You can use a function as the response to a message. The first argument is `message`, the second argument is `captures` (if available), the third is `group` (if the chatroom is a group chat), and the last is `next` function (check out [Receiver Flow](#receiver-flow)).
 ```js
 bot.onReceive("test", async function (message, captures, group) {
     // Code here
@@ -255,7 +262,7 @@ bot.onReceive(/^tes/, "This will not be sent.")
 
 In a response function, you can continue the flow to the next receiver using the `next()` function from the 4th argument:
 ```js
-bot.onReceive(/./, (msg, captures, group, next) => {
+bot.onReceive(/.*/, (msg, captures, group, next) => {
     if (userAuthorized(msg.sender.id)) next()
     return "You are not authorized!"
 })
@@ -266,7 +273,7 @@ bot.onReceive("test", "Hello authorized user!")
 ### Message Modification
 The `message` object that is passed to the response functions is the same object. Therefore, you can modify it in a response function, and the modification remains in the subsequent response functions.
 ```js
-bot.onReceive(/./, (msg, cap, group, next) => {
+bot.onReceive(bot.messageType.any, (msg, cap, group, next) => {
     msg.watermark = "MyBot"
     next()
 })
@@ -275,6 +282,13 @@ bot.onReceive("test", (msg) => {
     return `Brought to you by ${msg.watermark}`
 })
 ```
+
+## Message Type Enums
+`bot.messageType` has the following enum properties:
+- `any`: This is equivalent of regex `/.*/` in receiver input.
+- `nonmedia`: This includes `text` and `reaction` messages.
+- `media`: This includes `image`, `video`, `gif`, `audio`, `sticker` and `document`.
+- Self explanatory: `text`, `reaction`, `image`, `video`, `gif`, `audio`, `sticker`, `document`.
 
 ## Tools
 You can import tools that can be useful for certain scenarios.
@@ -394,6 +408,7 @@ Exposed are these items for programming custom functionalities.
 ## [Unreleased]
 ### Added
 - `bot.getGroupData()`
+- `bot.messageType`
 - Function response `next()` function from the 4th argument
 - `message.id`
 - `message.delete()`
