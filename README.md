@@ -437,7 +437,7 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
-## [Unreleased]
+## [1.11.0] 2025-11-09
 ### Added
 - `bot.getGroupData()`
 - `bot.messageType`

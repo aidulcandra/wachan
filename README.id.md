@@ -434,7 +434,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
-## [Belum Rilis]
+## [1.11.0] 2025-11-09
 ### Ditambahkan
 - `bot.getGroupData(jid)`
 - `bot.messageType`
