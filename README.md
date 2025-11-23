@@ -285,6 +285,9 @@ bot.onReceive("test", async (msg) => {
 })
 ```
 
+### Mentioning
+To mention a user, you can put `@<user-lid>` in your text (without `@lid` part). For example: `msg.reply("Hello @1234567812345")`
+
 ## Receiver Flow
 The receivers are checked one by one in order you register them. If two or more receivers can be triggered by the same message, then the one that was registered first will be executed.
 ```js

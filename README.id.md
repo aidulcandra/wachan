@@ -283,6 +283,9 @@ bot.onReceive("test", async (msg) => {
 })
 ```
 
+### Mention User
+Untuk me-mention user, kamu bisa tambahkan `@<user-lid>` di dalam teks pesanmu (tanpa `@lid`). Contoh: `msg.reply("Halo @1234567812345")`
+
 ## Alur Receiver
 Receiver diperiksa satu per satu menurut urutan ia di-register. Jika dua receiver bisa di-trigger oleh satu pesan yang sama, maka hanya receiver pertama yang akan dieksekusi.
 ```js
