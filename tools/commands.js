@@ -134,7 +134,7 @@ function generateMenu(options = {}) {
 }
 
 function getCommandInfo(name) {
-    return commandList.find(c => c.name === name)
+    return commandList.find(c => c.name === name || c.aliases.includes(name))
         || Object.values(commandSections).flat().find(c => c.name === name)
 }
 
