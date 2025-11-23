@@ -143,6 +143,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - string: kirim pesan teks ini
         - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
 - `bot.getGroupData(jid)` - Dapatkan informasi tentang grup.
+- `bot.getUserData(id)` - Dapatkan data dari user dari JID / LID nya, jika bot sudah menyimpannya.
 - `bot.start(options)` - Jalankan bot. Options:
     - `suppressBaileysLog` - Default `true`. Jika `true`, maka senyapkan log baileys di console.
     - `phoneNumber` - String berisi nomor telepon (dengan kode negara, tanpa simbol dan spasi) untuk langsung menghubungkan ke nomor tersebut tanpa perlu diinput lagi di console.
@@ -433,6 +434,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 <br>
 
 # Changelog
+
+## [Belum Rilis]
+### Ditambahkan
+- `bot.getUserData()`
 
 ## [1.11.0] 2025-11-09
 ### Ditambahkan

@@ -39,6 +39,10 @@ async function getGroupData(jid) {
     return await store.groupStore.get(jid)
 }
 
+async function getUserData(id) {
+    return store.userStore.find(id)
+}
+
 async function start(options = {}) {
     if (!fs.existsSync(WACHAN_DATA_PATH)) {
         fs.mkdirSync(WACHAN_DATA_PATH)
@@ -74,7 +78,7 @@ async function start(options = {}) {
 const bot = { 
     onConnected, onReady, onReceive, onError, start, 
     sendMessage, waitForMessage,
-    getGroupData,
+    getGroupData, getUserData,
     settings, getSocket,
     messageType: { 
         any: 0, nonmedia:1, media: 2,
