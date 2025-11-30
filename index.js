@@ -36,7 +36,15 @@ async function waitForMessage(options, timeout=10000) {
 }
 
 async function getGroupData(jid) {
-    return await store.groupStore.get(jid)
+    const group = await store.groupStore.get(jid)
+    return group ? {
+        id: group.id,
+        subject: group.subject,
+        description: group.desc,
+        getParticipants: () => group.participants.map(p => ({ id: p.id, lid: p.lid })),
+        getAdmins: () => group.participants.filter(p => p.admin).map(p => ({ id: p.id, lid: p.lid })),
+        getMembers: () => group.participants.filter(p => !p.admin).map(p => ({ id: p.id, lid: p.lid })),
+    } : null
 }
 
 async function getUserData(id) {

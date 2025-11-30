@@ -15,6 +15,8 @@ Cara yang lebih simpel untuk meng-kode baileys.
     - [Captures](#captures)
     - [Value Yang Di Return](#value-yang-di-return)
 - [Opsi Pengiriman Pesan](#opsi-pengiriman-pesan)
+    - [Mention User](#mention-user)
+    - [Data Grup](#data-grup)
 - [Alur Receiver](#alur-receiver)
 - [Enum Tipe Message](#enum-tipe-message)
 - [Tools](#tools)
@@ -286,6 +288,19 @@ bot.onReceive("test", async (msg) => {
 ### Mention User
 Untuk me-mention user, kamu bisa tambahkan `@<user-lid>` di dalam teks pesanmu (tanpa `@lid`). Contoh: `msg.reply("Halo @1234567812345")`
 
+### Data Grup
+Untuk mengambil data grup, gunakan `bot.getGroupData(id)`. Mereturn berikut, jika ada:
+- `group`
+    - `group.id` - ID grup
+    - `group.subject` - Subject (judul) grup
+    - `group.description` - Deskripsi grup
+    - `group.getParticipants()` - Ambil list peserta grup berupa array berisi objek-objek dengan struktur berikut:
+        - `participant`
+            - `participant.id` - ID peserta. Bisa berupa JID atau LID
+            - `participant.lid` - LID peserta
+    - `group.getAdmins()` - Ambil list khusus admin grup
+    - `group.getMembers()` - Ambil list khusus member (bukan admin)
+
 ## Alur Receiver
 Receiver diperiksa satu per satu menurut urutan ia di-register. Jika dua receiver bisa di-trigger oleh satu pesan yang sama, maka hanya receiver pertama yang akan dieksekusi.
 ```js
@@ -329,6 +344,7 @@ Kamu bisa import tools Yang berguna di berbagai skenario.
 ### Commands Tool `require("wachan/commands")`
 Berguna untuk membuat command (perintah) yang berformat prefix-command-param yang populer di kalangan developer bot whatsapp. Contoh: `/search article`
 <br>
+
 Meng-export: `commands`
 - `commands` - Commands Tool. Ketika diimport, akan otomatis menambah satu item pengaturan baru, `bot.settings.commandPrefixes`, yaitu array dari prefix-prefix yang bisa digunakan untuk menjalankan command.
     - `commands.add(name, response, options)` - Tambah command baru

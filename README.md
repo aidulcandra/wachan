@@ -15,6 +15,8 @@ Simpler way to code baileys.
     - [Captures](#captures)
     - [Returned Value](#returned-value)
 - [Message Sending Options](#message-sending-options)
+    - [Mentioning](#mentioning)
+    - [Group Data](#group-data)
 - [Receiver Flow](#receiver-flow)
 - [Message Type Enums](#message-type-enums)
 - [Tools](#tools)
@@ -287,6 +289,19 @@ bot.onReceive("test", async (msg) => {
 
 ### Mentioning
 To mention a user, you can put `@<user-lid>` in your text (without `@lid` part). For example: `msg.reply("Hello @1234567812345")`
+
+### Group Data
+To get data of a group chat, use `bot.getGroupData(id)`. Returns, if available:
+- `group`
+    - `group.id` - ID of the group
+    - `group.subject` - The subject / title of the group chat
+    - `group.description` - The description of the group
+    - `group.getParticipants()` - Get the list of all participants in the group. It's an array of object with the structure:
+        - `participant`
+            - `participant.id` - ID of the participant. Could be a JID or LID.
+            - `participant.lid` - LID of the participant
+    - `group.getAdmins()` - Get the list of participants who are admins of the group.
+    - `group.getMembers()` - Get the list of participants who are not admins.
 
 ## Receiver Flow
 The receivers are checked one by one in order you register them. If two or more receivers can be triggered by the same message, then the one that was registered first will be executed.
