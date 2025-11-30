@@ -28,7 +28,7 @@ function onError(response) {
 async function waitForMessage(options, timeout=10000) {
     let receiver
     const result = await new Promise(resolve => {
-        receiver = onReceive(options, m=>resolve(m))
+        receiver = onReceive(options, context=>resolve(context.message))
         setTimeout(resolve, timeout)
     })
     receiver.remove()
