@@ -59,7 +59,7 @@ async function start(options = {}) {
     store.messageStore.size = settings.messageStoreSize
     while (true) {
         try {
-            console.clear()
+            // console.clear()
             console.log("", "🗨 WACHAN".green, `v${wachan.version}`.gray, "\n")
             console.log("Wachan is connecting...".green)
             const phoneNumber = options.phoneNumber

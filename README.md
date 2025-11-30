@@ -3,6 +3,13 @@ English | [Bahasa Indonesia](./README.id.md)
 # wachan
 Simpler way to code baileys.
 
+## Deprecation Warning
+In the next major version, all response functions (including the ones for commands) will have their parameters simplified into 2:
+- `context` - This will contain: `message`, `captures`, and `command`
+- `next` function
+
+More explanation [here](#response-function)
+
 ## Contents
 - [Installation](#installation)
 - [Example](#example)
@@ -61,7 +68,10 @@ bot.onReceive("send audio", {audio:"..."})
 bot.onReceive("send sticker", {sticker:"..."}) // webp file
 
 // 3) Function response: Custom actions
-bot.onReceive("test", async (message, captures, group) => {
+bot.onReceive("test", async (context, next) => {
+    // v1 arguments: message, captures, group, next
+
+    const { message, captures } = context
     const options = {...}
 
     // 3 ways of sending message:
@@ -136,7 +146,7 @@ This is what wachan module exports:<br><br>
         - `context` - An object, containing the arguments from the response function:
             - `message`
             - `captures`
-            - `groupChat`
+            - `groupChat` (deprecated. use `bot.getGroupData(id)` instead)
 - `bot.waitForMessage(input, timeout)` - Wait for a message of specified input then return the message
     - `input`: The same as `input` in `bot.onReceive()` above
     - `timeout`: Time limit for the waiting. If no matching messages have been captured, `waitForMessage()` returns `undefined`
@@ -158,10 +168,12 @@ This is what wachan module exports:<br><br>
 - `bot.messageType` - Contains enums for receiver input. See [here](#message-type-enums)
 
 ## Response Function
-You can use a function as the response to a message. The first argument is `message`, the second argument is `captures` (if available), the third is `group` (if the chatroom is a group chat), and the last is `next` function (check out [Receiver Flow](#receiver-flow)).
+You can use a function as the response to a message. The first argument is `context` and the second one is `next` function (check out [Receiver Flow](#receiver-flow)).
+<br><br>Previously, the first argument is `message`, the second argument is `captures` (if available), the third is `group` (if the chatroom is a group chat), and the last is `next` function. (This is now deprecated. `message` and `captures` will later be under `context` object).
+
 ```js
-bot.onReceive("test", async function (message, captures, group) {
-    // Code here
+bot.onReceive("test", async function (context, next) {
+    // const { message, captures } = context
 })
 ```
 ### Message Object
@@ -198,7 +210,7 @@ bot.onReceive("test", async function (message, captures, group) {
 - `message.toBaileys()` - Return the original baileys message object.
 
 ### Captures
-The second argument, `captures` is an object <b>(not an array)</b> of captured text from regex inputs.
+`captures` is an object <b>(not an array)</b> of captured text from regex inputs.
 
 The keys depend on the regex. If using regular capturing using brackets, then the result is stored with numeric keys (starting from 0). If using <i>named capture</i>, then the key is a string.
 
@@ -211,18 +223,7 @@ Input Regex|Received message text|`captures`
 `captures.toArray()` returns the array of the captures. Useful for doing array operations on it.
 
 ### Group
-The third argument is `group`, the object that contains information about the group. This will be `null` if the message is sent in a private chat.
-- `group`
-    - `group.id` - ID of the group (the same as `message.room`)
-    - `group.subject` - The subject / title of the group chat
-    - `group.description` - The description of the group
-    - `group.getParticipants()` - Get the list of all participants in the group. It's an array of object with the structure:
-        - `participant`
-            - `participant.id` - ID of the participant. Could be a JID or LID.
-            - `participant.lid` - LID of the participant
-    - `group.getAdmins()` - Get the list of participants who are admins of the group.
-    - `group.getMembers()` - Get the list of participants who are not admins.
-
+The third argument is `group`, the object that contains information about the group. This will be `null` if the message is sent in a private chat. (Now deprecated as function response's third argument. You can get this by using `bot.getGroupData(id)` instead)
 
 ### Returned Value
 In the response function, you can return a string/object:
@@ -346,6 +347,7 @@ You can import tools that can be useful for certain scenarios.
 ### Commands Tool `require("wachan/commands")`
 Useful for quickly setting up prefix-command-params style inputs in popular bot format. Ex: `/search article`
 <br>
+
 Exports: `commands`
 - `commands` - The Commands Tool. When imported, will add a new item in the settings, `bot.settings.commandPrefixes`, which is an array of prefixes that can be used to invoke commands.
     - `commands.add(name, response, options)` - Add a new command.
@@ -353,7 +355,19 @@ Exports: `commands`
         - `response` - String/Object/Function
             - as string: Reply the command message with this.
             - as object: More sending options. [See here](#message-sending-options)
-            - as function: `response(message, params, command, prefix, group, bot)`
+            - as function: `response(context, next)`. [See here](#response-function). There is an additional field in `context` which is `command`.
+                - `context`
+                    - `context.message` - Message object
+                    - `context.command` - Command information
+                        - `context.command.prefix` - Prefix that is used when invoking this command
+                        - `context.command.name` - Name of the (if an alias was used, then it will be the value of the name)
+                        - `context.command.parameters` - Command parameter (in Array). Ex: `/test a b c` -> params = ["a","b","c"]
+                        - `context.command.description` - Description of the command
+                        - `context.command.aliases` - Alias(es) of this command
+                        - `context.command.hidden` - Whether this is a command that is hidden from menu generator.
+                        - and any other properties inside `options` when you add this command.
+                - `next` - Function to proceed to the next receiver. (See [Receiver Flow](#receiver-flow))
+            - as function (old structure, which is deprecated): `response(message, params, command, prefix, group, bot)`
                 - `message` - The command message
                 - `params` - Parameters of the commands. Example: `/test a b c` -> params = ["a","b","c"]
                 - `command` - The command name that is used
@@ -374,6 +388,10 @@ Exports: `commands`
     - `commands.removePrefix(prefix)` - Remove one of the existing command prefixes.
     - `commands.getCommandInfo(commandName)` - Get the info about a registered command by its name.
     - `commands.getCommands()` - Get a list of the info of all registered commands.
+    - `commands.beforeEach(callback)` - Add a callback that will be executed before executing each command. This is useful for example for authorization (like admin/owner checking)
+        - `callback(context, next)` - The callback that will be added
+            - `context` - Just like `context` when you add a new command through `commands.add()`
+            - `next` - Function to skip to the next callback, or the command that is about to be executed.
     - `commands.generateMenu(options)` - Generate a string of menu that automatically lists all the registered commands and also groups them by their sections. Generation options:
         -   `options?.prefix` - The prefix to display. By default the first prefix in the registered prefixes list.
         - `options?.header` - The header or title of the menu. Note: You need to add newlines (`\n`) manually at the end of it if you want to separate the header and the body in their own lines. By default: `"> COMMAND LIST:\n\n"`
@@ -412,6 +430,26 @@ cmd.add("multiply", function (msg, params) {
 // Will respond when someone types:
 // /multiply 4 5
 // Bot will multiply 4 and 5 then send the result in chat
+```
+
+How to use `beforeEach()`:
+```js
+const cmd = require("wachan/commands")
+
+cmd.beforeEach((context, next) => {
+    const { adminOnly } = context.command
+    const { isAdmin } = context.message.sender
+    
+    if (adminOnly && !isAdmin) return `Only admin can use this command!`
+
+    next()
+})
+
+cmd.add("special", async (context, next) {
+    return "Special command has been executed!"
+}, { adminOnly: true })
+
+// When a user types /special, then we will check if they are an admin or not, if not then the command will not be executed
 ```
 
 ### Sticker Tool `require("wachan/sticker")`
@@ -456,6 +494,13 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
+## [Unreleased]
+### Added
+- `bot.getUserData()`
+- `cmd.beforeEach()`
+### Deprecated
+- Response function arguments will be simplified into 2 arguments: `context` and `next`. This will also be the case for response functions of commands.
+
 ## [1.11.0] 2025-11-09
 ### Added
 - `bot.getGroupData()`
@@ -469,10 +514,6 @@ Exposed are these items for programming custom functionalities.
 - `message.getQuoted()` is now available in messages with no quoted message, but it returns `null`
 - `commands.getCommands()`
 - `sticker.create()`'s new option field `size`
-
-## [Unreleased]
-### Added
-- `bot.getUserData()`
 
 ## [1.10.0] - 2025-10-26
 ### Added

@@ -1,5 +1,6 @@
 const fs = require("fs")
 
+const { NextSignal } = require("../lib/classes/next-signal")
 const bot = require("../index")
 const { onReceive, settings } = bot
 
@@ -8,17 +9,27 @@ const prefixes = settings.commandPrefixes ??= ["/"]
 const commandList = []
 const commandSections = {}
 
+const preCommandCallbacks = []
+
+function beforeEach(callback) {
+    if (callback.length > 2) {
+        console.warn("Deprecation Warning: beforeEach callback function's arguments will be simplified into only 2 arguments (context, next) in the next major version. See documentation for details.".yellow)
+    }
+    preCommandCallbacks.push(callback)
+}
+
 function add(commandName, response, options = {}) {
     const names = [commandName, ...options.aliases||[]]
     const prefixRegex = prefixes.map(escapeRegExp).join("|")
     const nameRegex = names.map(escapeRegExp).join("|")
     const pattern = `^(?<prefix>${prefixRegex})\\s*(?<commandName>${nameRegex})\\b(?:\\s+(?<paramString>.+))?`
-    const commandRegex = new RegExp(pattern, "i")
+    const commandRegex = new RegExp(pattern, "is")
     const c = {
+        ...options,
         name: commandName,
         description: options.description || "",
         aliases: options.aliases || [],
-        hidden: options.hidden || false
+        hidden: options.hidden || false,
     }
     if (options.sectionName) {
         commandSections[options.sectionName] ??= []
@@ -26,12 +37,47 @@ function add(commandName, response, options = {}) {
     } else {
         commandList.push(c)
     }
-    return onReceive(commandRegex, async function (message, captures, group) {
-        const { prefix, commandName, paramString } = captures
+    return onReceive(commandRegex, async function (context, next, group) {
+        const { prefix, commandName, paramString } = context.captures
         const separator = options.separator || " "
         const params = paramString?.split(separator) || []
+
+        // Combine into a command context
+        const commandContext = {
+            ...context.message,
+            message: context.message,
+            command: {
+                prefix,
+                name: commandName,
+                parameters: params,
+                ...c
+            }
+        }
+
+        // Combine params into next function for backward compatibility
+        const nextProxy = new Proxy(next, {
+            get(target, prop, receiver) {
+                if (params[prop]) {
+                    console.warn("Deprecation Warning: Accessing command parameters via 'next' is deprecated and will be removed in the next major version. Please access parameters via 'context.command.parameters' instead.".yellow)
+                    return params[prop]
+                }
+                return Reflect.get(...arguments)
+            }
+        })
+
+        for (const callback of preCommandCallbacks) {
+            
+            try {
+                // old: callback(message, params, commandName, prefix, group, bot, next)
+                return await callback(commandContext, nextProxy, commandName, prefix, group, bot, next)
+            } catch (e) {
+                if (e instanceof NextSignal) continue
+                throw e
+            }
+        }
+
         return typeof response === "function"
-            ? response(message, params, commandName, prefix, group, bot)
+            ? await response(commandContext, nextProxy, commandName, prefix, group, bot)
             : response
     })
 }
@@ -145,4 +191,9 @@ function getCommands() {
     }))
 }
 
-module.exports = { add, fromFile, fromFolder, addPrefix, removePrefix, generateMenu, getCommandInfo, getCommands }
+module.exports = { 
+    beforeEach,
+    add, fromFile, fromFolder, 
+    addPrefix, removePrefix, 
+    generateMenu, getCommandInfo, getCommands 
+}

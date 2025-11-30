@@ -3,6 +3,13 @@
 # wachan
 Cara yang lebih simpel untuk meng-kode baileys.
 
+## Peringatan Deprecation
+Pada versi major berikutnya, semua fungsi respon (termasuk untuk command) akan disederhanakan sehingga memiliki 2 parameter saja:
+- `context` - Ini akan berisi: `message`, `captures`, dan `command`
+- fungsi `next`
+
+Penjelasan selengkapnya [di sini](#function-response)
+
 ## Daftar Isi
 - [Instalasi](#instalasi)
 - [Contoh](#contoh)
@@ -61,8 +68,11 @@ bot.onReceive("kirim audio", {audio:"..."})
 bot.onReceive("kirim sticker", {sticker:"..."}) // file WebP
 
 // 3) Respon function: Custom script
-bot.onReceive("test", async (message, captures, group) => {
-    const options = {...}
+bot.onReceive("test", async (context, next) => {
+    // argument v1: message, captures, group, next
+
+    const { message, captures } = context
+    const options = {...} // Contoh
 
     // 3 cara mengirim pesan:
     // 1) Dengan bot.sendMessage()
@@ -135,7 +145,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - `context` - Objek yang berisi argument-argument dari fungsi respon:
             - `message`
             - `captures`
-            - `groupChat`
+            - `groupChat`  (deprecated. gunakan `bot.getGroupData(id)`)
 - `bot.waitForMessage(input, timeout)` - Menunggu munculnya pesan masuk sesuai input lalu me-return pesan tersebut.
     - `input`: Sama seperti `input` di `bot.onReceive()` di atas.
     - `timeout`: Batas waktu tunggu. Jika tidak ditemukan pesan dan waktu habis, `waitForMessage()` akan me-return `undefined`.
@@ -156,11 +166,13 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
 - `bot.getSocket()` - Ambil objek socket baileys.
 - `bot.messageType` - Berisi enum untuk filter di receiver. Lihat di [sini](#enum-tipe-message)
 
-## Function Response
-Kamu bisa gunakan function sebagai respon pesan. Argument pertamanya adalah `message`, kedua `captures` (jika ada), ketiga `group` (jika chat room tempat pesan diterima adalah grup), dan terakhir fungsi `next` (cek [Alur Receiver](#alur-receiver)).
+## Fungsi Respon
+Kamu bisa gunakan fungsi sebagai respon. Argument pertama adalah `context` dan kedua adalah fungsi `next` (cek [Alur Receiver](#alur-receiver)).
+<br><br>Sebelumnya, argumen pertama adalah `message`, kedua adalah `captures` (jika ada), ketiga `group` (jika chat roomnya berupa grup chat), dan terakhir fungsi `next`. (Ini sudah deprecated. Kedepannya `message` dan `captures` akan masuk ke dalam `context`).
+
 ```js
-bot.onReceive("test", async function (message, captures, group) {
-    // Kode di sini
+bot.onReceive("test", async function (context, next) {
+    // const { message, captures } = context
 })
 ```
 ### Objek Pesan (Message)
@@ -197,7 +209,7 @@ bot.onReceive("test", async function (message, captures, group) {
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
 
 ### Captures
-Argument kedua adalah `captures` yaitu objek <b>(bukan array)</b> yang berisi string teks-teks yang diambil (di-capture) dengan regex. Jika tidak ada, maka objek-nya kosong.
+`captures` yaitu objek <b>(bukan array)</b> yang berisi string teks-teks yang diambil (di-capture) dengan regex. Jika tidak ada, maka objek-nya kosong.
 
 Key dari objek nya tergantung pada regex-nya. Jika menggunakan capturing biasa dengan tanda kurung, maka hasilnya tersimpan pada key berupa angka (mulai dari 0). Jika menggunakan <i>named capture</i>, maka key-nya berupa string.
 
@@ -210,17 +222,7 @@ Regex Input|Teks yg diterima|Objek `captures`
 `captures.toArray()` bisa digunakan untuk mengubah objek `captures` ke array (agar bisa melakukan operasi array)
 
 ### Group
-Argumentt kedua adalah `group`, objek yang berisi informasi tentang grup. Nilainya `null` jika pesan dikirim ke pesan pribadi.
-- `group`
-    - `group.id` - ID grup (sama dengan `message.room`)
-    - `group.subject` - Subject (judul) grup
-    - `group.description` - Deskripsi grup
-    - `group.getParticipants()` - Ambil list peserta grup berupa array berisi objek-objek dengan struktur berikut:
-        - `participant`
-            - `participant.id` - ID peserta. Bisa berupa JID atau LID
-            - `participant.lid` - LID peserta
-    - `group.getAdmins()` - Ambil list khusus admin grup
-    - `group.getMembers()` - Ambil list khusus member (bukan admin)
+Argumentt kedua adalah `group`, objek yang berisi informasi tentang grup. Nilainya `null` jika pesan dikirim ke pesan pribadi. (Sudah deprecated sebagai argument ketiga dari response function. Kamu bisa dapatkan objek ini lewat `bot.getGroupData(id)`)
 
 ### Value Yang Di-Return
 Di dalam function response, kamu bisa me-return string/object:
@@ -352,14 +354,28 @@ Meng-export: `commands`
         - `response` - String/Object/Function
             - sebagai string: Balas ke pesan command dengan teks
             - sebagai object: Lebih banyak opsi pengiriman. [Cek di sini](#opsi-pengiriman-pesan)
-            - sebagai function: `response(message, params, command, prefix, group, bot)`
+            - sebagai function: `response(context, next)`. [Cek di sini](#fungsi-respon). Dengan tambahan property di dalam `context` yaitu `command`.
+                - `context`
+                    - `context.message` - Objek pesan
+                    - `context.command` - Informasi command
+                        - `context.command.prefix` - Prefix yang digunakan
+                        - `context.command.name` - Nama command (jika yang digunakan adalah alias command, maka alias itu yang tertulis di sini)
+                        - `context.command.parameters` - Parameter command (dalam Array). Contoh: `/test a b c` -> params = ["a","b","c"]
+                        - `context.command.description` - Deskripsi command
+                        - `context.command.aliases` - Alias dari command ini (array)
+                        - `context.command.hidden` - Apakah ini termasuk command yang disembunyikan dari menu generator
+                        - dan property custom lain yang diset ketika membuat command tsb., yang ada di dalam `options`
+                - `next` - Function untuk berpindah ke receiver berikutnya. (Lihat [Alur Receiver](#alur-receiver))
+
+            - sebagai function (susunan sebelumnya, sudah deprecated): `response(message, params, command, prefix, group, bot)`
                 - `message` - Pesan perintah
                 - `params` - Parameter. Contoh: `/test a b c` -> params = ["a","b","c"]
                 - `command` - Nama command yang digunakan.
                 - `prefix` - Prefix yang digunakan
                 - `group` - Info tentang grup dimana perintah ini dijalankan
                 - `bot` - Objek bot yang sama dengan export utama wachan
-        - `options` - Opsi tambahan untuk command ini
+
+        - `options` - Opsi tambahan untuk command ini. Kamu bisa berikan data-data custom di dalam sini. Untuk data bawaannya yaitu sbb:
             - `options.aliases` - Array alias untuk alternatif perintah
             - `options.separator` - Karakter yang akan digunakan sebagai pemotong string parameter. Default spasi (`" "`)
             - `options.description` - Deskripsi command
@@ -372,6 +388,10 @@ Meng-export: `commands`
     - `commands.removePrefix(prefix)` - Menghapus salah satu prefix yang ada.
     - `commands.getCommandInfo(commandName)` - Ambil info tentang suatu command yang sudah terdaftar.
     - `commands.getCommands()` - Ambil info semua command yang sudah terdaftar.
+    - `commands.beforeEach(callback)` - Tambahkan callback yang akan dijalankan sebelum masuk ke setiap command. Ini berguna misalnya untuk otorisasi (contoh pengecekan owner/admin)
+        - `callback(context, next)` - Callback yang akan ditambahkan
+            - `context` - Sama seperti `context` saat menambahkan command baru dengan `commands.add()`
+            - `next` - Fungsi untuk melanjutkan ke callback berikutnya, atau masuk ke command jika sudah tidak ada lagi callback.
     - `commands.generateMenu(options)` - Generate sebuah string berisi menu perintah yang otomatis berisi list perintah dan dikelompokkan berdasarkan section-nya. Opsi Generation:
         -   `options?.prefix` - Prefix yang akan ditampilkan. Secara default, prefix pertama di daftar prefix.
         - `options?.header` - Judul menu. Catatan: Kamu perlu menambahkan newlines (`\n`) secara manual di ujunnya jika ingin memisahkan judul dan isi di baris berbeda. Secara default: `"> COMMAND LIST:\n\n"`
@@ -401,8 +421,9 @@ Meng-export: `commands`
 Contoh Penggunaan:
 ```js
 const cmd = require("wachan/commands")
-cmd.add("multiply", function (msg, params) {
-    const [a, b] = params
+cmd.add("multiply", function (context, next) { 
+    // Susunan parameter lama: (msg, params)
+    const [a, b] = context.command.parameters
     const result = Number(a) * Number(b)
     return `The result of ${a}*${b} is ${result}`
 })
@@ -410,6 +431,26 @@ cmd.add("multiply", function (msg, params) {
 // Akan merespon ketika ada yang mengetik:
 // /multiply 4 5
 // Bot akan mengalikan 4 and 5 lalu mengirimkan hasilnya di chat.
+```
+
+Contoh penggunaan `beforeEach()`:
+```js
+const cmd = require("wachan/commands")
+
+cmd.beforeEach((context, next) => {
+    const { adminOnly } = context.command
+    const { isAdmin } = context.message.sender
+    
+    if (adminOnly && !isAdmin) return `Hanya admin yang bisa menggunakan command ini!`
+
+    next()
+})
+
+cmd.add("special", async (context, next) {
+    return "Special command sudah dieksekusi!"
+}, { adminOnly: true })
+
+// Ketika user mengetik /special, maka akan dicek dulu apakah dia admin, jika tidak maka ditolak
 ```
 
 ### Sticker Tool `require("wachan/sticker")`
@@ -457,6 +498,9 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ## [Belum Rilis]
 ### Ditambahkan
 - `bot.getUserData()`
+- `cmd.beforeEach()`
+### Akan Dihilangkan
+- Parameter dari fungsi respon akan disederhanakan menjadi 2: `context` dan `next`. Ini juga akan berlaku untuk fungsi respon dari command.
 
 ## [1.11.0] 2025-11-09
 ### Ditambahkan
