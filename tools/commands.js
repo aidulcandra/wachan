@@ -103,7 +103,7 @@ function fromFile(commandName, filePath, sectionName) {
         console.log(`Loaded command "${commandName}" from file "${filePath}".`.blue)
         return r
     } catch (error) {
-        console.error(`wachan/commands/fromFile: Error loading command file "${filePath}":`.red, error.message.red)
+        console.error(`wachan/commands/fromFile: Error loading command file "${filePath}":`.red, error.stack.red)
     }
 }
 
