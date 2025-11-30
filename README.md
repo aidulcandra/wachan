@@ -498,6 +498,8 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - `bot.getUserData()`
 - `cmd.beforeEach()`
+### Fixed
+- User's admin status now updates without needing for the program to restart.
 ### Deprecated
 - Response function arguments will be simplified into 2 arguments: `context` and `next`. This will also be the case for response functions of commands.
 

@@ -499,6 +499,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - `bot.getUserData()`
 - `cmd.beforeEach()`
+### Diperbaiki
+- Status admin dari user akan terupdate tanpa harus program direstart dulu
 ### Akan Dihilangkan
 - Parameter dari fungsi respon akan disederhanakan menjadi 2: `context` dan `next`. Ini juga akan berlaku untuk fungsi respon dari command.
 
