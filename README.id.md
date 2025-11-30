@@ -203,7 +203,7 @@ bot.onReceive("test", async function (context, next) {
         - string: balas dengan teks ini
         - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
 - `message.react(emoji)` - Kirim reaction ke pesan ini
-    - `emoji` - String berisi 1 emoji untuk dijadikan reaction
+    - `emoji` - String berisi 1 emoji untuk dijadikan reaction. Gunakan string kosong untuk menghapus reaction.
 - `message.delete()` - Hapus pesan ini. Note: Bot harus menjadi admin sebelum menghapus pesan-pesan yang ada di grup.
 - `message.getQuoted()` - Me-return pesan yang di-quote oleh pesan ini. `null` jika tidak ada.
 - `message.toBaileys()` - Me-return objek message asli dari modul baileys
@@ -501,6 +501,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `cmd.beforeEach()`
 ### Diperbaiki
 - Status admin dari user akan terupdate tanpa harus program direstart dulu
+- Sekarang bisa menghapus reaction dengan menggunakan string kosong
 ### Akan Dihilangkan
 - Parameter dari fungsi respon akan disederhanakan menjadi 2: `context` dan `next`. Ini juga akan berlaku untuk fungsi respon dari command.
 

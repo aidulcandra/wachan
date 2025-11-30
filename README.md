@@ -204,7 +204,7 @@ bot.onReceive("test", async function (context, next) {
         - string: reply with this text
         - object: can use more options. See [here](#message-sending-options)
 - `message.react(emoji)` - Send reaction to the message.
-    - `emoji` - The emoji in string to use as reaction
+    - `emoji` - The emoji in string to use as reaction. Use empty string to remove a reaction.
 - `message.delete()` - Delete this message. Note: the bot needs to be an admin for it to be able to delete messages in a group.
 - `message.getQuoted()` - Return the message that this message is quoting. `null` if there isn't.
 - `message.toBaileys()` - Return the original baileys message object.
@@ -500,6 +500,7 @@ Exposed are these items for programming custom functionalities.
 - `cmd.beforeEach()`
 ### Fixed
 - User's admin status now updates without needing for the program to restart.
+- You can now remove a reaction by using an empty string as input
 ### Deprecated
 - Response function arguments will be simplified into 2 arguments: `context` and `next`. This will also be the case for response functions of commands.
 
