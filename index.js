@@ -48,6 +48,7 @@ async function getGroupData(jid) {
 }
 
 async function getUserData(id) {
+    if (!id) return null
     return store.userStore.find(id)
 }
 
