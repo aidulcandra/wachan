@@ -283,6 +283,10 @@ If the object is a string, then the message will be sent as a text message. Howe
     - `options.contacts[]` - Array of contacts to send. Each item is a `contact`:
         - `contact.name` - The displayed name of the contact.
         - `contact.number` - The contact number (in string)
+    - `options.poll` - Poll object to send as poll message
+        - `options.poll.title` - Title of the poll
+        - `options.poll.options[]` - Options for the poll as array of strings
+        - `options.poll.multiple` - If true, then allow multiple selection
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
@@ -505,6 +509,7 @@ Exposed are these items for programming custom functionalities.
 - `bot.getUserData()`
 - `cmd.beforeEach()`
 - Sending and receiving contacts
+- Sending polls
 ### Fixed
 - User's admin status now updates without needing for the program to restart.
 - You can now remove a reaction by using an empty string as input

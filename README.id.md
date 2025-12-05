@@ -282,6 +282,10 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.contacts[]` - Array berisi kontak. Tiap elemennya adalah objek `contact`:
         - `contact.name` - Nama kontak yang ditampilkan.
         - `contact.number` - Nomor kontak dalam string.
+    - `options.poll` - Objek poll untuk mengirim polling
+        - `options.poll.options[]` - Array berisi string dari opsi-opsi polling
+        - `options.poll.title` - Judul dari polling
+        - `options.poll.multiple` - Jika true, maka bisa memilih lebih dari 1 opsi
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -506,6 +510,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `bot.getUserData()`
 - `cmd.beforeEach()`
 - Mengirim dan menerima kontak
+- Mengirim polling
 ### Diperbaiki
 - Status admin dari user akan terupdate tanpa harus program direstart dulu
 - Sekarang bisa menghapus reaction dengan menggunakan string kosong
