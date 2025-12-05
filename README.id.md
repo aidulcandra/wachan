@@ -186,7 +186,7 @@ bot.onReceive("test", async function (context, next) {
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
 - `message.timestamp` - Timestamp dari pesan ini dalam format Unix Timestamp.
-- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`
+- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttonReply"`, atau `"contacts"`
 - `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`)
 - `message.downloadMedia(saveTo)` - Download media sebagai buffer. Jika path disediakan di parameter `saveTo`, maka filenya akan disimpan di situ.
 - `message.text` - Teks atau caption dari pesan
@@ -197,6 +197,9 @@ bot.onReceive("test", async function (context, next) {
     - `message.buttonReply.id` - ID yang diberikan ke button
     - `message.buttonReply.text` - Teks yang tertulis di atas button
     - `message.buttonReply.pos` - Posisi button (yang pertama adalah 0)
+- `message.contacts[]` - List kontak yang dikirim jika ini adalah pesan kontak
+    - `contact.name` - Nama kontak
+    - `contact.number` - Nomor telepon kontak
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
 - `message.reply(options)` - Balas ke pesan.
     - `options` - Bisa berupa string / object
@@ -269,13 +272,16 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
         - `button.code` - Kode yang akan dicopy ke keyboard ketika button diketuk. Wajib untuk button jenis `copy`.
         - `button.phoneNumber` - Nomor yang akan dihubungi ketika button diketuk. Wajib untuk button jenis `call`.
         - `button.title` - Judul menu list yang dimunculkan dari button jenis `list`.
-        - `button.sections[]` - Array berisi section dari menu list. Wajib untuk button jenis `list`.
+        - `button.sections[]` - Array berisi section dari menu list. Wajib untuk button jenis `list`. Setiap elemennya adalah objek `section`:
             - `section.title` - Judul section
-            - `section.rows[]` - Array dari list item. Wajib ada di dalam section.
+            - `section.rows[]` - Array dari list item. Wajib ada di dalam section. Setiap elemennya adalah objek `row`:
                 - `row.id` - ID dari item. Wajib ada.
                 - `row.title` - Judul dari item. Wajib ada.
                 - `row.description` - Deskripsi item.
                 - `row.header` - Teks header dari item.
+    - `options.contacts[]` - Array berisi kontak. Tiap elemennya adalah objek `contact`:
+        - `contact.name` - Nama kontak yang ditampilkan.
+        - `contact.number` - Nomor kontak dalam string.
 
 <b>Catatan:</b> Karena `bot.sendMessage()` dan `message.reply()` normalnya me-return sebuah object message yang berisi property `text`, jadi me-return hasil dari function-function tersebut bisa membuat bot mengirim pesan 2 kali:
 ```js
@@ -499,6 +505,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ### Ditambahkan
 - `bot.getUserData()`
 - `cmd.beforeEach()`
+- Mengirim dan menerima kontak
 ### Diperbaiki
 - Status admin dari user akan terupdate tanpa harus program direstart dulu
 - Sekarang bisa menghapus reaction dengan menggunakan string kosong

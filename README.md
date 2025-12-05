@@ -187,7 +187,7 @@ bot.onReceive("test", async function (context, next) {
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
 - `message.timestamp` - UNIX timestamp of this message.
-- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`
+- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttonReply"`, `"contacts"`
 - `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, or `"document"`)
 - `message.downloadMedia(saveTo)` - Get the buffer of the media. If you provide a path in `saveTo`, it will also save the file there.
 - `message.text` - Text or caption of the message.
@@ -198,6 +198,9 @@ bot.onReceive("test", async function (context, next) {
     - `message.buttonReply.id` - The ID that is assigned to the button
     - `message.buttonReply.text` - The displayed text on the button
     - `message.buttonReply.pos` - The position of the button (first one is 0)
+- `message.contacts` - List of contacts, if this is a contacts message.
+    - `contact.name` - Name of the contact
+    - `contact.number` - Phone number of the contact
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.reply(options)` - Reply to the message.
     - `options` - Can be a string / object
@@ -270,13 +273,16 @@ If the object is a string, then the message will be sent as a text message. Howe
         - `button.code` - The code to copy to clipboard when the button is tapped. Required for `copy` buttons.
         - `button.phoneNumber` - The number to dial when tapping the button. Required for `call` buttons.
         - `button.title` - Title of the list menu. Required for `list` buttons.
-        - `button.sections[]` - Array of list menu sections. Required for `list` buttons.
+        - `button.sections[]` - Array of list menu sections. Required for `list` buttons. Each item is a `section`:
             - `section.title` - Title of the section
-            - `section.rows[]` - List of items in the section. Required in a section.
+            - `section.rows[]` - List of items in the section. Required in a section. Each item is a `row`:
                 - `row.id` - ID of the item on this row. Required.
                 - `row.title` - Title of the item on this row. Required.
                 - `row.description` - Description of the item.
                 - `row.header` - Header text of the item.
+    - `options.contacts[]` - Array of contacts to send. Each item is a `contact`:
+        - `contact.name` - The displayed name of the contact.
+        - `contact.number` - The contact number (in string)
 
 <b>Note:</b> Since `bot.sendMessage()` and `message.reply()` return a message object which contains a `text` property, returning the result of these functions inside a response function can make your bot send message twice. For example:
 ```js
@@ -498,6 +504,7 @@ Exposed are these items for programming custom functionalities.
 ### Added
 - `bot.getUserData()`
 - `cmd.beforeEach()`
+- Sending and receiving contacts
 ### Fixed
 - User's admin status now updates without needing for the program to restart.
 - You can now remove a reaction by using an empty string as input
