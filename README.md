@@ -187,13 +187,16 @@ bot.onReceive("test", async function (context, next) {
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
 - `message.timestamp` - UNIX timestamp of this message.
-- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttonReply"`, `"contacts"`
+- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, `"vote"`
 - `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, or `"document"`)
 - `message.downloadMedia(saveTo)` - Get the buffer of the media. If you provide a path in `saveTo`, it will also save the file there.
 - `message.text` - Text or caption of the message.
 - `message.reaction` - Information about reaction, if this is a reaction message
     - `message.reaction.emoji` - The emoji that is used as reaction
     - `message.reaction.key` - Key object of the reacted message
+- `message.buttons` - Buttons object. The same as the `buttons` parameter used to send buttons message. ([here](#message-sending-options))
+- `message.title` - Title of the buttons message
+- `message.footer` - Footer text of the buttons message
 - `message.buttonReply` - Information about tapped button
     - `message.buttonReply.id` - The ID that is assigned to the button
     - `message.buttonReply.text` - The displayed text on the button
@@ -201,6 +204,14 @@ bot.onReceive("test", async function (context, next) {
 - `message.contacts` - List of contacts, if this is a contacts message.
     - `contact.name` - Name of the contact
     - `contact.number` - Phone number of the contact
+- `message.poll` - Information on poll, if this is a poll message.
+    - `message.poll.title` - Title of the poll
+    - `message.poll.options` - Array containing the options.
+    - `message.poll.multiple` - True if multiple selection is allowed
+    - `message.poll.votes` - An object containing options as keys, and array of voter ids as value. Example: `{"opt1":["1234@lid"]}`
+- `message.vote` - An update on polling (the sender voting/unvoting)
+    - `message.vote.pollId` - ID of the poll message
+    - `message.vote.list` - Array of the selected options. Can also be empty as a result of unvoting.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
 - `message.reply(options)` - Reply to the message.
     - `options` - Can be a string / object
@@ -280,6 +291,8 @@ If the object is a string, then the message will be sent as a text message. Howe
                 - `row.title` - Title of the item on this row. Required.
                 - `row.description` - Description of the item.
                 - `row.header` - Header text of the item.
+    - `options.title` - Title for messages with buttons.
+    - `options.footer` - Footer for messages with buttons.
     - `options.contacts[]` - Array of contacts to send. Each item is a `contact`:
         - `contact.name` - The displayed name of the contact.
         - `contact.number` - The contact number (in string)

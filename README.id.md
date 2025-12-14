@@ -186,17 +186,28 @@ bot.onReceive("test", async function (context, next) {
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
 - `message.timestamp` - Timestamp dari pesan ini dalam format Unix Timestamp.
-- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttonReply"`, atau `"contacts"`
+- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, atau `"vote"`
 - `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`)
 - `message.downloadMedia(saveTo)` - Download media sebagai buffer. Jika path disediakan di parameter `saveTo`, maka filenya akan disimpan di situ.
 - `message.text` - Teks atau caption dari pesan
 - `message.reaction` - Informasi tentang reaction, jika ini adalah pesan reaction
     - `message.reaction.emoji` - Emoji yang digunakan
     - `message.reaction.key` - Objek key dari pesan yang di-react
+- `message.buttons` - Objek button. Sama seperti property `buttons` yang dibuat ketika mengirim pesan button ([cek di sini](#opsi-pengiriman-pesan))
+- `message.title` - Judul pesan untuk pesan buttons
+- `message.footer` - Footer pesan untuk pesan buttons
 - `message.buttonReply` - Informasi tentang button yang diketuk
     - `message.buttonReply.id` - ID yang diberikan ke button
     - `message.buttonReply.text` - Teks yang tertulis di atas button
     - `message.buttonReply.pos` - Posisi button (yang pertama adalah 0)
+- `message.poll` - Informasi polling, jika ini adalah pesan polling
+    - `message.poll.title` - Judul polling
+    - `message.poll.options` - List opsi polling dalam array
+    - `message.poll.multiple` - `true` jika di polling ini bisa memilih lebih dari satu opsi
+    - `message.poll.votes` - Objek berisi opsi vote dan id dari voter-voter nya. Contoh: `{"opsi1":["1234@lid", "2345@lid"]}`
+- `message.vote` - Informasi tentang perubahan polling (pengirim pesan melakukan voting/unvoting)
+    - `message.vote.pollId` - ID dari pesan polling nya
+    - `message.vote.list` - List opsi yang menjadi pilihan. Bisa juga berupa array kosong karena hasil dari unvoting.
 - `message.contacts[]` - List kontak yang dikirim jika ini adalah pesan kontak
     - `contact.name` - Nama kontak
     - `contact.number` - Nomor telepon kontak
@@ -279,6 +290,8 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
                 - `row.title` - Judul dari item. Wajib ada.
                 - `row.description` - Deskripsi item.
                 - `row.header` - Teks header dari item.
+    - `options.title` - Judul untuk pesan yang ber-button.
+    - `options.footer` - Tulisan kaki (footer) untuk pesan yang ber-button.
     - `options.contacts[]` - Array berisi kontak. Tiap elemennya adalah objek `contact`:
         - `contact.name` - Nama kontak yang ditampilkan.
         - `contact.number` - Nomor kontak dalam string.
