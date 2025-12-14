@@ -66,7 +66,8 @@ async function start(options = {}) {
             const phoneNumber = options.phoneNumber
             if (phoneNumber && typeof phoneNumber !== "string") throw new Error("index: start: 'phoneNumber' option must be a string".red)
             const suppressLogs = options.suppressBaileysLogs ?? true
-            const {socket, requiresRestart} = await connect({store, behaviors, phoneNumber, suppressLogs})
+            const configOverrides = options.baileysConfigOverrides || {}
+            const {socket, requiresRestart} = await connect({store, behaviors, phoneNumber, suppressLogs, configOverrides})
             if (requiresRestart) {
                 console.log("Wachan needs to restart. Restarting...".yellow);
                 continue;

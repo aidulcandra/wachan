@@ -159,6 +159,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
 - `bot.start(options)` - Jalankan bot. Options:
     - `suppressBaileysLog` - Default `true`. Jika `true`, maka senyapkan log baileys di console.
     - `phoneNumber` - String berisi nomor telepon (dengan kode negara, tanpa simbol dan spasi) untuk langsung menghubungkan ke nomor tersebut tanpa perlu diinput lagi di console.
+    - `configOverrides` - Objek config untuk meng-override (mengganti) konfigurasi pada fungsi makeWASocket dari baileys
 - `bot.settings` - Pengaturan bot. Cek [di sini](#penjelasan-tiap-item-di-pengaturan)
     - `bot.settings.receiveOfflineMessages`
     - `bot.settings.defaultBotName`
@@ -511,6 +512,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 1. Objek socket milik baileys: `bot.getSocket()`
 2. Objek pesan milik baileys: `message.toBaileys()`
 3. `bot.start({ suppressBaileysLogs: false })` untuk menampilkan logs dari baileys di console
+4. `bot.start({ configOverrides: {...} })` untuk meng-override (mengganti) konfigurasi pada baileys (parameter di fungsi makeWASocket)
 
 <hr>
 <br>

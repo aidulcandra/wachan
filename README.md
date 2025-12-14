@@ -160,6 +160,7 @@ This is what wachan module exports:<br><br>
 - `bot.start(options)` - Start the bot. Options:
     - `suppressBaileysLogs`: Default `true`. If `true`, do not show logs from baileys in the console.
     - `phoneNumber`: String containing the phone number (with country code, without symbols and spaces). If not specified, wachan will prompt it in the console.
+    - `configOverrides`: An object of config to override bailey's makeWASocket function parameters
 - `bot.settings` - Settings for the bot. See [here](#explanation-on-each-item)
     - `bot.settings.receiveOfflineMessages`
     - `bot.settings.defaultBotName`
@@ -510,6 +511,7 @@ Exposed are these items for programming custom functionalities.
 1. Baileys' socket object: `bot.getSocket()`
 2. Message's original object: `message.toBaileys()`
 3. `bot.start({ suppressBaileysLogs: false })` to show the logs from baileys
+4. `bot.start({ configOverrides: {...} })` to override baileys makeWASocket function parameters.
 
 <hr>
 <br>
