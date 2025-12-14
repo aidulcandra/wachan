@@ -520,12 +520,13 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
-## [Belum Rilis]
+## [1.12.0] 2025-12-14
 ### Ditambahkan
 - `bot.getUserData()`
 - `cmd.beforeEach()`
 - Mengirim dan menerima kontak
 - Mengirim dan menerima polling
+- `options.configOverrides` pada parameter fungsi `start()`
 ### Diperbaiki
 - Status admin dari user akan terupdate tanpa harus program direstart dulu
 - Sekarang bisa menghapus reaction dengan menggunakan string kosong

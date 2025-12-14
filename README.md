@@ -519,12 +519,13 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
-## [Unreleased]
+## [1.12.0] 2025-12-14
 ### Added
 - `bot.getUserData()`
 - `cmd.beforeEach()`
 - Sending and receiving contacts
 - Sending and receiving polls
+- `options.configOverrides` in `start()` function
 ### Fixed
 - User's admin status now updates without needing for the program to restart.
 - You can now remove a reaction by using an empty string as input
