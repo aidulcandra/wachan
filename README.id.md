@@ -523,7 +523,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `bot.getUserData()`
 - `cmd.beforeEach()`
 - Mengirim dan menerima kontak
-- Mengirim polling
+- Mengirim dan menerima polling
 ### Diperbaiki
 - Status admin dari user akan terupdate tanpa harus program direstart dulu
 - Sekarang bisa menghapus reaction dengan menggunakan string kosong

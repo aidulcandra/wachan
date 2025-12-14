@@ -522,7 +522,7 @@ Exposed are these items for programming custom functionalities.
 - `bot.getUserData()`
 - `cmd.beforeEach()`
 - Sending and receiving contacts
-- Sending polls
+- Sending and receiving polls
 ### Fixed
 - User's admin status now updates without needing for the program to restart.
 - You can now remove a reaction by using an empty string as input
