@@ -2,3 +2,4 @@
 /tests
 /temp
 package-lock.json
+.npmrc
