@@ -336,10 +336,10 @@ bot.onReceive("tes123", "This will be sent.")
 bot.onReceive(/^tes/, "This will not be sent.")
 ```
 
-In a response function, you can continue the flow to the next receiver using the `next()` function from the 4th argument:
+In a response function, you can continue the flow to the next receiver using the `next()` function from the 4th argument (now deprecated as 4th argument, it's the 2nd now):
 ```js
-bot.onReceive(/.*/, (msg, captures, group, next) => {
-    if (userAuthorized(msg.sender.id)) next()
+bot.onReceive(/.*/, (ctx, next) => {
+    if (userAuthorized(ctx.message.sender.id)) next()
     return "You are not authorized!"
 })
 
@@ -349,13 +349,13 @@ bot.onReceive("test", "Hello authorized user!")
 ### Message Modification
 The `message` object that is passed to the response functions is the same object. Therefore, you can modify it in a response function, and the modification remains in the subsequent response functions.
 ```js
-bot.onReceive(bot.messageType.any, (msg, cap, group, next) => {
-    msg.watermark = "MyBot"
+bot.onReceive(bot.messageType.any, ({message}, next) => {
+    message.watermark = "MyBot"
     next()
 })
 
-bot.onReceive("test", (msg) => {
-    return `Brought to you by ${msg.watermark}`
+bot.onReceive("test", ({message}) => {
+    return `Brought to you by ${message.watermark}`
 })
 ```
 

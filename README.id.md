@@ -335,10 +335,10 @@ bot.onReceive("tes123", "Ini akan dikirimkan.")
 bot.onReceive(/^tes/, "Ini tidak akan dikirimkan.")
 ```
 
-Di dalam fungsi respon, kamu bisa lanjutkan alurnya ke receiver berikutnya dengan fungsi `next()` yang ada di parameter ke-4:
+Di dalam fungsi respon, kamu bisa lanjutkan alurnya ke receiver berikutnya dengan fungsi `next()` yang ada di parameter ke-4 (sudah deprecated sebagai argument ke-4, sekarang sudah jadi argument ke-2):
 ```js
-bot.onReceive(/.*/, (msg, captures, group, next) => {
-    if (userAuthorized(msg.sender.id)) next()
+bot.onReceive(/.*/, (ctx, next) => {
+    if (userAuthorized(ctx.message.sender.id)) next()
     return "Kamu tidak punya akses!"
 })
 
@@ -348,21 +348,21 @@ bot.onReceive("test", "Halo silakan masuk!")
 ### Memodifikasi Message
 Objek `message` yang diteruskan ke fungsi respon adalah objek yang sama. Maka dari itu kamu bisa memodifikasi `message` ini dan perubahannya akan terlihat di fungsi-fungsi respon berikutnya.
 ```js
-bot.onReceive(bot.messageType.any, (msg, cap, group, next) => {
-    msg.watermark = "MyBot"
+bot.onReceive(bot.messageType.any, ({message}, next) => {
+    message.watermark = "MyBot"
     next()
 })
 
-bot.onReceive("test", (msg) => {
-    return `Brought to you by ${msg.watermark}`
+bot.onReceive("test", ({message}) => {
+    return `Brought to you by ${message.watermark}`
 })
 ```
 
 ## Enum Tipe Message
 `bot.messageType` mempunyai enum-enum berikut:
 - `any`: Ini sama seperti regex `/.*/` di dalam input receiver.
-- `nonmedia`: This termasuk pesan `text` dan `reaction`.
-- `media`: This termasuk `image`, `video`, `gif`, `audio`, `sticker` dan `document`.
+- `nonmedia`: Ini termasuk pesan `text` dan `reaction`.
+- `media`: Ini termasuk `image`, `video`, `gif`, `audio`, `sticker` dan `document`.
 - Lainnya: `text`, `reaction`, `image`, `video`, `gif`, `audio`, `sticker`, `document`.
 
 ## Tools
