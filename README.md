@@ -519,6 +519,10 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
+## [1.12.1] 2025-12-30
+### Changed
+- Updated baileys version
+
 ## [1.12.0] 2025-12-14
 ### Added
 - `bot.getUserData()`

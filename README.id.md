@@ -520,6 +520,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
+## [1.12.1] 2025-12-30
+### Diubah
+- Update versi baileys
+
 ## [1.12.0] 2025-12-14
 ### Ditambahkan
 - `bot.getUserData()`
