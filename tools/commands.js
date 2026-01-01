@@ -48,7 +48,7 @@ function add(commandName, response, options = {}) {
             message: context.message,
             command: {
                 prefix,
-                name: commandName,
+                usedName: commandName,
                 parameters: params,
                 ...c
             }

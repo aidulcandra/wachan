@@ -384,7 +384,8 @@ Exports: `commands`
                     - `context.message` - Message object
                     - `context.command` - Command information
                         - `context.command.prefix` - Prefix that is used when invoking this command
-                        - `context.command.name` - Name of the (if an alias was used, then it will be the value of the name)
+                        - `context.command.name` - Original name of the command.
+                        - `context.command.usedName` - The alias name that is used to invoke the command
                         - `context.command.parameters` - Command parameter (in Array). Ex: `/test a b c` -> params = ["a","b","c"]
                         - `context.command.description` - Description of the command
                         - `context.command.aliases` - Alias(es) of this command
@@ -518,6 +519,10 @@ Exposed are these items for programming custom functionalities.
 <br>
 
 # Changelog
+
+## [Unreleased]
+### Added
+- `context.command.usedName`
 
 ## [1.12.1] 2025-12-30
 ### Changed

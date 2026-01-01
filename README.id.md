@@ -383,7 +383,8 @@ Meng-export: `commands`
                     - `context.message` - Objek pesan
                     - `context.command` - Informasi command
                         - `context.command.prefix` - Prefix yang digunakan
-                        - `context.command.name` - Nama command (jika yang digunakan adalah alias command, maka alias itu yang tertulis di sini)
+                        - `context.command.name` - Nama command asalnya
+                        - `context.command.usedName` - Nama command atau alias yang dipakai ketika menjalankan command
                         - `context.command.parameters` - Parameter command (dalam Array). Contoh: `/test a b c` -> params = ["a","b","c"]
                         - `context.command.description` - Deskripsi command
                         - `context.command.aliases` - Alias dari command ini (array)
@@ -519,6 +520,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 <br>
 
 # Changelog
+
+## [Belum Rilis]
+### Ditambahkan
+- `context.command.usedName`
 
 ## [1.12.1] 2025-12-30
 ### Diubah
