@@ -21,6 +21,15 @@ function onReceive(options, response) {
     return addReceiver(options, response)
 }
 
+function onReceiveReply(message, response) {
+    return addReceiver(
+        message 
+            ? m => m.getQuoted().then(q => q?.id === message.id)
+            : m => m.getQuoted().then(q => q != null),
+        response
+    )
+}
+
 function onError(response) {
     return addErrorCallback(response)
 }
@@ -86,7 +95,7 @@ async function start(options = {}) {
 }
 
 const bot = { 
-    onConnected, onReady, onReceive, onError, start, 
+    onConnected, onReady, onReceive, onReceiveReply, onError, start, 
     sendMessage, waitForMessage,
     getGroupData, getUserData,
     settings, getSocket,
