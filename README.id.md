@@ -139,6 +139,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
         - object: balas (dan meng-quote) pesan yang diterima dengan data dari object-nya. Lihat [di sini](#opsi-pengiriman-pesan)
         - function: `response(message, captures)`, jalankan fungsi. [Penjelasan](#function-response)
     - me-return: sebuah objek `Receiver`. Receiver ini bisa dihapus dengan cara `receiver.remove()` untuk menghentikan respon yg dilakukannya.
+- `bot.onReceiveReply(message, response)` - Menambahkan receiver yang akan merespon ke pesan yang mereply pesan yang diset di parameter `message`, atau ke pesan manapun jika parameter `message` tidak diset.
 - `bot.onError(response)` - Tambahkan fungsi yang akan dieksekusi ketika error.
     - `response` - Fungsi yang akan dijalankan, `response(error, context)`.
         - `error` - Objek error.
@@ -187,8 +188,8 @@ bot.onReceive("test", async function (context, next) {
     - `message.sender.name` - Username pengirim
     - `message.sender.isAdmin` - `true`/`false` jika si pengirim adalah admin/bukan admin. `null` jika pesan ini pesan pribadi. (bukan di dalam grup)
 - `message.timestamp` - Timestamp dari pesan ini dalam format Unix Timestamp.
-- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, atau `"vote"`
-- `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, atau `"document"`)
+- `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, atau `"vote"`
+- `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, atau `"document"`)
 - `message.downloadMedia(saveTo)` - Download media sebagai buffer. Jika path disediakan di parameter `saveTo`, maka filenya akan disimpan di situ.
 - `message.text` - Teks atau caption dari pesan
 - `message.reaction` - Informasi tentang reaction, jika ini adalah pesan reaction
@@ -213,10 +214,14 @@ bot.onReceive("test", async function (context, next) {
     - `contact.name` - Nama kontak
     - `contact.number` - Nomor telepon kontak
 - `message.receivedOnline` - `true` jika pesan ini diterima ketika bot sedang online
+- `message.edited` - Jika pesan ini diedit
+    - `message.edited.type` - Tipe pesan ini
+    - `message.edited.text` - Teks yang tertulis setelah diedit
 - `message.reply(options)` - Balas ke pesan.
     - `options` - Bisa berupa string / object
         - string: balas dengan teks ini
         - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
+- `message.edit(newText)` - Edit teks dari pesan (hanya untuk pesan bot sendiri, dan jika masih bisa diedit, yaitu sebelum 15 menit setelah terkirim)
 - `message.react(emoji)` - Kirim reaction ke pesan ini
     - `emoji` - String berisi 1 emoji untuk dijadikan reaction. Gunakan string kosong untuk menghapus reaction.
 - `message.delete()` - Hapus pesan ini. Note: Bot harus menjadi admin sebelum menghapus pesan-pesan yang ada di grup.
@@ -272,6 +277,7 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
     - `options.video` - Video yang akan dikirim. Bisa berupa buffer, url, maupun path.
     - `options.gif` - Video yang akan dikirim sebagai GIF. Bisa berupa buffer, url, maupun path. (Whatsapp tidak support file GIF, jika kamu menggunakan file GIF, maka tidak akan bergerak gambarnya)
     - `options.audio` - Audio yang akan dikirim. Bisa berupa buffer, url, maupun path.
+    - `options.vn` - Audio yang akan dikirim sebagai Voice Note.
     - `options.sticker` - File WebP yang akan dikirim sebagai stiker (buffer/url/path)
     - `options.document` - File yang akan dikirim sebagai pesan document. Pengaturan tambahan:
         - `options.mimetype` - Mimetype dari file ini.
@@ -524,6 +530,15 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ## [Belum Rilis]
 ### Ditambahkan
 - `context.command.usedName`
+- `bot.messageType.vn`
+- tipe pesan `audio` dan `vn` dipisah
+- `message.edit()`
+- `bot.messageType.edit`
+- `message.edited.type`
+- `message.edited.text`
+- `bot.onReceiveReply()`
+### Diperbaiki
+- `message.sender.id` dan `message.sender.lid` yang isinya tidak tepat
 
 ## [1.12.1] 2025-12-30
 ### Diubah

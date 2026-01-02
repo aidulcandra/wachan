@@ -140,6 +140,7 @@ This is what wachan module exports:<br><br>
         - object: will reply to (and quote) the received message using data from the object. See [here](#message-sending-options)
         - function: `response(message, captures)`, will execute the function. [Explanation here](#response-function)
     - returns: a `Receiver` object. This Receiver can be removed to stop its behavior by calling `receiver.remove()`
+- `bot.onReceiveReply(message, response)` - Set up a receiver that responds to incoming messages as a reply to a specific message, or to any messages if first parameter is set to falsy.
 - `bot.onError(response)` - Set up a new action to be taken in response of an error.
     - `response` - A function to run, `response(error, context)`.
         - `error` - The error object.
@@ -188,8 +189,8 @@ bot.onReceive("test", async function (context, next) {
     - `message.sender.name` - Username of the sender.
     - `message.sender.isAdmin` - `true`/`false` if the sender is an admin/not an admin of this group chat. `null` if this message is a private message. (not in a group)
 - `message.timestamp` - UNIX timestamp of this message.
-- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, `"vote"`
-- `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"sticker"`, or `"document"`)
+- `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, `"vote"`
+- `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, or `"document"`)
 - `message.downloadMedia(saveTo)` - Get the buffer of the media. If you provide a path in `saveTo`, it will also save the file there.
 - `message.text` - Text or caption of the message.
 - `message.reaction` - Information about reaction, if this is a reaction message
@@ -214,10 +215,14 @@ bot.onReceive("test", async function (context, next) {
     - `message.vote.pollId` - ID of the poll message
     - `message.vote.list` - Array of the selected options. Can also be empty as a result of unvoting.
 - `message.receivedOnline` - `true` if this message is received when bot is online.
+- `message.edited` - If this message is an edited message
+    - `message.edited.type` - The type of the edited message
+    - `message.edited.text` - The text of the message after edited
 - `message.reply(options)` - Reply to the message.
     - `options` - Can be a string / object
         - string: reply with this text
         - object: can use more options. See [here](#message-sending-options)
+- `message.edit(newText)` - Edit the text of a message (only for bot's own messages, and only if the message is still editable, which is within 15 minutes after being sent)
 - `message.react(emoji)` - Send reaction to the message.
     - `emoji` - The emoji in string to use as reaction. Use empty string to remove a reaction.
 - `message.delete()` - Delete this message. Note: the bot needs to be an admin for it to be able to delete messages in a group.
@@ -273,6 +278,7 @@ If the object is a string, then the message will be sent as a text message. Howe
     - `options.video` - Video to send. It can be a buffer, a url or a path.
     - `options.gif` - Video to send as gif. It can be a buffer, a url or a path. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
     - `options.audio` - Audio to send. It can be a buffer, a url or a path.
+    - `options.vn` - Audio to send as voice note.
     - `options.sticker` - WebP file to send as sticker (buffer/url/path)
     - `options.document` - A file to send as document. Supporting properties:
         - `options.mimetype` - Mimetype for this document/file
@@ -523,6 +529,15 @@ Exposed are these items for programming custom functionalities.
 ## [Unreleased]
 ### Added
 - `context.command.usedName`
+- `bot.messageType.vn`
+- separated `audio` and `vn` types of messages
+- `message.edit()`
+- `bot.messageType.edit`
+- `message.edited.type`
+- `message.edited.text`
+- `bot.onReceiveReply()`
+### Fixed
+- `message.sender.id` and `message.sender.lid` having incorrect values
 
 ## [1.12.1] 2025-12-30
 ### Changed
