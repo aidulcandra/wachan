@@ -526,7 +526,7 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
-## [Unreleased]
+## [1.13.0] 2026-01-02
 ### Added
 - `context.command.usedName`
 - `bot.messageType.vn`

@@ -527,7 +527,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
-## [Belum Rilis]
+## [1.13.0] 2026-01-02
 ### Ditambahkan
 - `context.command.usedName`
 - `bot.messageType.vn`
