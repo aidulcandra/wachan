@@ -150,12 +150,13 @@ function generateMenu(options = {}) {
     const sectionSeparator = options.sectionSeparator ?? "\n\n"
     const unsectionedFirst = options.unsectionedFirst ?? false
     const noDescriptionPlaceholder = options.noDescriptionPlaceholder ?? "No description"
+    const formatter = options.formatter
 
     let menu = header
     const buildCommandList = (list) => {
         return list.filter(c => !c.hidden)
         .map(c => {
-            return commandFormat
+            return formatter && formatter(c) || commandFormat
                 .replace("<<prefix>>", prefix)
                 .replace("<<name>>", c.name)
                 .replace("<<description>>", c.description || noDescriptionPlaceholder || "")
