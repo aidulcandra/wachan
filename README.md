@@ -192,6 +192,13 @@ bot.onReceive("test", async function (context, next) {
 - `message.type` - Type of this message. Can be one of these: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, `"vote"`
 - `message.isMedia` - `true` if this is a media message (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, or `"document"`)
 - `message.downloadMedia(saveTo)` - Get the buffer of the media. If you provide a path in `saveTo`, it will also save the file there.
+- `message.streamMedia()` - Get the stream object from the media.
+- `message.mimeType` - Mimetype for media messages.
+- `message.fileName` - File name for document messages.
+- `message.fileSize` - File size for media messages. (in bytes)
+- `message.duration` - Duration for audio and video messages (in seconds)
+- `message.width` - Width of video
+- `message.height` - Height of video
 - `message.text` - Text or caption of the message.
 - `message.reaction` - Information about reaction, if this is a reaction message
     - `message.reaction.emoji` - The emoji that is used as reaction
@@ -424,11 +431,12 @@ Exports: `commands`
             - `context` - Just like `context` when you add a new command through `commands.add()`
             - `next` - Function to skip to the next callback, or the command that is about to be executed.
     - `commands.generateMenu(options)` - Generate a string of menu that automatically lists all the registered commands and also groups them by their sections. Generation options:
-        -   `options?.prefix` - The prefix to display. By default the first prefix in the registered prefixes list.
+        - `options?.prefix` - The prefix to display. By default the first prefix in the registered prefixes list.
         - `options?.header` - The header or title of the menu. Note: You need to add newlines (`\n`) manually at the end of it if you want to separate the header and the body in their own lines. By default: `"> COMMAND LIST:\n\n"`
         - `options?.sectionTitleFormat` - Use this to format the title of each section. Use `<<section>>` to mark the position of the section title. By default: `"# <<section>>\n"` (Again, manually insert the newlines)
         - `options?.sectionFooter` - The footer of each section. Again, manually insert the newlines but insert them at the beginning. (Ex: `"\n------"`). By default: `""` (empty string)
         - `options?.commandFormat` - The formatting of each command item. Use `<<prefix>>`, `<<name>>`, and `<<description>>` to mark the position of the prefix, command name, and the description, respectively. By default: ``"- `<<prefix>><<name>>`: <<description>>"``
+        - `options?.formatter` - Formatter function to use, it takes 1 argument that contains information about the command. If this returns falsy, then `options.commandFormat` will be used.
         - `options?.commandSeparator` - The separator between command items. By default: `"\n"` (a newline)
         - `options?.sectionSeparator` - The separator between sections. By default: `"\n\n"`
         - `options?.unsectionedFirst` - If `true` will show the unsectioned commands before the sectioned ones and vice versa.
@@ -525,6 +533,20 @@ Exposed are these items for programming custom functionalities.
 <br>
 
 # Changelog
+
+## [1.14.0] 2026-01-16
+### Added
+- `message.fileName`
+- `message.mimeType`
+- `message.fileSize`
+- `message.duration`
+- `message.height`
+- `message.width`
+- `message.streamMedia()`
+- `options.formatter` from `commands.generateMenu(options)`
+
+### Fixed
+- Remove `ffmpeg-static` dependency
 
 ## [1.13.0] 2026-01-02
 ### Added

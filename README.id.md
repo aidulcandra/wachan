@@ -191,6 +191,13 @@ bot.onReceive("test", async function (context, next) {
 - `message.type` - Jenis dari pesan ini. Bisa berupa: `"text"`, `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, `"document"`, `"reaction"`, `"buttons"`, `"buttonReply"`, `"contacts"`, `"poll"`, atau `"vote"`
 - `message.isMedia` - `true` jika pesan ini adalah pesan media (type = `"image"`, `"video"`, `"gif"`, `"audio"`, `"vn"`, `"sticker"`, atau `"document"`)
 - `message.downloadMedia(saveTo)` - Download media sebagai buffer. Jika path disediakan di parameter `saveTo`, maka filenya akan disimpan di situ.
+- `message.streamMedia()` - Ambil objek stream dari media.
+- `message.mimeType` - Mimetype dari pesan media.
+- `message.fileName` - Nama file dari pesan dokumen.
+- `message.fileSize` - Ukuran file dari pesan media. (dalam byte)
+- `message.duration` - Durasi audio dan video (dalam detik)
+- `message.width` - Lebar video
+- `message.height` - Tinggi video
 - `message.text` - Teks atau caption dari pesan
 - `message.reaction` - Informasi tentang reaction, jika ini adalah pesan reaction
     - `message.reaction.emoji` - Emoji yang digunakan
@@ -429,6 +436,7 @@ Meng-export: `commands`
         - `options?.sectionTitleFormat` - Gunakan ini untuk formatting judul tiap section. Gunakan `<<section>>` untuk menandai posisi teks nama section. Secara default: `"# <<section>>\n"` (Sama seperti tadi, tambahkan newline secara manual)
         - `options?.sectionFooter` - Footer (bagian bawah/penutup) dari tiap section. Sekali lagi, newline perlu ditambahkan secara manual tetapi di awal. (Contoh: `"\n------"`). Secara default: `""` (string kosong)
         - `options?.commandFormat` - Formatting dari setiap butir command. Gunakan `<<prefix>>`, `<<name>>`, dan `<<description>>` untuk menandai posisi prefix, nama command, dan deskripsi command. Secara default: ``"- `<<prefix>><<name>>`: <<description>>"``
+        - `options?.formatter` - Fungsi Formatter yang akan dipakai use, memerlukan 1 argument berisi informasi soal perintahnya. Jika fungsi ini mereturn falsy, maka `options.commandFormat` akan digunakan.
         - `options?.commandSeparator` - Pemisah tiap item command. Secara default: `"\n"` (newline)
         - `options?.sectionSeparator` - Pemisah antar section. Secara default: `"\n\n"`
         - `options?.unsectionedFirst` - Jika `true` akan menampilkan command tanpa section lebih dulu, setelah itu command yang ada sectionnya. Jika `false` maka sebaliknya.
@@ -526,6 +534,20 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 <br>
 
 # Changelog
+
+## [1.14.0] 2026-01-16
+### Ditambahkan
+- `message.fileName`
+- `message.mimeType`
+- `message.fileSize`
+- `message.duration`
+- `message.height`
+- `message.width`
+- `message.streamMedia()`
+- `options.formatter` dari `commands.generateMenu(options)`
+
+### Diperbaiki
+- Hapus dependency: `ffmpeg-static`
 
 ## [1.13.0] 2026-01-02
 ### Ditambahkan
