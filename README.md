@@ -5,7 +5,7 @@ Simpler way to code baileys.
 
 ## Deprecation Warning
 In the next major version, all response functions (including the ones for commands) will have their parameters simplified into 2:
-- `context` - This will contain: `message`, `captures`, and `command`
+- `context` - This will contain: `message`, `captures`, `group` and `command`
 - `next` function
 
 More explanation [here](#response-function)
@@ -71,7 +71,7 @@ bot.onReceive("send sticker", {sticker:"..."}) // webp file
 bot.onReceive("test", async (context, next) => {
     // v1 arguments: message, captures, group, next
 
-    const { message, captures } = context
+    const { message, captures, group } = context
     const options = {...}
 
     // 3 ways of sending message:
@@ -138,7 +138,7 @@ This is what wachan module exports:<br><br>
     - `response`: can be a string, an object, or a function.
         - string: will reply to (and quote) the received message with the string as the text
         - object: will reply to (and quote) the received message using data from the object. See [here](#message-sending-options)
-        - function: `response(message, captures)`, will execute the function. [Explanation here](#response-function)
+        - function: `response(context, next)`, will execute the function. [Explanation here](#response-function)
     - returns: a `Receiver` object. This Receiver can be removed to stop its behavior by calling `receiver.remove()`
 - `bot.onReceiveReply(message, response)` - Set up a receiver that responds to incoming messages as a reply to a specific message, or to any messages if first parameter is set to falsy.
 - `bot.onError(response)` - Set up a new action to be taken in response of an error.
@@ -171,11 +171,11 @@ This is what wachan module exports:<br><br>
 
 ## Response Function
 You can use a function as the response to a message. The first argument is `context` and the second one is `next` function (check out [Receiver Flow](#receiver-flow)).
-<br><br>Previously, the first argument is `message`, the second argument is `captures` (if available), the third is `group` (if the chatroom is a group chat), and the last is `next` function. (This is now deprecated. `message` and `captures` will later be under `context` object).
+<br><br>Previously, the first argument is `message`, the second argument is `captures` (if available), the third is `group` (if the chatroom is a group chat), and the last is `next` function. (This is now deprecated. `message`, `captures`, and `group` will later be under `context` object).
 
 ```js
 bot.onReceive("test", async function (context, next) {
-    // const { message, captures } = context
+    // const { message, captures, group } = context
 })
 ```
 ### Message Object
@@ -251,7 +251,8 @@ Input Regex|Received message text|`captures`
 `captures.toArray()` returns the array of the captures. Useful for doing array operations on it.
 
 ### Group
-The third argument is `group`, the object that contains information about the group. This will be `null` if the message is sent in a private chat. (Now deprecated as function response's third argument. You can get this by using `bot.getGroupData(id)` instead)
+The third argument is `group`, the object that contains information about the group. This will be `null` if the message is sent in a private chat. (Now deprecated as function response's third argument, and it will go inside `context` object).
+You can also use `bot.getGroupData(id)` to get information about other groups.
 
 ### Returned Value
 In the response function, you can return a string/object:
@@ -262,7 +263,7 @@ bot.onReceive("test", async () => {
     return `Hello, ${a}!`
 })
 
-bot.onReceive("test", async (msg) => `Hello, ${msg.sender.name}!`)
+bot.onReceive("test", async ({msg}) => `Hello, ${msg.sender.name}!`)
 ```
 - object: Can use more options.<br>Example:
 ```js
@@ -538,6 +539,7 @@ Exposed are these items for programming custom functionalities.
 ## [Unreleased]
 ### Added
 - `message.isPrivate`
+- Response function's context argument now contains `group`
 
 ## [1.14.0] 2026-01-16
 ### Added

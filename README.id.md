@@ -5,7 +5,7 @@ Cara yang lebih simpel untuk meng-kode baileys.
 
 ## Peringatan Deprecation
 Pada versi major berikutnya, semua fungsi respon (termasuk untuk command) akan disederhanakan sehingga memiliki 2 parameter saja:
-- `context` - Ini akan berisi: `message`, `captures`, dan `command`
+- `context` - Ini akan berisi: `message`, `captures`, `group` dan `command`
 - fungsi `next`
 
 Penjelasan selengkapnya [di sini](#function-response)
@@ -71,7 +71,7 @@ bot.onReceive("kirim sticker", {sticker:"..."}) // file WebP
 bot.onReceive("test", async (context, next) => {
     // argument v1: message, captures, group, next
 
-    const { message, captures } = context
+    const { message, captures, group } = context
     const options = {...} // Contoh
 
     // 3 cara mengirim pesan:
@@ -137,7 +137,7 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
     - `response`: bisa berupa string, object, atau function.
         - string: balas (dan meng-quote) pesan yang diterima dengan teks
         - object: balas (dan meng-quote) pesan yang diterima dengan data dari object-nya. Lihat [di sini](#opsi-pengiriman-pesan)
-        - function: `response(message, captures)`, jalankan fungsi. [Penjelasan](#function-response)
+        - function: `response(context, next)`, jalankan fungsi. [Penjelasan](#function-response)
     - me-return: sebuah objek `Receiver`. Receiver ini bisa dihapus dengan cara `receiver.remove()` untuk menghentikan respon yg dilakukannya.
 - `bot.onReceiveReply(message, response)` - Menambahkan receiver yang akan merespon ke pesan yang mereply pesan yang diset di parameter `message`, atau ke pesan manapun jika parameter `message` tidak diset.
 - `bot.onError(response)` - Tambahkan fungsi yang akan dieksekusi ketika error.
@@ -170,11 +170,11 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
 
 ## Fungsi Respon
 Kamu bisa gunakan fungsi sebagai respon. Argument pertama adalah `context` dan kedua adalah fungsi `next` (cek [Alur Receiver](#alur-receiver)).
-<br><br>Sebelumnya, argumen pertama adalah `message`, kedua adalah `captures` (jika ada), ketiga `group` (jika chat roomnya berupa grup chat), dan terakhir fungsi `next`. (Ini sudah deprecated. Kedepannya `message` dan `captures` akan masuk ke dalam `context`).
+<br><br>Sebelumnya, argumen pertama adalah `message`, kedua adalah `captures` (jika ada), ketiga `group` (jika chat roomnya berupa grup chat), dan terakhir fungsi `next`. (Ini sudah deprecated. Kedepannya `message`, `captures`, dan `group` akan masuk ke dalam `context`).
 
 ```js
 bot.onReceive("test", async function (context, next) {
-    // const { message, captures } = context
+    // const { message, captures, group } = context
 })
 ```
 ### Objek Pesan (Message)
@@ -250,7 +250,8 @@ Regex Input|Teks yg diterima|Objek `captures`
 `captures.toArray()` bisa digunakan untuk mengubah objek `captures` ke array (agar bisa melakukan operasi array)
 
 ### Group
-Argumentt kedua adalah `group`, objek yang berisi informasi tentang grup. Nilainya `null` jika pesan dikirim ke pesan pribadi. (Sudah deprecated sebagai argument ketiga dari response function. Kamu bisa dapatkan objek ini lewat `bot.getGroupData(id)`)
+Argumentt kedua adalah `group`, objek yang berisi informasi tentang grup. Nilainya `null` jika pesan dikirim ke pesan pribadi. (Sudah deprecated sebagai argument ketiga dari response function, dan akan masuk ke dalam objek `context`).
+Kamu bisa juga gunakan `bot.getGroupData(id)` untuk mendapatkan data grup lain.
 
 ### Value Yang Di-Return
 Di dalam function response, kamu bisa me-return string/object:
@@ -261,7 +262,7 @@ bot.onReceive("test", async () => {
     return `Hello, ${a}!`
 })
 
-bot.onReceive("test", async (msg) => `Hello, ${msg.sender.name}!`)
+bot.onReceive("test", async ({msg}) => `Hello, ${msg.sender.name}!`)
 ```
 - object: Bisa ditambahkan opsi lain.<br>Contoh:
 ```js
@@ -539,6 +540,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ## [Belum Rilis]
 ### Ditambahkan
 - `message.isPrivate`
+- Argument `context` pada fungsi respon sekarang berisi `group`
 
 ## [1.14.0] 2026-01-16
 ### Ditambahkan
