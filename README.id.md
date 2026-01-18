@@ -181,6 +181,7 @@ bot.onReceive("test", async function (context, next) {
 `message`: Objek pesan Wachan
 - `message.id` - ID dari objek pesan ini
 - `message.room` - ID dari chatroom
+- `message.isPrivate` - Apakah pesan ini adalah pesan pribadi (private message)
 - `message.sender` - Objek pengirim (sender)
     - `message.sender.id` - ID pengirim (berupa format `nomor-telepon@s.whatsapp.net`)
     - `message.sender.lid` - LID pengirim (id tersembunyi untuk tiap user Whatsapp, dalam format `nomoracak@lid`)
@@ -534,6 +535,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 <br>
 
 # Changelog
+
+## [Belum Rilis]
+### Ditambahkan
+- `message.isPrivate`
 
 ## [1.14.0] 2026-01-16
 ### Ditambahkan

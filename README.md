@@ -182,6 +182,7 @@ bot.onReceive("test", async function (context, next) {
 `message`: Wachan message object
 - `message.id` - ID of the message
 - `message.room` - ID of the chat room
+- `message.isPrivate` - If the message is a private message
 - `message.sender` - Sender object
     - `message.sender.id` - ID of the sender (in the format of `phonenumber@s.whatsapp.net`)
     - `message.sender.lid` - LID of the sender (a hidden id  of each Whatsapp user, in the format of `randomnumber@lid`)
@@ -533,6 +534,10 @@ Exposed are these items for programming custom functionalities.
 <br>
 
 # Changelog
+
+## [Unreleased]
+### Added
+- `message.isPrivate`
 
 ## [1.14.0] 2026-01-16
 ### Added
