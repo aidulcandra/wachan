@@ -542,6 +542,9 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `message.isPrivate`
 - Argument `context` pada fungsi respon sekarang berisi `group`
 
+### Diperbaiki
+- Koreksi id dan lid pada group participant
+
 ## [1.14.0] 2026-01-16
 ### Ditambahkan
 - `message.fileName`

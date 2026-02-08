@@ -541,6 +541,9 @@ Exposed are these items for programming custom functionalities.
 - `message.isPrivate`
 - Response function's context argument now contains `group`
 
+### Fixed
+- Corrected values for group participants' id and lid
+
 ## [1.14.0] 2026-01-16
 ### Added
 - `message.fileName`
