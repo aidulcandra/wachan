@@ -539,6 +539,7 @@ Exposed are these items for programming custom functionalities.
 ## [Unreleased]
 ### Added
 - `message.isPrivate`
+- `message.streamMedia()`
 - Response function's context argument now contains `group`
 
 ### Fixed

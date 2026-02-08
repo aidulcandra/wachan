@@ -540,6 +540,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 ## [Belum Rilis]
 ### Ditambahkan
 - `message.isPrivate`
+- `message.streamMedia()`
 - Argument `context` pada fungsi respon sekarang berisi `group`
 
 ### Diperbaiki
