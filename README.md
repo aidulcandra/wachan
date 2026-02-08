@@ -284,12 +284,12 @@ If the object is a string, then the message will be sent as a text message. Howe
 - `options` - The message sending options
     - `options.text` - Text/caption to be sent
     - `options.quoted` - Message to be quoted. By default it's the received message (if using method 2, 3, 4). Can be changed or set to `null`.
-    - `options.image` - Image to send. It can be a buffer, a url or a path.
-    - `options.video` - Video to send. It can be a buffer, a url or a path.
-    - `options.gif` - Video to send as gif. It can be a buffer, a url or a path. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
-    - `options.audio` - Audio to send. It can be a buffer, a url or a path.
+    - `options.image` - Image to send. It can be a buffer, a url, a path or a stream object.
+    - `options.video` - Video to send. It can be a buffer, a url, a path or a stream object.
+    - `options.gif` - Video to send as gif. It can be a buffer, a url, a path or a stream object. (Whatsapp does not actually support GIF files. If you send a GIF file, it won't animate)
+    - `options.audio` - Audio to send. It can be a buffer, a url, a path or a stream object.
     - `options.vn` - Audio to send as voice note.
-    - `options.sticker` - WebP file to send as sticker (buffer/url/path)
+    - `options.sticker` - WebP file to send as sticker (buffer/url/path/stream)
     - `options.document` - A file to send as document. Supporting properties:
         - `options.mimetype` - Mimetype for this document/file
         - `options.fileName` - Filename for this document/file
@@ -542,6 +542,7 @@ Exposed are these items for programming custom functionalities.
 - `bot.getBotData()`
 - `message.isPrivate`
 - `message.streamMedia()`
+- Send media messages using stream objects
 - Response function's context argument now contains `group`
 
 ### Fixed

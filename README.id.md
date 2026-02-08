@@ -283,12 +283,12 @@ Jika object-nya adalah string, maka pesan akan dikirim dalam bentuk teks. Tetapi
 - `options` - Opsi pengiriman pesan
     - `options.text` - Text/caption yang akan dikirim
     - `options.quoted` - Pesan yang akan di-quote. Secara otomatis di-set ke pesan yang diterima (jika menggunakan cara 2, 3, 4). Bisa diganti maupun di-set ke `null`.
-    - `options.image` - Gambar yang akan dikirim. Bisa berupa buffer, url, maupun path.
-    - `options.video` - Video yang akan dikirim. Bisa berupa buffer, url, maupun path.
-    - `options.gif` - Video yang akan dikirim sebagai GIF. Bisa berupa buffer, url, maupun path. (Whatsapp tidak support file GIF, jika kamu menggunakan file GIF, maka tidak akan bergerak gambarnya)
-    - `options.audio` - Audio yang akan dikirim. Bisa berupa buffer, url, maupun path.
+    - `options.image` - Gambar yang akan dikirim. Bisa berupa buffer, url, path, maupun stream.
+    - `options.video` - Video yang akan dikirim. Bisa berupa buffer, url, path, maupun stream.
+    - `options.gif` - Video yang akan dikirim sebagai GIF. Bisa berupa buffer, url, path, maupun stream. (Whatsapp tidak support file GIF, jika kamu menggunakan file GIF, maka tidak akan bergerak gambarnya)
+    - `options.audio` - Audio yang akan dikirim. Bisa berupa buffer, url, path, maupun stream.
     - `options.vn` - Audio yang akan dikirim sebagai Voice Note.
-    - `options.sticker` - File WebP yang akan dikirim sebagai stiker (buffer/url/path)
+    - `options.sticker` - File WebP yang akan dikirim sebagai stiker (buffer/url/path/stream)
     - `options.document` - File yang akan dikirim sebagai pesan document. Pengaturan tambahan:
         - `options.mimetype` - Mimetype dari file ini.
         - `options.fileName` - Nama file yang ditampilkan untuk pesan document ini.
@@ -543,6 +543,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `bot.getBotData()`
 - `message.isPrivate`
 - `message.streamMedia()`
+- Kirim pesan media menggunakan objek stream
 - Argument `context` pada fungsi respon sekarang berisi `group`
 
 ### Diperbaiki
