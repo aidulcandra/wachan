@@ -94,6 +94,18 @@ async function start(options = {}) {
     }
 }
 
+function getBotData() {
+    const socket = getSocket()
+    if (!socket) throw new Error("Bot has not been started yet.")
+    return {
+        id: socket.user.id.replace(/:\d+@/, "@"),
+        lid: socket.user.lid.replace(/:\d+@/, "@"),
+        name: socket.user.name,
+        deviceSpecificId: socket.user.id,
+        deviceSpecificLid: socket.user.lid
+    }
+}
+
 const bot = { 
     onConnected, onReady, onReceive, onReceiveReply, onError, start, 
     sendMessage, waitForMessage,

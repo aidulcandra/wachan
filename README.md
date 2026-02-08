@@ -158,6 +158,7 @@ This is what wachan module exports:<br><br>
         - object: can send a message with more options. See [here](#message-sending-options)
 - `bot.getGroupData(jid)` - Get data of a group chat by its ID.
 - `bot.getUserData(id)` - Get data of a user by JID / LID, if the bot has saved it.
+- `bot.getBotData()` - Get data of the bot (id, lid, name)
 - `bot.start(options)` - Start the bot. Options:
     - `suppressBaileysLogs`: Default `true`. If `true`, do not show logs from baileys in the console.
     - `phoneNumber`: String containing the phone number (with country code, without symbols and spaces). If not specified, wachan will prompt it in the console.
@@ -538,6 +539,7 @@ Exposed are these items for programming custom functionalities.
 
 ## [Unreleased]
 ### Added
+- `bot.getBotData()`
 - `message.isPrivate`
 - `message.streamMedia()`
 - Response function's context argument now contains `group`
