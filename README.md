@@ -537,7 +537,7 @@ Exposed are these items for programming custom functionalities.
 
 # Changelog
 
-## [Unreleased]
+## [1.15.0] 2026-02-08
 ### Added
 - `bot.getBotData()`
 - `message.isPrivate`

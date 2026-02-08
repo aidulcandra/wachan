@@ -538,7 +538,7 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 # Changelog
 
-## [Belum Rilis]
+## [1.15.0] 2026-02-08
 ### Ditambahkan
 - `bot.getBotData()`
 - `message.isPrivate`
