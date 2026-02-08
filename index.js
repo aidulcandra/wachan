@@ -110,6 +110,7 @@ const bot = {
     onConnected, onReady, onReceive, onReceiveReply, onError, start, 
     sendMessage, waitForMessage,
     getGroupData, getUserData,
+    getBotData,
     settings, getSocket,
     messageType: { 
         any: 0, nonmedia:1, media: 2,
