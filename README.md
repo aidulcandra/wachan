@@ -147,7 +147,7 @@ This is what wachan module exports:<br><br>
         - `context` - An object, containing the arguments from the response function:
             - `message`
             - `captures`
-            - `groupChat` (deprecated. use `bot.getGroupData(id)` instead)
+            - `group` (previously `groupChat`)
 - `bot.waitForMessage(input, timeout)` - Wait for a message of specified input then return the message
     - `input`: The same as `input` in `bot.onReceive()` above
     - `timeout`: Time limit for the waiting. If no matching messages have been captured, `waitForMessage()` returns `undefined`
