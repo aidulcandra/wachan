@@ -342,6 +342,7 @@ Untuk mengambil data grup, gunakan `bot.getGroupData(id)`. Mereturn berikut, jik
             - `participant.lid` - LID peserta
     - `group.getAdmins()` - Ambil list khusus admin grup
     - `group.getMembers()` - Ambil list khusus member (bukan admin)
+    - `group.getLink()` - Ambil link grup. Error jika link tidak dapat diakses oleh bot (sebagai non admin).
 
 ## Alur Receiver
 Receiver diperiksa satu per satu menurut urutan ia di-register. Jika dua receiver bisa di-trigger oleh satu pesan yang sama, maka hanya receiver pertama yang akan dieksekusi.
@@ -537,6 +538,10 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 <br>
 
 # Changelog
+
+## [Belum Rilis]
+### Ditambahkan
+- `group.getLink()`
 
 ## [1.15.0] 2026-02-08
 ### Ditambahkan

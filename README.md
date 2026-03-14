@@ -343,6 +343,7 @@ To get data of a group chat, use `bot.getGroupData(id)`. Returns, if available:
             - `participant.lid` - LID of the participant
     - `group.getAdmins()` - Get the list of participants who are admins of the group.
     - `group.getMembers()` - Get the list of participants who are not admins.
+    - `group.getLink()` - Get invite link of the group. Errors if the link is hidden from the bot (as a non-admin).
 
 ## Receiver Flow
 The receivers are checked one by one in order you register them. If two or more receivers can be triggered by the same message, then the one that was registered first will be executed.
@@ -536,6 +537,10 @@ Exposed are these items for programming custom functionalities.
 <br>
 
 # Changelog
+
+## [Unreleased]
+### Added
+- `group.getLink()`
 
 ## [1.15.0] 2026-02-08
 ### Added
