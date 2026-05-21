@@ -156,6 +156,8 @@ This is what wachan module exports:<br><br>
     - `options` - can be a string / object
         - string: send a text message
         - object: can send a message with more options. See [here](#message-sending-options)
+- `bot.showTyping(targetId)` - Show the "typing" state to a chat id
+- `bot.showRecording(targetId)` - Show the "recording" state to a chat id
 - `bot.getGroupData(jid)` - Get data of a group chat by its ID.
 - `bot.getUserData(id)` - Get data of a user by JID / LID, if the bot has saved it.
 - `bot.getBotData()` - Get data of the bot (id, lid, name)
@@ -540,6 +542,8 @@ Exposed are these items for programming custom functionalities.
 
 ## [Unreleased]
 ### Added
+- `bot.showTyping()`
+- `bot.showRecording()`
 - `group.getLink()`
 
 ## [1.15.0] 2026-02-08

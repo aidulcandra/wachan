@@ -155,6 +155,8 @@ Ini objek-objek yang di-export oleh wachan:<br><br>
     - `options` - bisa berupa string / object
         - string: kirim pesan teks ini
         - object: lebih banyak opsi pengiriman. Lihat di [sini](#opsi-pengiriman-pesan)
+- `bot.showTyping(targetId)` - Tampilkan mode "typing" di suatu id chat
+- `bot.showRecording(targetId)` - Show the "recording" di suatu id chat
 - `bot.getGroupData(jid)` - Dapatkan informasi tentang grup.
 - `bot.getUserData(id)` - Dapatkan data dari user dari JID / LID nya, jika bot sudah menyimpannya.
 - `bot.getBotData()` - Dapatkan data bot (id, lid, nama)
@@ -541,6 +543,8 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 
 ## [Belum Rilis]
 ### Ditambahkan
+- `bot.showTyping()`
+- `bot.showRecording()`
 - `group.getLink()`
 
 ## [1.15.0] 2026-02-08

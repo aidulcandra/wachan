@@ -44,6 +44,18 @@ async function waitForMessage(options, timeout=10000) {
     return result
 }
 
+function showTyping(to) {
+    const socket = getSocket()
+    if (!socket) throw new Error("Bot has not been started yet.")
+    socket.sendPresenceUpdate("composing", to)
+}
+
+function showRecording(to) {
+    const socket = getSocket()
+    if (!socket) throw new Error("Bot has not been started yet.")
+    socket.sendPresenceUpdate("recording", to)
+}
+
 async function getGroupData(jid) {
     const group = await store.groupStore.get(jid)
     return group ? {
@@ -110,7 +122,7 @@ const bot = {
     onConnected, onReady, onReceive, onReceiveReply, onError, start, 
     sendMessage, waitForMessage,
     getGroupData, getUserData,
-    getBotData,
+    getBotData, showTyping, showRecording,
     settings, getSocket,
     messageType: { 
         any: 0, nonmedia:1, media: 2,
