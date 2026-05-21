@@ -547,6 +547,9 @@ Kamu bisa akses item-item ini untuk memprogram fungsi tambahan sendiri.
 - `bot.showRecording()`
 - `group.getLink()`
 
+### Diubah
+- Update ke baileys v7.0.0-rc12
+
 ## [1.15.0] 2026-02-08
 ### Ditambahkan
 - `bot.getBotData()`

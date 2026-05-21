@@ -546,6 +546,9 @@ Exposed are these items for programming custom functionalities.
 - `bot.showRecording()`
 - `group.getLink()`
 
+### Changed
+- Updated to baileys v7.0.0-rc12
+
 ## [1.15.0] 2026-02-08
 ### Added
 - `bot.getBotData()`
